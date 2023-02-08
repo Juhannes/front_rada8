@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import MyAdvertisementsView from "@/views/MyAdvertisementsView.vue";
+import MessagesView from "@/views/MessagesView.vue";
+
 
 Vue.use(VueRouter)
 
@@ -15,6 +17,10 @@ const routes = [
     path: '/my-advertisements',
     name: 'myAdvertisements',
     component: MyAdvertisementsView
+  },{
+    path: '/messages',
+    name: 'messageRoute',
+    component: MessagesView
   },
   {
     path: '/about',

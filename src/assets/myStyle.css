@@ -1,5 +1,8 @@
+body{
+    background-color: aliceblue
+}
+
 .icon-hover:hover {
     color: aquamarine;
     cursor: pointer;
-
 }

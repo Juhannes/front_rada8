@@ -1,8 +1,31 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div class="row">
+      <div style="padding: 50px">
+        <h1>Ei viitsi enam üksi pilli tinistada või on bändist puudu see üks ja ainus?</h1>
+      </div>
+      <div style="padding-bottom: 20px">
+        <h2>Pole vaja kaugelt otsida!</h2>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-2">
+        <button type="button" class="btn btn-outline-secondary">Otsin bändi</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-outline-secondary">Otsin bändikaaslast</button>
+      </div>
+      <div class="col-2">
+        <button type="button" class="btn btn-outline-secondary">Otsin varustust</button>
+      </div>
+    </div>
+    <div class="row justify-content-center" style="padding: 10px">
+      <div class="col-2">
+        <button type="button" class="btn btn-outline-secondary">Lisan kuulutuse</button>
+      </div>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -16,3 +39,7 @@ export default {
   }
 }
 </script>
+
+<style>
+
+</style>

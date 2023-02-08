@@ -1,8 +1,17 @@
 <template>
-  <div id="app">
+  <div id="app" style="background-color: aliceblue">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <div class="row justify-content-end">
+        <div class="col-2">
+          <router-link type="button" class="btn btn-outline-secondary" to="/">Minu kuulutused</router-link>
+        </div>
+        <div class="col-1">
+          <router-link type="button" class="btn btn-outline-secondary" to="/about">Sõnumid</router-link>
+        </div>
+        <div class="col-2">
+          <router-link type="button" class="btn btn-outline-secondary" to="/about">Logi välja</router-link>
+        </div>
+      </div>
     </nav>
     <router-view/>
   </div>
@@ -27,6 +36,6 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #d30505;
 }
 </style>

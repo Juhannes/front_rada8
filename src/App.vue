@@ -3,13 +3,16 @@
     <nav>
       <div class="row justify-content-end">
         <div class="col-2">
-          <router-link type="button" class="btn btn-outline-secondary" to="/">Minu kuulutused</router-link>
-        </div>
-        <div class="col-1">
-          <router-link type="button" class="btn btn-outline-secondary" to="/about">Sõnumid</router-link>
+          <img src="./assets/logo-no-background.png" style="max-width: 50%"/>
         </div>
         <div class="col-2">
-          <router-link type="button" class="btn btn-outline-secondary" to="/about">Logi välja</router-link>
+          <router-link type="button" class="btn btn-outline-secondary" to="/my-advertisements">Minu kuulutused</router-link>
+        </div>
+        <div class="col-1">
+          <router-link type="button" class="btn btn-outline-secondary" to="/messages">Sõnumid</router-link>
+        </div>
+        <div class="col-2">
+          <router-link type="button" class="btn btn-outline-secondary" to="/home">Logi välja</router-link>
         </div>
       </div>
     </nav>

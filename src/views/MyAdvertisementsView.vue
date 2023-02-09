@@ -3,13 +3,13 @@
 
     <div class="row" style="padding: 20px">
 
-      <MyAdvertisementSelection/>
+      <MyAdvertisementSelection ref="myAdvertisementSelection" @emitSelectedTypeIdEvent="setRequestedTypeId" />
 
     </div>
 
     <div class="row" style="padding: 20px">
 
-      <MyAdvertisementsTable/>
+      <MyAdvertisementsTable ref="myAdvertisementsTable"/>
 
       <div class="col-4">
         <div>
@@ -52,7 +52,29 @@ import MyAdvertisementSelection from "@/views/MyAdvertisementSelection.vue";
 
 export default {
   name: "MyAdvertisementsView",
-  components: {MyAdvertisementSelection, MyAdvertisementsTable}
+  components: {MyAdvertisementSelection, MyAdvertisementsTable},
+  data: function () {
+    return {
+      advertisementRequest: {
+        advertisementId: 0,
+        userId: 0,
+        header: '',
+        body: '',
+        typeId: 0,
+        cityId: 0,
+        createdTimestamp: null,
+        editedTimestamp: null,
+        status: '',
+        picture: null
+      }
+    }
+  },
+  methods: {
+    setRequestedTypeId(typeId) {
+      this.$refs.myAdvertisementsTable.setRequestedTypeId(typeId)
+      console.log(typeId)
+    }
+  }
 }
 </script>
 

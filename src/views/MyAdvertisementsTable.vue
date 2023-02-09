@@ -12,9 +12,6 @@
             Aktiivne
           </label>
         </div>
-
-
-
       </td>
       <td>
         <div class="col-1" style="padding: 10px">
@@ -67,6 +64,12 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+
+    setRequestedTypeId(typeId) {
+      this.myAdvertisements.typeId = typeId
+      this.getMyAdvertisements(2, typeId)
+      console.log(2, typeId)
     },
 
     checked: function () {

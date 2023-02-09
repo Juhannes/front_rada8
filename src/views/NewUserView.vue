@@ -21,7 +21,32 @@
       <div class="form-check">
         <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
         <label class="form-check-label" for="defaultCheck1">
-          Nõustun <a href="#" class="link-dark">kasutajatingimustega</a>
+          Nõustun
+          <!-- Button trigger modal -->
+          <a class="link-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            kasutajatingimustega
+          </a>
+
+          <!-- Modal -->
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Kasutajatingimused</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                  Don't be a dick!
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keeldun</button>
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Nõustun</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </label>
       </div>
       <button v-on:click="createNewUser" type="button" class="btn btn-success">Loo uus kasutaja</button>

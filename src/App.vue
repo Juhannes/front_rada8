@@ -2,11 +2,16 @@
   <div id="app" style="background-color: aliceblue">
     <nav>
       <div class="row justify-content-end">
+        <div class="col justify-content-start">
+          <router-link type="button" class="btn btn-outline-secondary" to="/new-user">Loo kasutaja</router-link>
+        </div>
         <div class="col-2">
           <img src="./assets/logo-no-background.png" style="max-width: 50%"/>
         </div>
+
         <div class="col-2">
-          <router-link type="button" class="btn btn-outline-secondary" to="/my-advertisements">Minu kuulutused</router-link>
+          <router-link type="button" class="btn btn-outline-secondary" to="/my-advertisements">Minu kuulutused
+          </router-link>
         </div>
         <div class="col-1">
           <router-link type="button" class="btn btn-outline-secondary" to="/messages">Sõnumid</router-link>

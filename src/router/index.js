@@ -2,11 +2,23 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import MyAdvertisementsView from "@/views/MyAdvertisementsView.vue";
+import NewUserView from "@/views/NewUserView.vue";
+import LoginView from "@/views/LoginView.vue";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/login',
+    name: 'loginRoute',
+    component: LoginView
+  },
+  {
+    path: '/new-user',
+    name: 'newUserRoute',
+    component: NewUserView
+  },
+    {
     path: '/home',
     name: 'home',
     component: HomeView

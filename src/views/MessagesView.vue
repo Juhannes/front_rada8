@@ -1,78 +1,83 @@
 <template>
   <div>
-    <div class="col col-2 text-end">
-      Sissetulnud sõnumid / <u>Saadetud sõnumid</u>
-    </div>
-    <div class="row" style="padding: 20px">
-      <div class="accordion accordion-flush col-8" style="background-color: aliceblue" id="accordionFlushExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-              Esimene kuulutus HEADING
-            </button>
-          </h2>
-          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-               data-bs-parent="#accordionFlushExample">
-            <div class="row justify-content-end">
-              <div class="accordion-body col-4">Kuulutuse sisu BODY</div>
-              <div class="form-check col-2" style="padding: 10px">
-                <input class="form-check-input" type="checkbox" value="">
-                <label class="form-check-label" for="flexCheckDefault">
-                  Aktiivne
-                </label>
-              </div>
-              <div>
-                <font-awesome-icon icon="fa-regular fa-pen-to-square" class="mx-2 icon-hover"/>
-              </div>
-              <div class="col-2" style="padding: 10px">
-                <button type="button" class="btn btn-secondary">Kustuta</button>
-              </div>
-            </div>
-          </div>
+    <div class="row">
+
+      <!--  COLUMN 1  -->
+      <div class="col col-7">
+        <div class="col text-start" style="margin-left: 2rem">
+          Sissetulnud sõnumid / <u>Saadetud sõnumid</u>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-              Accordion Item #2
-            </button>
-          </h2>
-          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-               data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-              <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
-              filled with some actual content.
-            </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-              Accordion Item #3
-            </button>
-          </h2>
-          <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-               data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-              <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
-              happening here in terms of content, but just filling up the space to make it look, at least at first
-              glance, a bit more representative of how this would look in a real-world application.
-            </div>
-          </div>
+        <div class="col">
+          <MessageTable @emitShowMessageEvent="showMessage" :messages="messages" />
         </div>
       </div>
+
+
+      <!-- COLUMN 2  -->
+      <MessageWindow :message="this.message"/>
+
+
     </div>
+
   </div>
 </template>
 
 <script>
+import MessageTable from "@/components/messages/MessageTable.vue";
+import MessageWindow from "@/components/messages/MessageWindow.vue";
+
 export default {
-  name: "MessagesView"
+  name: "MessagesView",
+  components: {MessageWindow, MessageTable},
+  data: function () {
+    return {
+      // userId: sessionStorage.getItem('userId')
+      userId: 3,
+      message: {},
+
+      messages: [
+        {
+          messageId: 0,
+          conversationId: 0,
+          subject: '',
+          sender: {
+            userId: 0,
+            userName: '',
+            email: ''
+          },
+          body: '',
+          dateTime: '',
+          advertisementId: 0
+        }
+      ]
+    }
+  },
+  methods: {
+    getReceivedMessages: function (userId) {
+      this.$http.get("/message", {
+            params: {
+              userId: userId,
+            }
+          }
+      ).then(response => {
+        this.messages = response.data
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    showMessage: function (messageId) {
+      let message = this.messages.find(message => message.messageId == messageId)
+      this.message = message
+
+
+    },
+    sortMessagesByDate: function () {
+      this.messages.sort()
+    },
+  },
+  beforeMount() {
+    this.getReceivedMessages(this.userId)
+  }
 }
 </script>
 
-<style scoped>
-
-</style>

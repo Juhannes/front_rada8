@@ -1,5 +1,16 @@
 .icon-hover:hover {
     color: aquamarine;
     cursor: pointer;
+}
 
+.mystyle {
+    padding: 10px;
+}
+
+.btn-sml, .btn-group-sm > .btn {
+    --bs-btn-padding-y: 0.25rem;
+    --bs-btn-padding-x: 0.5rem;
+    --bs-btn-font-size: 0.875rem;
+    --bs-btn-border-radius: 0.25rem;
+    padding: 10px;
 }

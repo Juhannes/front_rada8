@@ -5,6 +5,7 @@
 
       <MyAdvertisementSelection ref="myAdvertisementSelection" @emitSelectedTypeIdEvent="setRequestedTypeId" />
 
+      <button type="button" class="btn btn-outline-secondary col-3">Lisa uus kuulutus</button>
     </div>
 
     <div class="row" style="padding: 20px">
@@ -12,35 +13,9 @@
       <MyAdvertisementsTable ref="myAdvertisementsTable"/>
 
       <div class="col-4">
-        <div>
-          <div class="p-3 border bg-light">
-            <div class="row">
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Pealkiri: </span>
-                <input type="text" class="form-control">
-              </div>
-            </div>
-            <div class="row">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Asukoht</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div class="row">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Kategooria</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-
+        <EditAddAdvertisement/>
       </div>
+
     </div>
 
   </div>
@@ -49,10 +24,11 @@
 <script>
 import MyAdvertisementsTable from "@/views/MyAdvertisementsTable.vue";
 import MyAdvertisementSelection from "@/views/MyAdvertisementSelection.vue";
+import EditAddAdvertisement from "@/views/EditAddAdvertisement.vue";
 
 export default {
   name: "MyAdvertisementsView",
-  components: {MyAdvertisementSelection, MyAdvertisementsTable},
+  components: {EditAddAdvertisement, MyAdvertisementSelection, MyAdvertisementsTable},
   data: function () {
     return {
       advertisementRequest: {

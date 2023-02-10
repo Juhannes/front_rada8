@@ -1,7 +1,7 @@
 <template>
-  <select class="form-select" aria-label="Default select example">
+  <select v-model="selectedTypeId" v-on:change="emitSelectedAdvertisementType" class="form-select" aria-label="Default select example">
     <option selected disabled>Kategooria</option>
-    <option v-for="advertisementTypes in advertisementTypes" :value="advertisementTypes.advertisementTypeId">{{advertisementTypes.advertisementTypeName}}</option>
+    <option v-for="advertisementTypes in advertisementTypes" :value="advertisementTypes.id">{{advertisementTypes.name}}</option>
   </select>
 </template>
 <script>
@@ -24,12 +24,14 @@ export default {
       this.$http.get("/my-advertisements-types")
           .then(response => {
             this.advertisementTypes = response.data
-            console.log(response.data)
           })
           .catch(error => {
             console.log(error)
           })
 
+    },
+    emitSelectedAdvertisementType: function () {
+      this.$emit('emitAdvertisementTypeEvent', this.selectedTypeId)
     },
   },
   beforeMount() {

@@ -1,31 +1,21 @@
 <template>
   <div>
     <div class="p-3 border bg-light">
-      <div class="row" style="padding: 5px">
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Pealkiri: </span>
-          <input type="text" class="form-control">
-        </div>
+      <div class="row">
+        <AdvertisementHeading ref="advertisementHeading" @emitAdvertisementHeadingEvent="setAdvertisementAddHeading"/>
       </div>
       <div class="row" style="padding: 5px">
-        <CitiesDropdown/>
+        <CitiesDropdown ref="citiesDropdown" @emitSelectedCityIdEvent="setAdvertisementAddCityId"/>
+      </div>
+      <div class="row" style="padding: 5px">
+        <TypeDropdown ref="typeDropdown" @emitAdvertisementTypeEvent="setAdvertisementAddType"/>
       </div>
       <div class="row">
-        <TypeDropdown/>
+        <AdvertisementBody ref="advertisementBody" @emitAdvertisementBodyEvent="setAdvertisementAddBody"/>
       </div>
 
-      <div class="input-group" style="padding: 5px">
-        <span class="input-group-text">Lisainfo:</span>
-        <textarea class="form-control" aria-label="With textarea"></textarea>
-      </div>
-
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox">
-        <label class="form-check-label" for="flexCheckDefault">
-          Aktiivne
-        </label>
-      </div>
-      <button type="button" class="btn btn-secondary btn-sm">Salvesta</button>
+      <ActiveBox ref="activeBox" @emitActiveStatusEvent="setAdvertisementAddStatus"/>
+      <button v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta</button>
       <button type="button" class="btn btn-secondary btn-sm">Kustuta</button>
       <button type="button" class="btn btn-secondary btn-sm">Tühista</button>
 
@@ -35,9 +25,84 @@
 <script>
 import TypeDropdown from "@/views/TypeDropdown.vue";
 import CitiesDropdown from "@/views/CitiesDropdown.vue";
+import AdvertisementHeading from "@/views/AdvertisementHeading.vue";
+import AdvertisementBody from "@/views/AdvertisementBody.vue";
+import ActiveBox from "@/views/ActiveBox.vue";
+
 
 export default {
   name: 'EditAddAdvertisement',
-  components: {CitiesDropdown, TypeDropdown}
+  components: {ActiveBox, AdvertisementBody, AdvertisementHeading, CitiesDropdown, TypeDropdown},
+  data: function () {
+    return {
+      advertisementAdd: {
+        userId: 2,
+        header: '',
+        body: '',
+        typeId: 0,
+        cityId: 0,
+        createdTimestamp: null,
+        editedTimestamp: null,
+        status: '',
+        picture: null
+      }
+    }
+  },
+  methods: {
+    setAdvertisementAddHeading(advertisementHeading) {
+      this.advertisementAdd.header = advertisementHeading
+    },
+
+    addAdvertisement: function () {
+      this.callAdvertisementAddEmits()
+      this.setAdvertisementCreatedTimestamp()
+      this.setAdvertisementEditedTimestamp()
+      this.postAdvertisement()
+    },
+
+    callAdvertisementAddEmits: function () {
+      this.$refs.advertisementHeading.emitAdvertisementHeading()
+      this.$refs.citiesDropdown.emitSelectedCityId()
+      this.$refs.advertisementBody.emitAdvertisementBody()
+      this.$refs.typeDropdown.emitSelectedAdvertisementType()
+      this.$refs.activeBox.emitActiveStatus()
+      console.log(this.advertisementAdd)
+    },
+
+    setAdvertisementAddCityId(cityId) {
+      this.advertisementAdd.cityId = cityId
+    },
+
+    setAdvertisementAddBody(body) {
+      this.advertisementAdd.body = body
+    },
+
+    setAdvertisementAddType(typeId) {
+      this.advertisementAdd.typeId = typeId
+    },
+
+    setAdvertisementCreatedTimestamp() {
+      this.advertisementAdd.createdTimestamp = Date()
+    },
+
+    setAdvertisementEditedTimestamp() {
+      this.advertisementAdd.editedTimestamp = Date()
+    },
+
+    setAdvertisementAddStatus(status) {
+      this.advertisementAdd.status = status
+    },
+
+    postAdvertisement: function () {
+      this.$http.post("/my-advertisements", this.advertisementAdd
+      ).then(response => {
+        console.log(response.data)
+        alert("Uus kuulutus lisatud")
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
+  }
 }
 </script>

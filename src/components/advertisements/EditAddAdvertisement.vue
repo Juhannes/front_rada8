@@ -13,8 +13,10 @@
       <div class="row">
         <AdvertisementBody ref="advertisementBody" @emitAdvertisementBodyEvent="setAdvertisementAddBody"/>
       </div>
+      <div class="col-1" style="padding: 10px">
+        <ActiveBox ref="activeBox" @emitActiveStatusEvent="setAdvertisementAddStatus"/>
+      </div>
 
-      <ActiveBox ref="activeBox" @emitActiveStatusEvent="setAdvertisementAddStatus"/>
       <button v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta</button>
       <button type="button" class="btn btn-secondary btn-sm">Kustuta</button>
       <button type="button" class="btn btn-secondary btn-sm">Tühista</button>
@@ -23,11 +25,11 @@
   </div>
 </template>
 <script>
-import TypeDropdown from "@/views/TypeDropdown.vue";
-import CitiesDropdown from "@/views/CitiesDropdown.vue";
-import AdvertisementHeading from "@/views/AdvertisementHeading.vue";
-import AdvertisementBody from "@/views/AdvertisementBody.vue";
-import ActiveBox from "@/views/ActiveBox.vue";
+import TypeDropdown from "@/components/TypeDropdown.vue";
+import CitiesDropdown from "@/components/CitiesDropdown.vue";
+import AdvertisementHeading from "@/components/advertisements/AdvertisementHeading.vue";
+import AdvertisementBody from "@/components/advertisements/AdvertisementBody.vue";
+import ActiveBox from "@/components/advertisements/ActiveBox.vue";
 
 
 export default {
@@ -45,12 +47,29 @@ export default {
         editedTimestamp: null,
         status: '',
         picture: null
-      }
+      },
+      advertisementId: 0
     }
   },
   methods: {
     setAdvertisementAddHeading(advertisementHeading) {
       this.advertisementAdd.header = advertisementHeading
+    },
+
+    getAdvertisementFilled: function () {
+      this.$http.get("/my-advertisements", {
+            params: {
+              advertisementId: this.advertisementId,
+            }
+          }
+      ).then(response => {
+        this.advertisementAdd = response.data
+
+        this.$refs.citiesDropdown.setSelectedCityId(this.advertisementAdd.cityId)
+        this.$refs.typeDropdown.setSelectedTypeId(this.advertisementAdd.typeId)
+      }).catch(error => {
+        console.log(error)
+      })
     },
 
     addAdvertisement: function () {

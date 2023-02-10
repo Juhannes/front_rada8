@@ -33,6 +33,9 @@ export default {
     emitSelectedAdvertisementType: function () {
       this.$emit('emitAdvertisementTypeEvent', this.selectedTypeId)
     },
+    setSelectedTypeId: function (typeId) {
+      this.selectedTypeId = typeId
+    },
   },
   beforeMount() {
     this.getAdvertisementTypes()

@@ -6,18 +6,15 @@
       <th scope="row">{{ myAdvertisements.header }}</th>
       <td>
         <div class="form-check col-2" style="padding: 10px">
-          <input v-if="myAdvertisements.status === 'A'" checked class="form-check-input" type="checkbox">
-          <input v-else class="form-check-input" type="checkbox">
+          <input v-if="myAdvertisements.status === 'A'" disabled checked class="form-check-input" type="checkbox">
+          <input v-else class="form-check-input" disabled type="checkbox">
           <label class="form-check-label">
             Aktiivne
           </label>
         </div>
-
-
-
       </td>
       <td>
-        <div class="col-1" style="padding: 10px">
+        <div v-on:click="emitIsEdit(myAdvertisements.advertisementId)" class="col-1" style="padding: 10px">
           <font-awesome-icon icon="fa-regular fa-pen-to-square" class="mx-2 icon-hover"/>
         </div>
       </td>
@@ -49,7 +46,8 @@ export default {
           status: '',
           picture: null
         }
-      ]
+      ],
+      isEdit: false
     }
   },
   methods: {
@@ -68,10 +66,15 @@ export default {
         console.log(error)
       })
     },
-
-    checked: function () {
-      this.myAdvertisements.status = ((this.myAdvertisements.status == 'A') ? 'I' : 'A')
-    }
+    setRequestedTypeId(typeId) {
+      this.myAdvertisements.typeId = typeId
+      this.getMyAdvertisements(2, typeId)
+      console.log(2, typeId)
+    },
+    emitIsEdit(advertisementId) {
+      this.isEdit = !this.isEdit
+      this.$emit('emitIsEditEvent', this.isEdit, advertisementId)
+    },
 
   },
   beforeMount() {

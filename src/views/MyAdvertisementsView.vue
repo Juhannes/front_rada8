@@ -3,56 +3,46 @@
 
     <div class="row" style="padding: 20px">
 
-      <MyAdvertisementSelection/>
+      <MyAdvertisementSelection ref="myAdvertisementSelection" @emitSelectedTypeIdEvent="setRequestedTypeId"/>
 
+<!--      <button type="button" class="btn btn-outline-secondary col-3">Lisa uus kuulutus</button>-->
     </div>
 
     <div class="row" style="padding: 20px">
 
-      <MyAdvertisementsTable/>
+      <MyAdvertisementsTable ref="myAdvertisementsTable" @emitIsEditEvent="setIsEdit"/>
 
-      <div class="col-4">
-        <div>
-          <div class="p-3 border bg-light">
-            <div class="row">
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Pealkiri: </span>
-                <input type="text" class="form-control">
-              </div>
-            </div>
-            <div class="row">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Asukoht</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div class="row">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Kategooria</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-
+      <div v-if="isEdit" class="col-4">
+        <EditAddAdvertisement/>
       </div>
+
     </div>
 
   </div>
 </template>
 
 <script>
-import MyAdvertisementsTable from "@/views/MyAdvertisementsTable.vue";
-import MyAdvertisementSelection from "@/views/MyAdvertisementSelection.vue";
+import MyAdvertisementsTable from "@/components/advertisements/MyAdvertisementsTable.vue";
+import MyAdvertisementSelection from "@/components/advertisements/MyAdvertisementSelection.vue";
+import EditAddAdvertisement from "@/components/advertisements/EditAddAdvertisement.vue";
 
 export default {
   name: "MyAdvertisementsView",
-  components: {MyAdvertisementSelection, MyAdvertisementsTable}
+  components: {EditAddAdvertisement, MyAdvertisementSelection, MyAdvertisementsTable},
+  data: function () {
+    return {
+      isEdit: false
+    }
+  },
+  methods: {
+    setRequestedTypeId(typeId) {
+      this.$refs.myAdvertisementsTable.setRequestedTypeId(typeId)
+      console.log(typeId)
+    },
+    setIsEdit() {
+      this.isEdit = !this.isEdit
+    },
+  }
 }
 </script>
 

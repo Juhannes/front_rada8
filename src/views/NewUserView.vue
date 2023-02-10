@@ -1,6 +1,11 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-3">
+      <alertSuccess :message-success="messageSuccess"/>
+
+      <alertAlert :message-alert="messageAlert"/>
+
+
       <div class="input-group mb-3">
         <input v-model="userDto.username" type="text" class="form-control" placeholder="Kasutajanimi" aria-label="Username"
                aria-describedby="basic-addon1">
@@ -60,8 +65,14 @@
 </template>
 
 <script>
+
+
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import AlertAlert from "@/components/alert/AlertAlert.vue";
+
 export default {
   name: "NewUserView",
+  components: {AlertAlert, AlertSuccess},
   data: function () {
     return{
       userDto: {
@@ -70,6 +81,8 @@ export default {
         email: '',
       },
         isSelected: false,
+        messageSuccess:'',
+        messageAlert:''
 
 
 
@@ -81,7 +94,7 @@ export default {
     sendNewUserToDb: function () {
       this.$http.post("/register", this.userDto
       ).then(response => {
-        alert("Kasutaja edukalt lisatud!")
+        this.messageSuccess = "Kasutaja edukalt loodud!"
       }).catch(error => {
         alert("katki!!!!")
       })
@@ -95,7 +108,7 @@ export default {
     addNewUser: function () {
       if (this.checkInput()) {
         this.sendNewUserToDb()
-      } else alert("Täida kõik väljad!")
+      } else this.messageAlert = "Täida kõik väljad!"
     }
 
 

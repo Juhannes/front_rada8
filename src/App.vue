@@ -6,7 +6,9 @@
           <router-link type="button" class="btn btn-outline-secondary" to="/new-user">Loo kasutaja</router-link>
         </div>
         <div class="col-2">
-          <img src="./assets/logo-no-background.png" style="max-width: 50%"/>
+          <router-link to="/home">
+          <img  src="./assets/logo-no-background.png" style="max-width: 50%"/>
+          </router-link>
         </div>
 
         <div class="col-2">

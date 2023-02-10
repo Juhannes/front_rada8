@@ -1,13 +1,14 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-3">
-      <alertSuccess :message-success="messageSuccess"/>
 
-      <alertAlert :message-alert="messageAlert"/>
+      <AlertWarning :message-warning="messageWarning"/>
+      <MessageDanger :message-danger="messageDanger"/>
 
 
       <div class="input-group mb-3">
-        <input v-model="userDto.username" type="text" class="form-control" placeholder="Kasutajanimi" aria-label="Username"
+        <input v-model="userDto.username" type="text" class="form-control" placeholder="Kasutajanimi"
+               aria-label="Username"
                aria-describedby="basic-addon1">
       </div>
 
@@ -22,7 +23,6 @@
       </div>
 
 
-
       <div class="form-check">
         <input v-model="isSelected" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
         <label class="form-check-label" for="defaultCheck1">
@@ -33,7 +33,8 @@
           </a>
 
           <!-- Modal -->
-          <div class="modal fade" id="staticBackdrop"  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel"
+               aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -47,16 +48,15 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sule</button>
-<!--                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>-->
+                  <!--                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>-->
                 </div>
               </div>
             </div>
           </div>
         </label>
       </div>
-      <button v-on:click="addNewUser"  :disabled="!isSelected" type="button" class="btn btn-success">Loo uus kasutaja</button>
-
-
+      <button v-on:click="messageReset" :disabled="!isSelected" type="button" class="btn btn-success">Loo uus kasutaja
+      </button>
 
 
     </div>
@@ -68,23 +68,24 @@
 
 
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
-import AlertAlert from "@/components/alert/AlertAlert.vue";
+import AlertWarning from "@/components/alert/AlertWarning.vue";
+import MessageDanger from "@/components/alert/MessageDanger.vue";
+
 
 export default {
   name: "NewUserView",
-  components: {AlertAlert, AlertSuccess},
+  components: {MessageDanger, AlertWarning, AlertSuccess},
   data: function () {
-    return{
+    return {
       userDto: {
         username: '',
         password: '',
         email: '',
       },
-        isSelected: false,
-        messageSuccess:'',
-        messageAlert:''
-
-
+      isSelected: false,
+      messageSuccess: '',
+      messageWarning: '',
+      messageDanger: ''
 
 
     }
@@ -95,20 +96,31 @@ export default {
       this.$http.post("/register", this.userDto
       ).then(response => {
         this.messageSuccess = "Kasutaja edukalt loodud!"
+        this.goToLogin()
       }).catch(error => {
-        alert("katki!!!!")
+        this.messageDanger = "Kõik on katki :)"
       })
     },
     checkInput: function () {
-      return  this.userDto.username !== '' &&
-          this.userDto.password !=='' &&
-          this.userDto.email !==''
+      return this.userDto.username !== '' &&
+          this.userDto.password !== '' &&
+          this.userDto.email !== ''
 
     },
     addNewUser: function () {
+
       if (this.checkInput()) {
         this.sendNewUserToDb()
-      } else this.messageAlert = "Täida kõik väljad!"
+      } else this.messageWarning = "Täida kõik väljad!"
+    },
+    messageReset: function () {
+      this.messageSuccess = ''
+      this.messageWarning = ''
+      this.messageDanger = ''
+      this.addNewUser()
+    },
+    goToLogin: function () {
+      this.$router.push({name: "loginRoute"})
     }
 
 

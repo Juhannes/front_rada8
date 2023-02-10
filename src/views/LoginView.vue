@@ -3,6 +3,8 @@
 
 
   <div class="row justify-content-center">
+    <AlertSuccess :message-success="messageSuccess"/>
+
 
     <div class="col-3">
       <div class="input-group mb-3">
@@ -22,6 +24,10 @@
 </template>
 
 <script>
+
+
+import newUserView from "@/views/NewUserView.vue";
+
 export default {
   name: "LoginView",
   data: function() {
@@ -32,13 +38,15 @@ export default {
         roleName:'',
         email:'',
       },
-
+      messageSuccess:'',
       username:'',
-      password:''
+      password:'',
     }
   },
 
   methods: {
+
+
     sendLoginRequest: function () {
       this.$http.get("/login", {
             params: {
@@ -47,7 +55,7 @@ export default {
             }
           }
       ).then(response => {
-           this.loginResponse = response.data
+        this.loginResponse = response.data
         sessionStorage.setItem('userId', this.loginResponse.userId)
         sessionStorage.setItem('roleName', this.loginResponse.roleName)
         sessionStorage.setItem('email', this.loginResponse.email)
@@ -57,6 +65,9 @@ export default {
         alert("katki!!!")
       })
     },
+
   }
+
 }
+
 </script>

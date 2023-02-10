@@ -96,6 +96,7 @@ export default {
       this.$http.post("/register", this.userDto
       ).then(response => {
         this.messageSuccess = "Kasutaja edukalt loodud!"
+        this.$emit('successAlert')
         this.goToLogin()
       }).catch(error => {
         this.messageDanger = "Kõik on katki :)"

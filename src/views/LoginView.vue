@@ -3,7 +3,8 @@
 
 
   <div class="row justify-content-center">
-    <AlertSuccess :message-success="messageSuccess"/>
+    <div @successAlert="setMessageSuccess" ></div>
+    <AlertSuccess :message-success="messageSuccess"  />
 
 
     <div class="col-3">
@@ -27,9 +28,11 @@
 
 
 import newUserView from "@/views/NewUserView.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: "LoginView",
+  components: {AlertSuccess},
   data: function() {
     return{
 
@@ -45,6 +48,9 @@ export default {
   },
 
   methods: {
+    setMessageSuccess: function() {
+      this.messageSuccess = "Kasutaja loomine õnnestus"
+    },
 
 
     sendLoginRequest: function () {
@@ -67,7 +73,6 @@ export default {
     },
 
   }
-
 }
 
 </script>

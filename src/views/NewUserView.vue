@@ -19,7 +19,7 @@
 
 
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        <input v-model="isSelected" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
         <label class="form-check-label" for="defaultCheck1">
           Nõustun
           <!-- Button trigger modal -->
@@ -28,7 +28,7 @@
           </a>
 
           <!-- Modal -->
-          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal fade" id="staticBackdrop"  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -41,15 +41,15 @@
 
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keeldun</button>
-                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Nõustun</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sule</button>
+<!--                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>-->
                 </div>
               </div>
             </div>
           </div>
         </label>
       </div>
-      <button v-on:click="createNewUser" type="button" class="btn btn-success">Loo uus kasutaja</button>
+      <button v-on:click="addNewUser"  :disabled="!isSelected" type="button" class="btn btn-success">Loo uus kasutaja</button>
 
 
 
@@ -69,13 +69,16 @@ export default {
         password: '',
         email: '',
       },
+        isSelected: false,
+
+
 
 
     }
 
   },
   methods: {
-    createNewUser: function () {
+    sendNewUserToDb: function () {
       this.$http.post("/register", this.userDto
       ).then(response => {
         alert("Kasutaja edukalt lisatud!")
@@ -83,6 +86,18 @@ export default {
         alert("katki!!!!")
       })
     },
+    checkInput: function () {
+      return  this.userDto.username !== '' &&
+          this.userDto.password !=='' &&
+          this.userDto.email !==''
+
+    },
+    addNewUser: function () {
+      if (this.checkInput()) {
+        this.sendNewUserToDb()
+      } else alert("Täida kõik väljad!")
+    }
+
 
   }
 }

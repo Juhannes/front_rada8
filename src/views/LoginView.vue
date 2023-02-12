@@ -65,6 +65,8 @@ export default {
         sessionStorage.setItem('userId', this.loginResponse.userId)
         sessionStorage.setItem('roleName', this.loginResponse.roleName)
         sessionStorage.setItem('email', this.loginResponse.email)
+        this.$emit('loginSuccess')
+
 
       }).catch(error => {
 

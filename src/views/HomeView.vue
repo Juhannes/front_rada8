@@ -36,6 +36,15 @@ export default {
   name: 'HomeView',
   components: {
     HelloWorld
+  },
+
+  beforeMount() {
+    if (localStorage.getItem('reloaded')) {
+      localStorage.removeItem('reloaded');
+    } else {
+      localStorage.setItem('reloaded', '1');
+      location.reload();
+    }
   }
 }
 </script>

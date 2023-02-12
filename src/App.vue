@@ -7,7 +7,7 @@
         </div>
         <div class="col-2">
           <router-link to="/home">
-          <img  src="./assets/logo-no-background.png" style="max-width: 50%"/>
+            <img src="./assets/logo-no-background.png" style="max-width: 50%"/>
           </router-link>
         </div>
 
@@ -18,14 +18,46 @@
         <div class="col-1">
           <router-link type="button" class="btn btn-outline-secondary" to="/messages">Sõnumid</router-link>
         </div>
+
         <div class="col-2">
-          <router-link type="button" class="btn btn-outline-secondary" to="/home">Logi välja</router-link>
+          <router-link
+              v-if="isLoggedIn" v-on:click.native="logout" type="button" class="btn btn-outline-secondary" to="/home">Välju
+          </router-link>
+
+          <router-link v-else type="button" class="btn btn-outline-secondary" to="/login">Sisene</router-link>
         </div>
       </div>
     </nav>
-    <router-view/>
+    <router-view @loginSuccess="updateLoginButton"/>
   </div>
 </template>
+
+<script>
+export default {
+  name: "App",
+  data: function () {
+    return {
+      isLoggedIn: false,
+      roleName: sessionStorage.getItem('roleName')
+    }
+  },
+  methods: {
+    updateLoginButton: function () {
+      this.roleName = sessionStorage.getItem('roleName')
+      this.isLoggedIn = this.roleName === 'admin' || 'user'
+    },
+    logout: function () {
+      sessionStorage.clear()
+
+
+    }
+
+  }
+
+
+}
+
+</script>
 
 <style>
 #app {

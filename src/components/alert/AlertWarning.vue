@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: 'alertAlert',
+  name: 'alertWarning',
   props: {
     messageWarning: {}
   }

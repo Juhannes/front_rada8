@@ -16,6 +16,7 @@
       <td>
         <div v-on:click="emitIsEdit(myAdvertisements.advertisementId)" class="col-1" style="padding: 10px">
           <font-awesome-icon icon="fa-regular fa-pen-to-square" class="mx-2 icon-hover"/>
+          {{myAdvertisements.advertisementId}}
         </div>
       </td>
       <td>
@@ -62,6 +63,7 @@ export default {
       ).then(response => {
         console.log(response.data)
         this.myAdvertisements = response.data
+        console.log(response.data)
       }).catch(error => {
         console.log(error)
       })
@@ -72,8 +74,11 @@ export default {
       console.log(2, typeId)
     },
     emitIsEdit(advertisementId) {
-      this.isEdit = !this.isEdit
-      this.$emit('emitIsEditEvent', this.isEdit, advertisementId)
+      // this.isEdit = !this.isEdit
+      this.$emit('emitIsEditEvent', advertisementId)
+      this.myAdvertisements.advertisementId = advertisementId
+      // this.$route.push({name: 'EditAddAdvertisement', query:{advertisementId: advertisementId}})
+      console.log(advertisementId)
     },
 
   },

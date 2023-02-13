@@ -20,6 +20,14 @@ export default {
       this.status = ((this.isSelected) ? 'A' : 'I')
       this.$emit('emitActiveStatusEvent', this.status)
     },
+    setActiveStatus: function (status) {
+      this.status = status
+      if (this.status === 'A') {
+        this.isSelected = true
+      } else if (this.status === 'I' || this.status === 'D') {
+        this.isSelected = false
+      }
+    },
   }
 }
 </script>

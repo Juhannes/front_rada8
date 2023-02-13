@@ -10,7 +10,7 @@
 
     <div class="row" style="padding: 20px">
 
-      <MyAdvertisementsTable ref="myAdvertisementsTable" @emitIsEditEvent="setIsEdit" @/>
+      <MyAdvertisementsTable ref="myAdvertisementsTable" @emitIsEditEvent="setIsEdit"/>
 
       <div v-if="isEdit" class="col-4">
         <EditAddAdvertisement/>
@@ -41,10 +41,7 @@ export default {
     },
     setIsEdit() {
       this.isEdit = !this.isEdit
-    },
-    setRequestedLocationId(locationId) {
-      console.log(locationId)
-    },
+    }
   }
 }
 </script>

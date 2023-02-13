@@ -28,6 +28,10 @@ const routes = [
     path: '/my-advertisements',
     name: 'myAdvertisements',
     component: MyAdvertisementsView
+  },{
+    path: '/messages',
+    name: 'messageRoute',
+    component: MessagesView
   },
   {
     path: '/messages',

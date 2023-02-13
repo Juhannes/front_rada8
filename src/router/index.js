@@ -5,10 +5,16 @@ import MyAdvertisementsView from "@/views/MyAdvertisementsView.vue";
 import NewUserView from "@/views/NewUserView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MessagesView from "@/views/MessagesView.vue";
+import AdvertisementsView from "@/views/AdvertisementsView.vue";
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/advertisements',
+    name: 'advertisementsRoute',
+    component: AdvertisementsView
+  },
   {
     path: '/login',
     name: 'loginRoute',

@@ -23,7 +23,7 @@
 <!--        </div>-->
 <!--      </div>-->
       <div class="col-2">
-        <button type="button" class="btn btn-outline-secondary">Otsin bändi</button>
+        <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary">Otsin bändi</button>
       </div>
       <div class="col-3">
         <button type="button" class="btn btn-outline-secondary">Otsin bändikaaslast</button>
@@ -49,7 +49,13 @@ export default {
   name: 'HomeView',
   components: {
     HelloWorld
+  },
+  methods: {
+    searchBand: function () {
+      this.$router.push({name: "advertisementsRoute"})
+    }
   }
+
 }
 </script>
 

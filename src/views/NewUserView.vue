@@ -50,7 +50,7 @@
                 </div>
                 <div class="modal-footer">
                   <button v-on:click="isSelected = false" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ei nõustu</button>
-                                    <button v-on:click="isSelected = true" type="button" class="btn btn-success" data-bs-dismiss="modal">Nõustun</button>
+                  <button v-on:click="isSelected = true" type="button" class="btn btn-success" data-bs-dismiss="modal">Nõustun</button>
                 </div>
               </div>
             </div>

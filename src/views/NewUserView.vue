@@ -24,7 +24,9 @@
 
 
       <div class="form-check">
-        <input v-model="isSelected" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        <div>
+          <input v-model="isSelected" :disabled="isDisabled" class="form-check-input" type="checkbox" id="checkboxNoLabel">
+        </div>
         <label class="form-check-label" for="defaultCheck1">
           Nõustun
           <!-- Button trigger modal -->
@@ -47,7 +49,7 @@
 
                 </div>
                 <div class="modal-footer">
-                  <button v-on:click="isSelected = false" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sule</button>
+                  <button v-on:click="isSelected = false" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ei nõustu</button>
                                     <button v-on:click="isSelected = true" type="button" class="btn btn-success" data-bs-dismiss="modal">Nõustun</button>
                 </div>
               </div>
@@ -83,9 +85,11 @@ export default {
         email: '',
       },
       isSelected: false,
+      isDisabled: false,
 
       messageWarning: '',
       alertDanger: ''
+
 
 
     }

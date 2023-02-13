@@ -1,13 +1,13 @@
 <template>
 
 
-
   <div class="row justify-content-center">
-    <div @successAlert="setMessageSuccess" ></div>
-    <AlertSuccess :message-success="messageSuccess"  />
+
+
 
 
     <div class="col-3">
+      <AlertSuccess :message-success="messageSuccess"/>
       <div class="input-group mb-3">
         <input v-model="username" type="text" class="form-control" placeholder="Kasutajanimi" aria-label="Username"
                aria-describedby="basic-addon1">
@@ -20,7 +20,9 @@
 
       <button v-on:click="sendLoginRequest" type="button" class="btn btn-success">Sisene</button>
     </div>
-    </div>
+
+  </div>
+
 
 </template>
 
@@ -33,23 +35,27 @@ import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 export default {
   name: "LoginView",
   components: {AlertSuccess},
-  data: function() {
-    return{
+  data: function () {
+    return {
 
-      loginResponse:{
+      loginResponse: {
         userId: 0,
-        roleName:'',
-        email:'',
+        roleName: '',
+        email: '',
       },
-      messageSuccess:'',
-      username:'',
-      password:'',
+      messageSuccess: '',
+      username: '',
+      password: '',
     }
   },
 
   methods: {
-    setMessageSuccess: function() {
-      this.messageSuccess = "Kasutaja loomine õnnestus"
+    setMessageSuccess: function () {
+
+      this.messageSuccess = localStorage.getItem("messageSuccess")
+      localStorage.removeItem("messageSuccess")
+      if (this.messageSuccess == null)
+      this.messageSuccess = ''
     },
 
 
@@ -66,6 +72,7 @@ export default {
         sessionStorage.setItem('roleName', this.loginResponse.roleName)
         sessionStorage.setItem('email', this.loginResponse.email)
         this.$emit('loginSuccess')
+        this.messageSuccess='Tere tulemast!'
 
 
       }).catch(error => {
@@ -74,6 +81,9 @@ export default {
       })
     },
 
+  },
+  beforeMount() {
+    this.setMessageSuccess()
   }
 }
 

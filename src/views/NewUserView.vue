@@ -83,7 +83,7 @@ export default {
         email: '',
       },
       isSelected: false,
-      messageSuccess: '',
+
       messageWarning: '',
       messageDanger: ''
 
@@ -95,8 +95,7 @@ export default {
     sendNewUserToDb: function () {
       this.$http.post("/register", this.userDto
       ).then(response => {
-        this.messageSuccess = "Kasutaja edukalt loodud!"
-        this.$emit('successAlert')
+        localStorage.setItem("messageSuccess", "Kasutaja loomine õnnestus")
         this.goToLogin()
       }).catch(error => {
         this.messageDanger = "Kõik on katki :)"
@@ -115,7 +114,7 @@ export default {
       } else this.messageWarning = "Täida kõik väljad!"
     },
     messageReset: function () {
-      this.messageSuccess = ''
+
       this.messageWarning = ''
       this.messageDanger = ''
       this.addNewUser()

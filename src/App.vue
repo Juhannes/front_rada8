@@ -3,7 +3,9 @@
     <nav>
       <div class="row justify-content-end">
         <div class="col justify-content-start">
-          <router-link type="button" class="btn btn-outline-secondary" to="/new-user">Loo kasutaja</router-link>
+          <router-link v-if="isLoggedIn === false" type="button" class="btn btn-outline-secondary" to="/new-user">Loo
+            kasutaja
+          </router-link>
         </div>
         <div class="col-2">
           <router-link to="/home">
@@ -21,7 +23,8 @@
 
         <div class="col-2">
           <router-link
-              v-if="isLoggedIn" v-on:click.native="logout" type="button" class="btn btn-outline-secondary" to="/home">Välju
+              v-if="isLoggedIn" v-on:click.native="logout" type="button" class="btn btn-outline-secondary" to="/home">
+            Välju
           </router-link>
 
           <router-link v-else type="button" class="btn btn-outline-secondary" to="/login">Sisene</router-link>
@@ -48,8 +51,7 @@ export default {
     },
     logout: function () {
       sessionStorage.clear()
-
-
+      location.reload()
     }
 
   }

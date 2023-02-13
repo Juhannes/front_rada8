@@ -13,7 +13,7 @@
       </div>
 
       <div class="input-group mb-3">
-        <input v-model="userDto.password" type="text" class="form-control" placeholder="Parool" aria-label="Username"
+        <input v-model="userDto.password" type="password" class="form-control" placeholder="Parool" aria-label="Username"
                aria-describedby="basic-addon1">
       </div>
 

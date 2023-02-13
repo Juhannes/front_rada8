@@ -47,8 +47,8 @@
 
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sule</button>
-                  <!--                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>-->
+                  <button v-on:click="isSelected = false" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sule</button>
+                                    <button v-on:click="isSelected = true" type="button" class="btn btn-success" data-bs-dismiss="modal">Nõustun</button>
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@ export default {
         localStorage.setItem("messageSuccess", "Kasutaja loomine õnnestus")
         this.goToLogin()
       }).catch(error => {
-        this.alertDanger = "Kõik on katki :)"
+        this.alertDanger = "Kõik on katki, proovi uuesti :)"
       })
     },
     checkInput: function () {

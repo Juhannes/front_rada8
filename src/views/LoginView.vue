@@ -80,7 +80,8 @@ export default {
         sessionStorage.setItem('roleName', this.loginResponse.roleName)
         sessionStorage.setItem('email', this.loginResponse.email)
         this.$emit('loginSuccess')
-        this.messageSuccess='Tere tulemast!'
+        this.messageDanger = ''
+        this.messageSuccess = 'Tere tulemast!'
 
 
       }).catch(error => {

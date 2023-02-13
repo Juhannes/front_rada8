@@ -3,7 +3,7 @@
     <div class="col-3">
 
       <AlertWarning :message-warning="messageWarning"/>
-      <MessageDanger :message-danger="messageDanger"/>
+      <AlertDanger :message-danger="alertDanger"/>
 
 
       <div class="input-group mb-3">
@@ -69,12 +69,12 @@
 
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import AlertWarning from "@/components/alert/AlertWarning.vue";
-import MessageDanger from "@/components/alert/MessageDanger.vue";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
 
 
 export default {
   name: "NewUserView",
-  components: {MessageDanger, AlertWarning, AlertSuccess},
+  components: {AlertDanger, AlertWarning, AlertSuccess},
   data: function () {
     return {
       userDto: {
@@ -85,7 +85,7 @@ export default {
       isSelected: false,
 
       messageWarning: '',
-      messageDanger: ''
+      alertDanger: ''
 
 
     }
@@ -98,7 +98,7 @@ export default {
         localStorage.setItem("messageSuccess", "Kasutaja loomine õnnestus")
         this.goToLogin()
       }).catch(error => {
-        this.messageDanger = "Kõik on katki :)"
+        this.alertDanger = "Kõik on katki :)"
       })
     },
     checkInput: function () {
@@ -116,7 +116,7 @@ export default {
     messageReset: function () {
 
       this.messageWarning = ''
-      this.messageDanger = ''
+      this.alertDanger = ''
       this.addNewUser()
     },
     goToLogin: function () {

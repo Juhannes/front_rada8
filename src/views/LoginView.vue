@@ -8,6 +8,8 @@
 
     <div class="col-3">
       <AlertSuccess :message-success="messageSuccess"/>
+      <AlertDanger :message-danger="messageDanger"/>
+
       <div class="input-group mb-3">
         <input v-model="username" type="text" class="form-control" placeholder="Kasutajanimi" aria-label="Username"
                aria-describedby="basic-addon1">
@@ -31,18 +33,24 @@
 
 import newUserView from "@/views/NewUserView.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
 
 export default {
   name: "LoginView",
-  components: {AlertSuccess},
+  components: {AlertSuccess, AlertDanger},
   data: function () {
     return {
+      loginFailed: {
+        message:'',
+        errorCode:''
+      },
 
       loginResponse: {
         userId: 0,
         roleName: '',
         email: '',
       },
+      messageDanger:'',
       messageSuccess: '',
       username: '',
       password: '',
@@ -77,7 +85,8 @@ export default {
 
       }).catch(error => {
 
-        alert("katki!!!")
+        this.loginFailed = error.response.data
+        this.messageDanger = this.loginFailed.message
       })
     },
 

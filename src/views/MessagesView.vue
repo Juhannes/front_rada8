@@ -25,8 +25,9 @@
           {{ alertMessage }}
         </div>
         <MessageWindow @emitToggleMessageEvent="toggleMessage" @emitDeleteMessageEvent="deleteMessage"
-                       @emitRefreshTableEvent="getReceivedMessages(this.userId)"
+                     @emitRefreshTableEvent="getReceivedMessages(this.userId)"
                        @emitRestoreMessageEvent="restoreMessage"
+                       @emitSendReplyEvent="sendMessageReply"
                        :message="this.message" :view-message="viewMessage"/>
 
       </div>
@@ -46,8 +47,7 @@ export default {
   components: {MessageWindow, MessageTable},
   data: function () {
     return {
-      // userId: sessionStorage.getItem('userId')
-      userId: 3,
+      userId: sessionStorage.getItem('userId'),
       message: {},
       viewMessage: false,
       messageFilter: 'A',
@@ -69,7 +69,13 @@ export default {
           status: '',
           advertisementId: 0
         }
-      ]
+      ],
+      replyMessage: {
+        senderId: 0,
+        receiverId: 0,
+        conversationId: 0,
+        replyBody: ''
+      }
     }
   },
   methods: {
@@ -119,6 +125,17 @@ export default {
         this.alertMessage = '';
       }, 2000)
     },
+    sendMessageReply: function (replyMessage) {
+      this.replyMessage = replyMessage
+      this.$http.post("/message/reply", this.replyMessage
+      ).then(response => {
+        console.log(response.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
+
     showMessage: function (messageId) {
       let message = this.messages.find(message => message.messageId == messageId)
       this.message = message

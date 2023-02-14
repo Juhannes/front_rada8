@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import MyAdvertisementsView from "@/views/MyAdvertisementsView.vue";
 import NewUserView from "@/views/NewUserView.vue";
 import LoginView from "@/views/LoginView.vue";
+import MessagesView from "@/views/MessagesView.vue";
 
 Vue.use(VueRouter)
 

@@ -31,6 +31,9 @@ export default {
   components: {EditAddAdvertisement, MyAdvertisementSelection, MyAdvertisementsTable},
   data: function () {
     return {
+      isEdit: Boolean(this.$route.query.isEdit),
+      advertisementId: this.$route.params.advertisementId,
+
       advertisementRequest: {
         id: 0,
         userId: 0,
@@ -42,9 +45,7 @@ export default {
         editedTimestamp: null,
         status: "",
         picture: null
-      },
-      isEdit: false,
-      advertisementId: this.$route.query.advertisementId
+      }
     }
   },
   methods: {
@@ -57,11 +58,12 @@ export default {
           }
       ).then(response => {
         this.advertisementRequest = response.data
-        this.$refs.editAddAdvertisement.$refs.typeDropdown.setSelectedTypeId(this.advertisementRequest.typeId)
-        this.$refs.editAddAdvertisement.$refs.citiesDropdown.setSelectedCityId(this.advertisementRequest.cityId)
-        this.$refs.editAddAdvertisement.$refs.advertisementBody.setAdvertisementBody(this.advertisementRequest.body)
-        this.$refs.editAddAdvertisement.$refs.advertisementHeading.setAdvertisementHeading(this.advertisementRequest.header)
-        this.$refs.editAddAdvertisement.$refs.activeBox.setActiveStatus(this.advertisementRequest.status)
+        this.$refs.editAddAdvertisement.setAdvertisementAddType(this.advertisementRequest.typeId)
+        this.$refs.editAddAdvertisement.setAdvertisementAddCityId(this.advertisementRequest.cityId)
+        this.$refs.editAddAdvertisement.setAdvertisementAddBody(this.advertisementRequest.body)
+        this.$refs.editAddAdvertisement.setAdvertisementAddHeading(this.advertisementRequest.header)
+        this.$refs.editAddAdvertisement.setAdvertisementAddStatus(this.advertisementRequest.status)
+        this.$refs.editAddAdvertisement.setAdvertisementAddId(this.advertisementId)
 
       }).catch(error => {
         console.log(error)

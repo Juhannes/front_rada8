@@ -1,7 +1,7 @@
 <template>
   <div class="input-group mb-3">
     <span class="input-group-text">Pealkiri: </span>
-    <input v-model="advertisementHeading" v-on:input="emitAdvertisementHeading" type="text" class="form-control">
+    <input v-model="advertisementHeading" v-on:change="setAdvertisementHeading" type="text" class="form-control">
   </div>
 </template>
 <script>

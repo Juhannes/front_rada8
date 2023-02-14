@@ -2,23 +2,23 @@
   <div>
     <div class="p-3 border bg-light">
       <div class="row">
-        <AdvertisementHeading ref="advertisementHeading" @emitAdvertisementHeadingEvent="setAdvertisementAddHeading"/>
+        <AdvertisementHeading ref="advertisementHeading" />
       </div>
       <div class="row" style="padding: 5px">
-        <CitiesDropdown ref="citiesDropdown" @emitSelectedCityIdEvent="setAdvertisementAddCityId"/>
+        <CitiesDropdown ref="citiesDropdown" />
       </div>
       <div class="row" style="padding: 5px">
-        <TypeDropdown ref="typeDropdown" @emitAdvertisementTypeEvent="setAdvertisementAddType"/>
+        <TypeDropdown ref="typeDropdown" />
       </div>
       <div class="row">
-        <AdvertisementBody ref="advertisementBody" @emitAdvertisementBodyEvent="setAdvertisementAddBody"/>
+        <AdvertisementBody ref="advertisementBody" />
       </div>
       <div class="col-1" style="padding: 10px">
-        <ActiveBox ref="activeBox" @emitActiveStatusEvent="setAdvertisementAddStatus"/>
+        <ActiveBox ref="activeBox" />
       </div>
 
       <button v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta</button>
-      <button v-on:click="putAdvertisement" type="button" class="btn btn-secondary btn-sm">Uuenda</button>
+      <button v-on:click="editAdvertisement" type="button" class="btn btn-secondary btn-sm">Uuenda</button>
       <button type="button" class="btn btn-secondary btn-sm">Kustuta</button>
       <button type="button" class="btn btn-secondary btn-sm">Tühista</button>
 
@@ -31,8 +31,7 @@ import CitiesDropdown from "@/components/CitiesDropdown.vue";
 import AdvertisementHeading from "@/components/advertisements/AdvertisementHeading.vue";
 import AdvertisementBody from "@/components/advertisements/AdvertisementBody.vue";
 import ActiveBox from "@/components/advertisements/ActiveBox.vue";
-import MyAdvertisementsEditView from "@/views/MyAdvertisementsEditView.vue";
-
+import advertisementBody from "@/components/advertisements/AdvertisementBody.vue";
 
 export default {
   name: 'EditAddAdvertisement',
@@ -54,35 +53,18 @@ export default {
     }
   },
   methods: {
-    setAdvertisementAddHeading(advertisementHeading) {
-      this.advertisementAdd.header = advertisementHeading
-    },
-
-    // getMyAdvertisement: function () {
-    //   this.$http.get("/my-advertisement", {
-    //         params: {
-    //           advertisementId: this.advertisementId,
-    //         }
-    //       }
-    //   ).then(response => {
-    //     this.advertisementAdd = response.data
-    //     this.$refs.typeDropdown.setSelectedTypeId(this.advertisementAdd.typeId)
-    //     this.$refs.citiesDropdown.setSelectedCityId(this.advertisementAdd.cityId)
-    //     this.$refs.advertisementBody.setAdvertisementBody(this.advertisementAdd.body)
-    //     this.$refs.advertisementHeading.setAdvertisementHeading(this.advertisementAdd.header)
-    //     this.$refs.activeBox.setActiveStatus(this.advertisementAdd.status)
-    //     console.log(response.data)
-    //
-    //   }).catch(error => {
-    //     console.log(error)
-    //   })
-    // },
-
     addAdvertisement: function () {
       this.callAdvertisementAddEmits()
       this.setAdvertisementCreatedTimestamp()
       this.setAdvertisementEditedTimestamp()
       this.postAdvertisement()
+    },
+
+    editAdvertisement: function () {
+      console.log(this.advertisementId)
+      this.callAdvertisementAddEmits()
+      this.setAdvertisementEditedTimestamp()
+      this.putAdvertisement()
     },
 
     callAdvertisementAddEmits: function () {
@@ -93,16 +75,28 @@ export default {
       this.$refs.activeBox.emitActiveStatus()
     },
 
+    setAdvertisementAddHeading(advertisementHeading) {
+      this.advertisementAdd.header = advertisementHeading
+      this.$refs.advertisementHeading.setAdvertisementHeading(advertisementHeading)
+    },
+
     setAdvertisementAddCityId(cityId) {
       this.advertisementAdd.cityId = cityId
+      this.$refs.citiesDropdown.setSelectedCityId(cityId)
+    },
+
+    setAdvertisementAddId(advertisementId) {
+      this.advertisementId = advertisementId
     },
 
     setAdvertisementAddBody(body) {
       this.advertisementAdd.body = body
+      this.$refs.advertisementBody.setAdvertisementBody(this.advertisementAdd.body)
     },
 
     setAdvertisementAddType(typeId) {
       this.advertisementAdd.typeId = typeId
+      this.$refs.typeDropdown.setSelectedTypeId(typeId)
     },
 
     setAdvertisementCreatedTimestamp() {
@@ -115,6 +109,7 @@ export default {
 
     setAdvertisementAddStatus(status) {
       this.advertisementAdd.status = status
+      this.$refs.activeBox.setActiveStatus(status)
     },
 
     postAdvertisement: function () {
@@ -135,10 +130,15 @@ export default {
           }
       ).then(response => {
         console.log(response.data)
+        alert("Kuulutus muudetud!" + this.advertisementId)
+        console.log(this.advertisementAdd)
       }).catch(error => {
         console.log(error)
       })
     },
+  },
+  beforeMount() {
+    console.log("Id on: " + this.advertisementId)
   }
 }
 </script>

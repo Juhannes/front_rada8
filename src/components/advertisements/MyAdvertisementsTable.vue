@@ -76,7 +76,7 @@ export default {
       // this.isEdit = !this.isEdit
       this.$emit('emitIsEditEvent', advertisementId)
       // this.myAdvertisements.advertisementId = advertisementId
-      this.$router.push({name: 'myAdvertisementsEdit', query: {advertisementId: advertisementId}})
+      this.$router.push({name: 'myAdvertisementsEdit', params: {advertisementId: advertisementId}})
       // console.log(advertisementId)
     },
 

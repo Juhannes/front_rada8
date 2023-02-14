@@ -18,6 +18,7 @@
       </div>
 
       <button v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta</button>
+      <button v-on:click="putAdvertisement" type="button" class="btn btn-secondary btn-sm">Uuenda</button>
       <button type="button" class="btn btn-secondary btn-sm">Kustuta</button>
       <button type="button" class="btn btn-secondary btn-sm">Tühista</button>
 
@@ -30,6 +31,7 @@ import CitiesDropdown from "@/components/CitiesDropdown.vue";
 import AdvertisementHeading from "@/components/advertisements/AdvertisementHeading.vue";
 import AdvertisementBody from "@/components/advertisements/AdvertisementBody.vue";
 import ActiveBox from "@/components/advertisements/ActiveBox.vue";
+import MyAdvertisementsEditView from "@/views/MyAdvertisementsEditView.vue";
 
 
 export default {
@@ -56,21 +58,25 @@ export default {
       this.advertisementAdd.header = advertisementHeading
     },
 
-    getAdvertisementFilled: function () {
-      this.$http.get("/my-advertisements", {
-            params: {
-              advertisementId: this.advertisementId,
-            }
-          }
-      ).then(response => {
-        this.advertisementAdd = response.data
-
-        this.$refs.citiesDropdown.setSelectedCityId(this.advertisementAdd.cityId)
-        this.$refs.typeDropdown.setSelectedTypeId(this.advertisementAdd.typeId)
-      }).catch(error => {
-        console.log(error)
-      })
-    },
+    // getMyAdvertisement: function () {
+    //   this.$http.get("/my-advertisement", {
+    //         params: {
+    //           advertisementId: this.advertisementId,
+    //         }
+    //       }
+    //   ).then(response => {
+    //     this.advertisementAdd = response.data
+    //     this.$refs.typeDropdown.setSelectedTypeId(this.advertisementAdd.typeId)
+    //     this.$refs.citiesDropdown.setSelectedCityId(this.advertisementAdd.cityId)
+    //     this.$refs.advertisementBody.setAdvertisementBody(this.advertisementAdd.body)
+    //     this.$refs.advertisementHeading.setAdvertisementHeading(this.advertisementAdd.header)
+    //     this.$refs.activeBox.setActiveStatus(this.advertisementAdd.status)
+    //     console.log(response.data)
+    //
+    //   }).catch(error => {
+    //     console.log(error)
+    //   })
+    // },
 
     addAdvertisement: function () {
       this.callAdvertisementAddEmits()
@@ -85,7 +91,6 @@ export default {
       this.$refs.advertisementBody.emitAdvertisementBody()
       this.$refs.typeDropdown.emitSelectedAdvertisementType()
       this.$refs.activeBox.emitActiveStatus()
-      console.log(this.advertisementAdd)
     },
 
     setAdvertisementAddCityId(cityId) {
@@ -122,6 +127,18 @@ export default {
       })
     },
 
+    putAdvertisement: function () {
+      this.$http.put("/my-advertisements", this.advertisementAdd, {
+            params: {
+              advertisementId: this.advertisementId,
+            }
+          }
+      ).then(response => {
+        console.log(response.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
   }
 }
 </script>

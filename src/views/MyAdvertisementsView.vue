@@ -41,7 +41,7 @@ export default {
     },
     setIsEdit() {
       this.isEdit = !this.isEdit
-    },
+    }
   }
 }
 </script>

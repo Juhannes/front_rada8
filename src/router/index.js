@@ -34,7 +34,13 @@ const routes = [
     path: '/my-advertisements',
     name: 'myAdvertisements',
     component: MyAdvertisementsView
-  },{
+  },
+  {
+    path: '/my-advertisements-edit',
+    name: 'myAdvertisementsEdit',
+    component: MyAdvertisementsEditView
+  },
+  {
     path: '/messages',
     name: 'messageRoute',
     component: MessagesView

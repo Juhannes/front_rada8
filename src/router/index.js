@@ -6,6 +6,7 @@ import NewUserView from "@/views/NewUserView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MessagesView from "@/views/MessagesView.vue";
 import AdvertisementsView from "@/views/AdvertisementsView.vue";
+import MyAdvertisementsEditView from "@/views/MyAdvertisementsEditView.vue";
 
 Vue.use(VueRouter)
 

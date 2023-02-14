@@ -2,7 +2,7 @@
   <table class="table-hover col-8">
     <tbody>
 
-    <tr v-for="myAdvertisements in myAdvertisements" :key="myAdvertisements.id" >
+    <tr v-if="myAdvertisements.status !== 'D'" v-for="myAdvertisements in myAdvertisements" :key="myAdvertisements.id" >
       <th scope="row">{{ myAdvertisements.header}}</th>
       <td>
         <div class="form-check col-2" style="padding: 10px">
@@ -19,7 +19,7 @@
         </div>
       </td>
       <td>
-        <div class="col-1" style="padding: 10px">
+        <div v-on:click="deleteAdvertisement(myAdvertisements.id)" class="col-1" style="padding: 10px">
           <font-awesome-icon icon="fa-solid fa-trash-can" class="mx-2 icon-hover"/>
         </div>
       </td>
@@ -73,11 +73,11 @@ export default {
       console.log(2, typeId)
     },
     emitIsEdit(advertisementId) {
-      // this.isEdit = !this.isEdit
       this.$emit('emitIsEditEvent', advertisementId)
-      // this.myAdvertisements.advertisementId = advertisementId
-      this.$router.push({name: 'myAdvertisementsEdit', params: {advertisementId: advertisementId}})
-      // console.log(advertisementId)
+      this.$router.push({name: 'myAdvertisementsEditRoute', params: {advertisementId: advertisementId}})
+    },
+    deleteAdvertisement(advertisementId) {
+      this.$router.push({name: 'myAdvertisementsDeleteRoute', params: {advertisementId: advertisementId}})
     },
 
   },

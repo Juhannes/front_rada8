@@ -2,25 +2,25 @@
   <div>
     <div class="p-3 border bg-light">
       <div class="row">
-        <AdvertisementHeading ref="advertisementHeading" />
+        <AdvertisementHeading ref="advertisementHeading" @emitAdvertisementHeadingEvent="setAdvertisementAddHeading"/>
       </div>
       <div class="row" style="padding: 5px">
-        <CitiesDropdown ref="citiesDropdown" />
+        <CitiesDropdown ref="citiesDropdown" @emitSelectedCityIdEvent="setAdvertisementAddCityId"/>
       </div>
       <div class="row" style="padding: 5px">
-        <TypeDropdown ref="typeDropdown" />
+        <TypeDropdown ref="typeDropdown" @emitAdvertisementTypeEvent="setAdvertisementAddType"/>
       </div>
       <div class="row">
-        <AdvertisementBody ref="advertisementBody" />
+        <AdvertisementBody ref="advertisementBody" @emitAdvertisementBodyEvent="setAdvertisementAddBody"/>
       </div>
       <div class="col-1" style="padding: 10px">
-        <ActiveBox ref="activeBox" />
+        <ActiveBox ref="activeBox" @emitActiveStatusEvent="setAdvertisementAddStatus"/>
       </div>
 
-      <button v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta</button>
-      <button v-on:click="editAdvertisement" type="button" class="btn btn-secondary btn-sm">Uuenda</button>
-      <button type="button" class="btn btn-secondary btn-sm">Kustuta</button>
-      <button type="button" class="btn btn-secondary btn-sm">Tühista</button>
+<!--      <button v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta</button>-->
+      <button v-on:click="editAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta muudatused</button>
+      <button v-on:click="deleteAdvertisement" type="button" class="btn btn-secondary btn-sm">Kustuta</button>
+      <button v-on:click="returnToMyAds" type="button" class="btn btn-secondary btn-sm">Tühista</button>
 
     </div>
   </div>
@@ -31,7 +31,6 @@ import CitiesDropdown from "@/components/CitiesDropdown.vue";
 import AdvertisementHeading from "@/components/advertisements/AdvertisementHeading.vue";
 import AdvertisementBody from "@/components/advertisements/AdvertisementBody.vue";
 import ActiveBox from "@/components/advertisements/ActiveBox.vue";
-import advertisementBody from "@/components/advertisements/AdvertisementBody.vue";
 
 export default {
   name: 'EditAddAdvertisement',
@@ -61,10 +60,27 @@ export default {
     },
 
     editAdvertisement: function () {
-      console.log(this.advertisementId)
-      this.callAdvertisementAddEmits()
+      // this.callAdvertisementAddEmits()
       this.setAdvertisementEditedTimestamp()
+      console.log(this.advertisementAdd.typeId)
       this.putAdvertisement()
+    },
+
+    deleteAdvertisement: function () {
+      this.$http.delete("/my-advertisements", {
+            params: {
+              advertisementId: this.advertisementId,
+            }
+          }
+      ).then(response => {
+        this.$router.push({name: 'myAdvertisementsRoute'})
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
+    returnToMyAds: function () {
+      this.$router.push({name: 'myAdvertisementsRoute'})
     },
 
     callAdvertisementAddEmits: function () {
@@ -91,7 +107,7 @@ export default {
 
     setAdvertisementAddBody(body) {
       this.advertisementAdd.body = body
-      this.$refs.advertisementBody.setAdvertisementBody(this.advertisementAdd.body)
+      this.$refs.advertisementBody.setAdvertisementBody(body)
     },
 
     setAdvertisementAddType(typeId) {
@@ -129,11 +145,10 @@ export default {
             }
           }
       ).then(response => {
-        console.log(response.data)
-        alert("Kuulutus muudetud!" + this.advertisementId)
-        console.log(this.advertisementAdd)
+        this.$router.push({name: 'myAdvertisementsRoute'})
       }).catch(error => {
         console.log(error)
+        alert("Nii küll ei saa rallit sõita" + this.advertisementId)
       })
     },
   },

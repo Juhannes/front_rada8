@@ -6,6 +6,8 @@
           <router-link v-if="isLoggedIn === false" type="button" class="btn btn-outline-secondary" to="/new-user">Loo
             kasutaja
           </router-link>
+          <router-link  type="button" class="btn btn-outline-secondary col-3" to="/advertisements">Sirvi kuulutusi
+          </router-link>
         </div>
         <div class="col-2">
           <router-link to="/home">

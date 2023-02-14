@@ -1,26 +1,30 @@
 <template>
 
 
-
   <div class="row justify-content-center">
-    <div @successAlert="setMessageSuccess" ></div>
-    <AlertSuccess :message-success="messageSuccess"  />
+
+
 
 
     <div class="col-3">
+      <AlertSuccess :message-success="messageSuccess"/>
+      <AlertDanger :message-danger="messageDanger"/>
+
       <div class="input-group mb-3">
         <input v-model="username" type="text" class="form-control" placeholder="Kasutajanimi" aria-label="Username"
                aria-describedby="basic-addon1">
       </div>
 
       <div class="input-group mb-3">
-        <input v-model="password" type="text" class="form-control" placeholder="Parool" aria-label="Username"
+        <input v-model="password" type="password" class="form-control" placeholder="Parool" aria-label="Username"
                aria-describedby="basic-addon1">
       </div>
 
       <button v-on:click="sendLoginRequest" type="button" class="btn btn-success">Sisene</button>
     </div>
-    </div>
+
+  </div>
+
 
 </template>
 
@@ -29,27 +33,37 @@
 
 import newUserView from "@/views/NewUserView.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
 
 export default {
   name: "LoginView",
-  components: {AlertSuccess},
-  data: function() {
-    return{
-
-      loginResponse:{
-        userId: 0,
-        roleName:'',
-        email:'',
+  components: {AlertSuccess, AlertDanger},
+  data: function () {
+    return {
+      loginFailed: {
+        message:'',
+        errorCode:''
       },
-      messageSuccess:'',
-      username:'',
-      password:'',
+
+      loginResponse: {
+        userId: 0,
+        roleName: '',
+        email: '',
+      },
+      messageDanger:'',
+      messageSuccess: '',
+      username: '',
+      password: '',
     }
   },
 
   methods: {
-    setMessageSuccess: function() {
-      this.messageSuccess = "Kasutaja loomine õnnestus"
+    setMessageSuccess: function () {
+
+      this.messageSuccess = localStorage.getItem("messageSuccess")
+      localStorage.removeItem("messageSuccess")
+      if (this.messageSuccess == null)
+      this.messageSuccess = ''
     },
 
 
@@ -65,13 +79,21 @@ export default {
         sessionStorage.setItem('userId', this.loginResponse.userId)
         sessionStorage.setItem('roleName', this.loginResponse.roleName)
         sessionStorage.setItem('email', this.loginResponse.email)
+        this.$emit('loginSuccess')
+        this.messageDanger = ''
+        this.messageSuccess = 'Tere tulemast!'
+
 
       }).catch(error => {
 
-        alert("katki!!!")
+        this.loginFailed = error.response.data
+        this.messageDanger = this.loginFailed.message
       })
     },
 
+  },
+  beforeMount() {
+    this.setMessageSuccess()
   }
 }
 

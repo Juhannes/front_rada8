@@ -3,7 +3,7 @@
     <div class="col-3">
 
       <AlertWarning :message-warning="messageWarning"/>
-      <MessageDanger :message-danger="messageDanger"/>
+      <AlertDanger :message-danger="alertDanger"/>
 
 
       <div class="input-group mb-3">
@@ -13,7 +13,7 @@
       </div>
 
       <div class="input-group mb-3">
-        <input v-model="userDto.password" type="text" class="form-control" placeholder="Parool" aria-label="Username"
+        <input v-model="userDto.password" type="password" class="form-control" placeholder="Parool" aria-label="Username"
                aria-describedby="basic-addon1">
       </div>
 
@@ -24,7 +24,9 @@
 
 
       <div class="form-check">
-        <input v-model="isSelected" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        <div>
+          <input v-model="isSelected" :disabled="isDisabled" class="form-check-input" type="checkbox" id="checkboxNoLabel">
+        </div>
         <label class="form-check-label" for="defaultCheck1">
           Nõustun
           <!-- Button trigger modal -->
@@ -47,8 +49,8 @@
 
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sule</button>
-                  <!--                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>-->
+                  <button v-on:click="isSelected = false" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ei nõustu</button>
+                  <button v-on:click="isSelected = true" type="button" class="btn btn-success" data-bs-dismiss="modal">Nõustun</button>
                 </div>
               </div>
             </div>
@@ -69,12 +71,12 @@
 
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import AlertWarning from "@/components/alert/AlertWarning.vue";
-import MessageDanger from "@/components/alert/MessageDanger.vue";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
 
 
 export default {
   name: "NewUserView",
-  components: {MessageDanger, AlertWarning, AlertSuccess},
+  components: {AlertDanger, AlertWarning, AlertSuccess},
   data: function () {
     return {
       userDto: {
@@ -83,9 +85,11 @@ export default {
         email: '',
       },
       isSelected: false,
-      messageSuccess: '',
+      isDisabled: false,
+
       messageWarning: '',
-      messageDanger: ''
+      alertDanger: ''
+
 
 
     }
@@ -95,11 +99,10 @@ export default {
     sendNewUserToDb: function () {
       this.$http.post("/register", this.userDto
       ).then(response => {
-        this.messageSuccess = "Kasutaja edukalt loodud!"
-        this.$emit('successAlert')
+        localStorage.setItem("messageSuccess", "Kasutaja loomine õnnestus")
         this.goToLogin()
       }).catch(error => {
-        this.messageDanger = "Kõik on katki :)"
+        this.alertDanger = "Kõik on katki, proovi uuesti :)"
       })
     },
     checkInput: function () {
@@ -115,9 +118,9 @@ export default {
       } else this.messageWarning = "Täida kõik väljad!"
     },
     messageReset: function () {
-      this.messageSuccess = ''
+
       this.messageWarning = ''
-      this.messageDanger = ''
+      this.alertDanger = ''
       this.addNewUser()
     },
     goToLogin: function () {

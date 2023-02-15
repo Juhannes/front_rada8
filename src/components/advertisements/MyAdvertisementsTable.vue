@@ -47,7 +47,8 @@ export default {
           picture: null
         }
       ],
-      isEdit: false
+      isEdit: false,
+      userId: sessionStorage.getItem('userId'),
     }
   },
   methods: {
@@ -69,8 +70,8 @@ export default {
 
     setRequestedTypeId(typeId) {
       this.myAdvertisements.typeId = typeId
-      this.getMyAdvertisements(2, typeId)
-      console.log(2, typeId)
+      this.getMyAdvertisements(this.userId, typeId)
+      console.log(this.userId, typeId)
     },
     emitIsEdit(advertisementId) {
       this.$emit('emitIsEditEvent', advertisementId)
@@ -82,7 +83,7 @@ export default {
 
   },
   beforeMount() {
-    this.getMyAdvertisements(2,1)
+    this.getMyAdvertisements(this.userId,1)
   }
 }
 </script>

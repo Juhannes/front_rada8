@@ -6,7 +6,10 @@
           <router-link v-if="isLoggedIn === false" type="button" class="btn btn-outline-secondary" to="/new-user">Loo
             kasutaja
           </router-link>
-          <router-link  type="button" class="btn btn-outline-secondary col-3" to="/advertisements">Sirvi kuulutusi
+          <router-link type="button" class="btn btn-outline-secondary col-3" to="/advertisements">Sirvi kuulutusi
+          </router-link>
+          <router-link v-if="isLoggedIn" type="button" class="btn btn-outline-secondary col-3"
+                       :to="{name:'newAdvertisementRoute', query:{isAdd: 'true'}}">Lisa kuulutus
           </router-link>
         </div>
         <div class="col-2">
@@ -16,7 +19,8 @@
         </div>
 
         <div class="col-2">
-          <router-link type="button" class="btn btn-outline-secondary" to="/my-advertisements">Minu kuulutused
+          <router-link v-if="isLoggedIn" type="button" class="btn btn-outline-secondary" to="/my-advertisements">Minu
+            kuulutused
           </router-link>
         </div>
         <div class="col-1">
@@ -73,6 +77,7 @@ export default {
   background-color: aliceblue;
   height: 100%;
 }
+
 nav {
   padding: 30px;
 }

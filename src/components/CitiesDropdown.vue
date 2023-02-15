@@ -1,6 +1,6 @@
 <template>
   <select v-model="selectedCityId" v-on:change="emitSelectedCityId" class="form-select" aria-label="Default select example">
-    <option selected disabled>Asukoht</option>
+    <option value="0" disabled>Asukoht</option>
     <option v-for="cities in cities" :value="cities.id">{{ cities.name }}</option>
   </select>
 </template>

@@ -34,7 +34,7 @@
     </div>
     <div class="row justify-content-center" style="padding: 10px">
       <div class="col-2">
-        <button type="button" class="btn btn-outline-secondary">Lisan kuulutuse</button>
+        <button v-on:click="addAdvertisement" type="button" class="btn btn-outline-secondary">Lisan kuulutuse</button>
       </div>
     </div>
   </div>
@@ -50,10 +50,25 @@ export default {
   components: {
     HelloWorld
   },
+  data: function () {
+    return {
+      isLoggedIn: false,
+      roleName: sessionStorage.getItem('roleName')
+    }
+  },
   methods: {
     searchBand: function () {
       this.$router.push({name: "advertisementsRoute"})
-    }
+    },
+    addAdvertisement: function () {
+      this.isLoggedIn = this.roleName != null;
+
+      if (this.isLoggedIn) {
+        this.$router.push({name: "newAdvertisementRoute"});
+      } else {
+        this.$router.push({name: "loginRoute"})
+      }
+    },
   }
 
 }

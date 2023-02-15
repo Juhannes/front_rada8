@@ -1,6 +1,6 @@
 <template>
   <select v-model="selectedTypeId" v-on:change="emitSelectedAdvertisementType" class="form-select" aria-label="Default select example">
-    <option selected disabled>Kategooria</option>
+    <option value="0">Kategooria</option>
     <option v-for="advertisementTypes in advertisementTypes" :value="advertisementTypes.id">{{advertisementTypes.name}}</option>
   </select>
 </template>

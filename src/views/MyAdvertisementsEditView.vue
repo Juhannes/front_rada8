@@ -64,6 +64,7 @@ export default {
         this.$refs.editAddAdvertisement.setAdvertisementAddHeading(this.advertisementRequest.header)
         this.$refs.editAddAdvertisement.setAdvertisementAddStatus(this.advertisementRequest.status)
         this.$refs.editAddAdvertisement.setAdvertisementAddId(this.advertisementId)
+        this.$refs.editAddAdvertisement.setAdvertisementAddPicture(this.advertisementRequest.picture)
 
       }).catch(error => {
         console.log(error)

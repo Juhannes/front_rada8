@@ -8,6 +8,7 @@ import MessagesView from "@/views/MessagesView.vue";
 import MyAdvertisementsEditView from "@/views/MyAdvertisementsEditView.vue";
 import MyAdvertisementsDeleteView from "@/views/MyAdvertisementsDeleteView.vue";
 import AdvertisementsView from "@/views/AdvertisementsView.vue";
+import NewAdvertisementView from "@/views/NewAdvertisementView.vue";
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,11 @@ const routes = [
     path: '/advertisements',
     name: 'advertisementsRoute',
     component: AdvertisementsView
+  },
+  {
+    path: '/new-advertisement',
+    name: 'newAdvertisementRoute',
+    component: NewAdvertisementView
   },
   {
     path: '/login',

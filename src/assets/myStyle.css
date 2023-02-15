@@ -18,3 +18,14 @@ body, html{
     --bs-btn-border-radius: 0.25rem;
     padding: 10px;
 }
+
+.container {
+    width: 250px;
+    height: 200px;
+}
+
+/* Resize images */
+.container img {
+    width: 100%;
+    height: auto;
+}

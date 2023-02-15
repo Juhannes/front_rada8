@@ -10,7 +10,7 @@
                 {{ advertisement.header }}
               </div>
               <div class="col" style="border: thin solid black">
-                Kuulutus lisatud: {{advertisement.createdTimestamp}}
+                Kuulutus lisatud: {{ advertisement.createdTimestamp }}
               </div>
             </div>
           </button>
@@ -19,7 +19,7 @@
              data-bs-parent="#accordionExample">
           <div class="accordion-body col">
             <div class="bi-justify-left row" style="border: thin solid black">
-              Asukoht: {{advertisement.cityId}}
+              Asukoht: {{ advertisement.cityId }}
             </div>
             <br>
             <div class="row" style="border: thin solid black">
@@ -28,10 +28,20 @@
             <br>
             <div class="row" style="border: thin solid black">
               <div class="col" style="border: thin solid black">
-                Sõnumi saatmiseks logi sisse
+                <!--User not logged in-->
+                <div v-if="isLoggedOut">Sõnumi saatmiseks</div>
+                <a v-if="isLoggedOut" v-on:click="pushToLogin" class="link-dark">logi sisse</a>
+                <!--User logged in-->
+                <SendMessageButton  v-else-if="!isLoggedOut"/>
+
+                <!--Admin logged in-->
+                <SendMessageButton  v-else-if="!isLoggedOut"/>
+
+
+
               </div>
               <div class="col" style="border: thin solid black">
-                Viimati muudetud: {{advertisement.modifiedTimestamp}}
+                Viimati muudetud: {{ advertisement.modifiedTimestamp }}
               </div>
             </div>
 
@@ -41,13 +51,40 @@
 
 
     </div>
+
   </div>
 </template>
 <script>
+import SendMessageButton from "@/components/SendMessageButton.vue";
+
 export default {
   name: 'AdvertisementsPiano',
+  components: {SendMessageButton},
   props: {
     advertisements: {}
+  },
+  data: function () {
+    return {
+      userId: sessionStorage.getItem('userId'),
+      isLoggedOut: true,
+      roleName: sessionStorage.getItem('roleName'),
+      isAdmin: false
+
+    }
+  },
+  methods: {
+
+    isAdmin: function () {
+            this.isAdmin = this.roleName === 'admin'
+    },
+    pushToLogin: function () {
+      this.$router.push({name: 'loginRoute'})
+    },
+    isUserLoggedOut: function () {
+      this.isLoggedOut = this.userId === null;
+
+    }
   }
+
 }
 </script>

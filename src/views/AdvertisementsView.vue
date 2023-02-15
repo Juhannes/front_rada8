@@ -12,7 +12,7 @@
         </div>
         <TypeDropdown/>
       </div>
-      <AdvertisementsPiano :advertisements="advertisements"/>
+      <AdvertisementsPiano :advertisements="advertisements" ref="advertisementsPiano"/>
     </div>
 
   </div>
@@ -26,8 +26,14 @@ import AdvertisementsPiano from "@/components/AdvertisementsPiano.vue";
 export default {
   name: "AdvertisementsView",
   components: {AdvertisementsPiano, CitiesDropdown, TypeDropdown},
+  mounted() {
+    this.callMethodInPiano()
+
+  },
   data: function () {
     return {
+
+
       advertisements: [
         {
           advertisementId: 0,
@@ -45,21 +51,35 @@ export default {
     }
   },
 
-      methods: {
-        getAllAdvertisements: function () {
-          this.$http.get("/advertisements")
-              .then(response => {
-                this.advertisements = response.data
-              })
-              .catch(error => {
-                console.log(error)
-              })
-        },
+  methods: {
 
-      },
-      beforeMount() {
+    callMethodInPiano: function () {
+
+      this.$refs.advertisementsPiano.isUserLoggedOut()
+
+    },
+
+
+    getAllAdvertisements: function () {
+      this.$http.get("/advertisements")
+          .then(response => {
+            this.advertisements = response.data
+          })
+          .catch(error => {
+            console.log(error)
+          })
+
+    },
+
+  },
+
+  beforeMount() {
+
     this.getAllAdvertisements()
-      }
+
+
+
+  }
 
 
 }

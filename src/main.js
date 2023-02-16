@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueParticles from 'vue-particles'
 import App from './App.vue'
 import router from './router'
 import VueAxios from "vue-axios";
@@ -19,6 +20,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
+Vue.use(VueParticles)
 
 new Vue({
   router,

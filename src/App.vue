@@ -1,15 +1,17 @@
 <template>
-  <div id="app" style="background-color: aliceblue">
-    <nav>
-      <div class="row justify-content-end">
-        <div class="col justify-content-start">
+  <div id="app">
+    <div>
+      <div class="row justify-content-center" style="padding-top: 5px">
+        <div class="col-2">
           <router-link v-if="isLoggedIn === false" type="button" class="btn btn-outline-secondary" to="/new-user">Loo
             kasutaja
           </router-link>
-          <router-link type="button" class="btn btn-outline-secondary col-3" to="/advertisements">Sirvi kuulutusi
-          </router-link>
-          <router-link v-if="isLoggedIn" type="button" class="btn btn-outline-secondary col-3"
+          <router-link v-if="isLoggedIn" type="button" class="btn btn-outline-secondary"
                        :to="{name:'newAdvertisementRoute', query:{isAdd: 'true'}}">Lisa kuulutus
+          </router-link>
+        </div>
+        <div class="col-2">
+          <router-link type="button" class="btn btn-outline-secondary" to="/advertisements">Sirvi kuulutusi
           </router-link>
         </div>
         <div class="col-2">
@@ -17,7 +19,6 @@
             <img src="./assets/logo-no-background.png" style="max-width: 50%"/>
           </router-link>
         </div>
-
         <div class="col-2">
           <router-link v-if="isLoggedIn" type="button" class="btn btn-outline-secondary" to="/my-advertisements">Minu
             kuulutused
@@ -26,8 +27,7 @@
         <div class="col-1">
           <router-link type="button" class="btn btn-outline-secondary" to="/messages">Sõnumid</router-link>
         </div>
-
-        <div class="col-2">
+        <div class="col-1">
           <router-link
               v-if="isLoggedIn" v-on:click.native="logout" type="button" class="btn btn-outline-secondary" to="/home">
             Välju
@@ -36,8 +36,9 @@
           <router-link v-else type="button" class="btn btn-outline-secondary" to="/login">Sisene</router-link>
         </div>
       </div>
-    </nav>
-    <router-view @loginSuccess="updateLoginButton"/>
+      <router-view @loginSuccess="updateLoginButton"/>
+    </div>
+
   </div>
 </template>
 

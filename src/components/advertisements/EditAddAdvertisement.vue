@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AlertSuccess :message-success="messageSuccess"/>
     <div class="p-3 border bg-light">
       <div class="row">
         <AdvertisementHeading ref="advertisementHeading" @emitAdvertisementHeadingEvent="setAdvertisementAddHeading"/>
@@ -20,16 +21,16 @@
         <ImageInput style="padding: 10px" @emitBase64Event="setAdvertisementAddPicture"/>
       </div>
       <div>
-        <div class="container">
+        <div>
           <img class="container" v-if="advertisementAdd.picture !== null" :src="advertisementAdd.picture">
         </div>
       </div>
 
-      <button v-if="isAdd" v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta</button>
-      <button v-else v-on:click="editAdvertisement" type="button" class="btn btn-secondary btn-sm">Salvesta muudatused</button>
-      <button v-if="!isAdd" v-on:click="deleteAdvertisement" type="button" class="btn btn-secondary btn-sm">Kustuta</button>
-      <button v-if="!isAdd" v-on:click="returnToMyAds" type="button" class="btn btn-secondary btn-sm">Tühista</button>
-      <button v-else v-on:click="$router.go(-1)" type="button" class="btn btn-secondary btn-sm">Tühista</button>
+      <button v-if="isAdd" v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm mystyle">Salvesta</button>
+      <button v-else v-on:click="editAdvertisement" type="button" class="btn btn-secondary btn-sm mystyle">Salvesta muudatused</button>
+      <button v-if="!isAdd" v-on:click="deleteAdvertisement" type="button" class="btn btn-secondary btn-sm mystyle">Kustuta</button>
+      <button v-if="!isAdd" v-on:click="returnToMyAds" type="button" class="btn btn-secondary btn-sm mystyle">Tühista</button>
+      <button v-else v-on:click="$router.go(-1)" type="button" class="btn btn-secondary btn-sm mystyle">Tühista</button>
 
     </div>
   </div>
@@ -42,15 +43,20 @@ import AdvertisementBody from "@/components/advertisements/AdvertisementBody.vue
 import ActiveBox from "@/components/advertisements/ActiveBox.vue";
 import router from "@/router";
 import ImageInput from "@/components/ImageInput.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: 'EditAddAdvertisement',
-  components: {ImageInput, ActiveBox, AdvertisementBody, AdvertisementHeading, CitiesDropdown, TypeDropdown},
+  components: {
+    AlertSuccess,
+    ImageInput, ActiveBox, AdvertisementBody, AdvertisementHeading, CitiesDropdown, TypeDropdown},
   props: {
     isAdd: Boolean
   },
   data: function () {
     return {
+      messageSuccess: '',
+
       advertisementAdd: {
         userId: 0,
         header: '',
@@ -63,7 +69,7 @@ export default {
         picture: null
       },
       advertisementId: 0,
-      userId: sessionStorage.getItem('userId')
+      userId: Number(sessionStorage.getItem('userId'))
     }
   },
   methods: {
@@ -81,8 +87,9 @@ export default {
     postAdvertisement: function () {
       this.$http.post("/my-advertisements", this.advertisementAdd
       ).then(response => {
-        console.log(response.data)
-        alert("Uus kuulutus lisatud")
+        console.log(this.advertisementAdd)
+        this.messageSuccess = 'Uus kuulutus lisatud!'
+        this.timeoutAndGoBack(2000)
       }).catch(error => {
         console.log(error)
       })
@@ -93,8 +100,6 @@ export default {
       this.setAdvertisementEditedTimestamp()
       this.advertisementAdd.userId = this.userId
       this.putAdvertisement()
-      console.log(this.userId)
-      console.log(this.advertisementAdd.cityId)
     },
 
     putAdvertisement: function () {
@@ -104,10 +109,11 @@ export default {
             }
           }
       ).then(response => {
-        this.$router.push({name: 'myAdvertisementsRoute'})
+        this.messageSuccess = 'Kuulutus muudetud!'
+        this.timeoutAndGoBack(2000)
       }).catch(error => {
         console.log(error)
-        alert("Nii küll ei saa rallit sõita" + this.advertisementId)
+        alert("Nii küll ei saa rallit sõita " + this.advertisementId)
       })
     },
 
@@ -118,10 +124,17 @@ export default {
             }
           }
       ).then(response => {
-        this.$router.push({name: 'myAdvertisementsRoute'})
+        this.messageSuccess = 'Kuulutus kustutatud!'
+        this.timeoutAndGoBack(2000)
       }).catch(error => {
         console.log(error)
       })
+    },
+
+    timeoutAndGoBack: function (timeOut) {
+      setTimeout(() => {
+        this.$router.go(-1)
+      }, timeOut)
     },
 
     returnToMyAds: function () {
@@ -176,9 +189,6 @@ export default {
       this.advertisementAdd.status = status
       this.$refs.activeBox.setActiveStatus(status)
     },
-  },
-  beforeMount() {
-    console.log("Id on: " + this.advertisementId)
   }
 }
 </script>

@@ -1,17 +1,20 @@
 <template>
-  <table class="table-hover col-8">
+  <table class="table-hover">
     <tbody>
 
     <tr v-if="myAdvertisements.status !== 'D'" v-for="myAdvertisements in myAdvertisements" :key="myAdvertisements.id" >
-      <th scope="row">{{ myAdvertisements.header}}</th>
+      <th class="col-3">{{ myAdvertisements.header}}</th>
       <td>
         <div class="form-check col-2" style="padding: 10px">
           <input v-if="myAdvertisements.status === 'A'" disabled checked class="form-check-input" type="checkbox">
           <input v-else class="form-check-input" disabled type="checkbox">
           <label class="form-check-label">
-            Aktiivne {{ myAdvertisements.id}}
+            Aktiivne
           </label>
         </div>
+      </td>
+      <td>
+        Viimane muutmine: {{myAdvertisements.editedTimestamp.substring(0, 21)}}
       </td>
       <td>
         <div v-on:click="emitIsEdit(myAdvertisements.id)" class="col-1" style="padding: 10px">
@@ -23,12 +26,24 @@
           <font-awesome-icon icon="fa-solid fa-trash-can" class="mx-2 icon-hover"/>
         </div>
       </td>
+      <td>
+        <div v-on:click="showPicture(myAdvertisements.picture)" v-if="myAdvertisements.picture !== null" class="col-1" style="padding: 10px">
+          <font-awesome-icon icon="fa-regular fa-image" class="mx-2 icon-hover"/>
+        </div>
+      </td>
+      <td>
+<!--        <div>-->
+<!--          <img class="container" v-if="(myAdvertisements.picture !== null) && showPic" :src="myAdvertisements.picture">-->
+<!--        </div>-->
+      </td>
     </tr>
-
     </tbody>
+
   </table>
+
 </template>
 <script>
+
 export default {
   name: 'MyAdvertisementsTable',
   data: function () {
@@ -49,6 +64,7 @@ export default {
       ],
       isEdit: false,
       userId: sessionStorage.getItem('userId'),
+      shownTimestamp: '',
     }
   },
   methods: {
@@ -61,7 +77,6 @@ export default {
             }
           }
       ).then(response => {
-        console.log(response.data)
         this.myAdvertisements = response.data
       }).catch(error => {
         console.log(error)
@@ -71,7 +86,6 @@ export default {
     setRequestedTypeId(typeId) {
       this.myAdvertisements.typeId = typeId
       this.getMyAdvertisements(this.userId, typeId)
-      console.log(this.userId, typeId)
     },
     emitIsEdit(advertisementId) {
       this.$emit('emitIsEditEvent', advertisementId)
@@ -79,6 +93,10 @@ export default {
     },
     deleteAdvertisement(advertisementId) {
       this.$router.push({name: 'myAdvertisementsDeleteRoute', params: {advertisementId: advertisementId}})
+    },
+
+    showPicture(pictureData) {
+      this.$emit('emitShowPicEvent', pictureData)
     },
 
   },

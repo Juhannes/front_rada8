@@ -10,10 +10,17 @@
 
     <div class="row" style="padding: 20px">
 
-      <MyAdvertisementsTable ref="myAdvertisementsTable" @emitIsEditEvent="setIsEdit"/>
+      <div class="col-8">
+        <MyAdvertisementsTable ref="myAdvertisementsTable" @emitIsEditEvent="setIsEdit" @emitShowPicEvent="setShowPic"/>
 
-      <div v-if="isEdit" class="col-4">
-        <EditAddAdvertisement/>
+        <div v-if="isEdit" class="col-4">
+          <EditAddAdvertisement/>
+        </div>
+      </div>
+      <div class="col-4">
+        <div v-if="showPic" @emitShowPicEvent="setShowPic">
+          <img class="container-preview" v-if="(pictureData !== null) && showPic" :src="pictureData">
+        </div>
       </div>
 
     </div>
@@ -31,7 +38,9 @@ export default {
   components: {EditAddAdvertisement, MyAdvertisementSelection, MyAdvertisementsTable},
   data: function () {
     return {
-      isEdit: false
+      isEdit: false,
+      showPic: false,
+      pictureData: ''
     }
   },
   methods: {
@@ -41,7 +50,11 @@ export default {
     },
     setIsEdit() {
       this.isEdit = !this.isEdit
-    }
+    },
+    setShowPic: function (pictureData){
+      this.showPic = !this.showPic
+      this.pictureData = pictureData
+    },
   }
 }
 </script>

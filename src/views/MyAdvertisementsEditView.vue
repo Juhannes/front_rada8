@@ -9,9 +9,9 @@
     </div>
 
     <div class="row" style="padding: 20px">
-
-      <MyAdvertisementsTable style="pointer-events: none" disabled ref="myAdvertisementsTable"/>
-
+      <div class="col-8">
+        <MyAdvertisementsTable style="pointer-events: none" disabled ref="myAdvertisementsTable"/>
+      </div>
       <div class="col-4">
         <EditAddAdvertisement ref="editAddAdvertisement"/>
       </div>

@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="btn btn-primary">
+  <button type="button" class="btn btn-dark">
     <font-awesome-icon icon="fa-regular fa-message"/>
     Saada sõnum
   </button>

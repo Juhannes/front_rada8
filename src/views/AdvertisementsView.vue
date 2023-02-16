@@ -21,13 +21,13 @@
 <script>
 import CitiesDropdown from "@/components/CitiesDropdown.vue";
 import TypeDropdown from "@/components/TypeDropdown.vue";
-import AdvertisementsPiano from "@/components/AdvertisementsPiano.vue";
+import AdvertisementsPiano from "@/components/advertisements/Piano/AdvertisementsPiano.vue";
 
 export default {
   name: "AdvertisementsView",
   components: {AdvertisementsPiano, CitiesDropdown, TypeDropdown},
   mounted() {
-    this.callMethodInPiano()
+    this.callMethodsInPiano()
 
   },
   data: function () {
@@ -53,9 +53,10 @@ export default {
 
   methods: {
 
-    callMethodInPiano: function () {
+    callMethodsInPiano: function () {
 
-      this.$refs.advertisementsPiano.isUserLoggedOut()
+      this.$refs.advertisementsPiano.isUserLoggedIn()
+      this.$refs.advertisementsPiano.isUserAdmin()
 
     },
 
@@ -76,6 +77,7 @@ export default {
   beforeMount() {
 
     this.getAllAdvertisements()
+
 
 
 

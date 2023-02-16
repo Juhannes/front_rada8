@@ -29,14 +29,12 @@
             <div class="row" style="border: thin solid black">
               <div class="col" style="border: thin solid black">
                 <!--User not logged in-->
-                <div v-if="isLoggedOut">Sõnumi saatmiseks</div>
-                <a v-if="isLoggedOut" v-on:click="pushToLogin" class="link-dark">logi sisse</a>
+                <NotLoggedInMessage v-if="!isLoggedIn"/>
                 <!--User logged in-->
-                <SendMessageButton  v-else-if="!isLoggedOut"/>
-
+                <SendMessageButton v-if="isLoggedIn"/>
+                <EditAdvertisementButton v-if="sessionUserId === advertisement.userId"/>
                 <!--Admin logged in-->
-                <SendMessageButton  v-else-if="!isLoggedOut"/>
-
+                <DeleteAdvertisementButton v-if="isAdmin"/>
 
 
               </div>
@@ -55,33 +53,37 @@
   </div>
 </template>
 <script>
-import SendMessageButton from "@/components/SendMessageButton.vue";
+import SendMessageButton from "@/components/advertisements/Piano/SendMessageButton.vue";
+import DeleteAdvertisementButton from "@/components/advertisements/Piano/DeleteAdvertisementButton.vue";
+import EditAdvertisementButton from "@/components/advertisements/Piano/EditAdvertisementButton.vue";
+import NotLoggedInMessage from "@/components/advertisements/Piano/NotLoggedInMessage.vue";
 
 export default {
   name: 'AdvertisementsPiano',
-  components: {SendMessageButton},
+  components: {NotLoggedInMessage, EditAdvertisementButton, DeleteAdvertisementButton, SendMessageButton},
   props: {
     advertisements: {}
   },
   data: function () {
+
     return {
-      userId: sessionStorage.getItem('userId'),
-      isLoggedOut: true,
+      sessionUserId: Number(sessionStorage.getItem('userId')),
+      isLoggedIn: true,
       roleName: sessionStorage.getItem('roleName'),
-      isAdmin: false
+      isAdmin: false,
+
+
 
     }
   },
   methods: {
 
-    isAdmin: function () {
-            this.isAdmin = this.roleName === 'admin'
+    isUserAdmin: function () {
+      this.isAdmin = this.roleName === 'admin'
     },
-    pushToLogin: function () {
-      this.$router.push({name: 'loginRoute'})
-    },
-    isUserLoggedOut: function () {
-      this.isLoggedOut = this.userId === null;
+
+    isUserLoggedIn: function () {
+      this.isLoggedIn = this.sessionUserId !== null;
 
     }
   }

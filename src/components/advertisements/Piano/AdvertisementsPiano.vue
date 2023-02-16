@@ -32,6 +32,7 @@
                 <NotLoggedInMessage v-if="!isLoggedIn"/>
                 <!--User logged in-->
                 <SendMessageButton v-if="isLoggedIn"/>
+                <!--Advertiser logged in-->
                 <EditAdvertisementButton v-if="sessionUserId === advertisement.userId"/>
                 <!--Admin logged in-->
                 <DeleteAdvertisementButton v-if="isAdmin"/>
@@ -72,11 +73,26 @@ export default {
       roleName: sessionStorage.getItem('roleName'),
       isAdmin: false,
 
+      cities: [
+        {
+          cityId: 0,
+          cityName: ''
+        }
+      ]
 
 
     }
   },
   methods: {
+    getAllCities: function () {
+      this.$http.get("/cities")
+          .then(response => {
+            this.cities = this.response.data
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
 
     isUserAdmin: function () {
       this.isAdmin = this.roleName === 'admin'

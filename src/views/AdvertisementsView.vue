@@ -2,7 +2,7 @@
   <div>
 
     <div class="row">
-      <div class="col-3" style="border: thin solid black">
+      <div class="col-3">
         <CitiesDropdown/>
         <br>
         <br>

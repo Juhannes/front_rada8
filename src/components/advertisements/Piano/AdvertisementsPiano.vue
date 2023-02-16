@@ -1,15 +1,15 @@
 <template>
-  <div class="col-8" style="border: thin solid black">
+  <div class="col-8">
     <div v-for="advertisement in advertisements" class="accordion" id="accordionExample">
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                   aria-expanded="true" aria-controls="collapseOne">
             <div class="row">
-              <div class="col-7" style="border: thin solid black">
+              <div class="col-7">
                 {{ advertisement.header }}
               </div>
-              <div class="col" style="border: thin solid black">
+              <div class="col">
                 Kuulutus lisatud: {{ advertisement.createdTimestamp }}
               </div>
             </div>
@@ -18,28 +18,30 @@
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
              data-bs-parent="#accordionExample">
           <div class="accordion-body col">
-            <div class="bi-justify-left row" style="border: thin solid black">
+            <div class="bi-justify-left row">
               Asukoht: {{ advertisement.cityId }}
             </div>
             <br>
-            <div class="row" style="border: thin solid black">
+            <div class="row" >
               {{ advertisement.body }}
+              <br>
+              <img src="" class="rounded mx-auto d-block" alt="...">
             </div>
             <br>
-            <div class="row" style="border: thin solid black">
-              <div class="col" style="border: thin solid black">
+            <div class="row">
+              <div class="col">
                 <!--User not logged in-->
                 <NotLoggedInMessage v-if="!isLoggedIn"/>
                 <!--User logged in-->
                 <SendMessageButton v-if="isLoggedIn"/>
                 <!--Advertiser logged in-->
-                <EditAdvertisementButton v-if="sessionUserId === advertisement.userId"/>
+                <EditAdvertisementButton v-if="isAdvertiser === advertisement.userId"/>
                 <!--Admin logged in-->
                 <DeleteAdvertisementButton v-if="isAdmin"/>
 
 
               </div>
-              <div class="col" style="border: thin solid black">
+              <div class="col">
                 Viimati muudetud: {{ advertisement.modifiedTimestamp }}
               </div>
             </div>
@@ -68,10 +70,11 @@ export default {
   data: function () {
 
     return {
-      sessionUserId: Number(sessionStorage.getItem('userId')),
-      isLoggedIn: true,
+      sessionUserId: sessionStorage.getItem('userId'),
+      isLoggedIn: false,
       roleName: sessionStorage.getItem('roleName'),
       isAdmin: false,
+      isAdvertiser: 0,
 
       cities: [
         {
@@ -84,15 +87,10 @@ export default {
     }
   },
   methods: {
-    getAllCities: function () {
-      this.$http.get("/cities")
-          .then(response => {
-            this.cities = this.response.data
-          })
-          .catch(error => {
-            console.log(error)
-          })
+    isAdvertiser: function () {
+      this.isAdvertiser = Number(sessionStorage.getItem('userId'))
     },
+
 
     isUserAdmin: function () {
       this.isAdmin = this.roleName === 'admin'

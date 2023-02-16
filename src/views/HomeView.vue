@@ -9,19 +9,11 @@
       </div>
     </div>
     <div class="row justify-content-center">
-<!--      Search bar-->
-<!--      <div class="row justify-content-center">-->
-<!--        <div class="col-3">-->
-<!--          <div class="input-group">-->
-<!--            <input type="text" class="form-control" placeholder="Otsi kuulutuse tekstist"-->
-<!--                   aria-label="Recipient's username" aria-describedby="button-addon2">-->
-<!--            <button class="btn btn-outline-secondary" type="button" id="button-addon2">-->
-<!--              <font-awesome-icon icon="fa-solid fa-magnifying-glass"/>-->
-<!--              Otsi-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="col-3">
+        <AlertSuccess :message-success="messageSuccess"/>
+      </div>
+    </div>
+     <div class="row justify-content-center">
       <div class="col-2">
         <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary">Otsin bändi</button>
       </div>
@@ -44,16 +36,34 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: 'HomeView',
   components: {
+    AlertSuccess,
     HelloWorld
+  },
+  data: function () {
+    return {
+      messageSuccess: ''
+    }
+
   },
   methods: {
     searchBand: function () {
       this.$router.push({name: "advertisementsRoute"})
-    }
+    },
+    setMessageSuccess: function () {
+
+      this.messageSuccess = localStorage.getItem("messageSuccess")
+      localStorage.removeItem("messageSuccess")
+      if (this.messageSuccess == null)
+        this.messageSuccess = ''
+    },
+  },
+  beforeMount() {
+    this.setMessageSuccess()
   }
 
 }

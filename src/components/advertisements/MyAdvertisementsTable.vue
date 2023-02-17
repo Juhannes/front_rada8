@@ -14,7 +14,7 @@
         </div>
       </td>
       <td>
-        Viimane muutmine: {{myAdvertisements.editedTimestamp.substring(0, 21)}}
+        Viimane muutmine: {{moment.utc(myAdvertisements.editedTimestamp).format('D/MM/YYYY, HH:mm')}}
       </td>
       <td>
         <div v-on:click="emitIsEdit(myAdvertisements.id)" class="col-1" style="padding: 10px">
@@ -31,11 +31,6 @@
           <font-awesome-icon icon="fa-regular fa-image" class="mx-2 icon-hover"/>
         </div>
       </td>
-      <td>
-<!--        <div>-->
-<!--          <img class="container" v-if="(myAdvertisements.picture !== null) && showPic" :src="myAdvertisements.picture">-->
-<!--        </div>-->
-      </td>
     </tr>
     </tbody>
 
@@ -44,8 +39,15 @@
 </template>
 <script>
 
+import moment from "moment";
+
 export default {
   name: 'MyAdvertisementsTable',
+  computed: {
+    moment() {
+      return moment
+    }
+  },
   data: function () {
     return {
       myAdvertisements: [

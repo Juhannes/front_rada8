@@ -1,17 +1,19 @@
 <template>
   <div>
     <AlertSuccess :message-success="messageSuccess"/>
+    <AlertWarning :message-warning="messageError"/>
+
     <div class="p-3 border bg-light">
       <div class="row">
         <AdvertisementHeading ref="advertisementHeading" @emitAdvertisementHeadingEvent="setAdvertisementAddHeading"/>
       </div>
-      <div class="row" style="padding: 5px">
+      <div class="row" style="margin: 1px">
         <CitiesDropdown ref="citiesDropdown" @emitSelectedCityIdEvent="setAdvertisementAddCityId"/>
       </div>
-      <div class="row" style="padding: 5px">
+      <div class="row" style="margin: 1px">
         <TypeDropdown ref="typeDropdown" @emitAdvertisementTypeEvent="setAdvertisementAddType"/>
       </div>
-      <div class="row">
+      <div class="row" style="padding-top: 10px">
         <AdvertisementBody ref="advertisementBody" @emitAdvertisementBodyEvent="setAdvertisementAddBody"/>
       </div>
       <div class="col-1" style="padding: 10px">
@@ -44,10 +46,12 @@ import ActiveBox from "@/components/advertisements/ActiveBox.vue";
 import router from "@/router";
 import ImageInput from "@/components/ImageInput.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import AlertWarning from "@/components/alert/AlertWarning.vue";
 
 export default {
   name: 'EditAddAdvertisement',
   components: {
+    AlertWarning,
     AlertSuccess,
     ImageInput, ActiveBox, AdvertisementBody, AdvertisementHeading, CitiesDropdown, TypeDropdown},
   props: {
@@ -56,6 +60,7 @@ export default {
   data: function () {
     return {
       messageSuccess: '',
+      messageError: '',
 
       advertisementAdd: {
         userId: 0,
@@ -63,8 +68,6 @@ export default {
         body: '',
         typeId: 0,
         cityId: 0,
-        createdTimestamp: null,
-        editedTimestamp: null,
         status: '',
         picture: null
       },
@@ -77,11 +80,14 @@ export default {
       return router
     },
     addAdvertisement: function () {
+      this.resetMessages()
       this.callAdvertisementAddEmits()
-      this.setAdvertisementCreatedTimestamp()
-      this.setAdvertisementEditedTimestamp()
       this.advertisementAdd.userId = this.userId
-      this.postAdvertisement()
+      if (this.allRequiredFieldsFilled()) {
+        this.postAdvertisement()
+      } else {
+        this.messageError = 'Veendu, et kõik väljad oleksid täidetud!'
+      }
     },
 
     postAdvertisement: function () {
@@ -89,17 +95,21 @@ export default {
       ).then(response => {
         console.log(this.advertisementAdd)
         this.messageSuccess = 'Uus kuulutus lisatud!'
-        this.timeoutAndGoBack(2000)
+        this.timeoutAndGoBack(1000)
       }).catch(error => {
         console.log(error)
       })
     },
 
     editAdvertisement: function () {
+      this.resetMessages()
       this.callAdvertisementAddEmits()
-      this.setAdvertisementEditedTimestamp()
       this.advertisementAdd.userId = this.userId
-      this.putAdvertisement()
+      if (this.allRequiredFieldsFilled()) {
+        this.putAdvertisement();
+      } else {
+        this.messageError = 'Veendu, et kõik väljad oleksid täidetud!'
+      }
     },
 
     putAdvertisement: function () {
@@ -110,7 +120,7 @@ export default {
           }
       ).then(response => {
         this.messageSuccess = 'Kuulutus muudetud!'
-        this.timeoutAndGoBack(2000)
+        this.timeoutAndGoBack(1000)
       }).catch(error => {
         console.log(error)
         alert("Nii küll ei saa rallit sõita " + this.advertisementId)
@@ -125,7 +135,7 @@ export default {
           }
       ).then(response => {
         this.messageSuccess = 'Kuulutus kustutatud!'
-        this.timeoutAndGoBack(2000)
+        this.timeoutAndGoBack(1000)
       }).catch(error => {
         console.log(error)
       })
@@ -147,6 +157,18 @@ export default {
       this.$refs.advertisementBody.emitAdvertisementBody()
       this.$refs.typeDropdown.emitSelectedAdvertisementType()
       this.$refs.activeBox.emitActiveStatus()
+    },
+
+    allRequiredFieldsFilled: function () {
+      return this.advertisementAdd.body !== '' &&
+          this.advertisementAdd.header !== '' &&
+          this.advertisementAdd.cityId > 0 &&
+          this.advertisementAdd.typeId > 0
+    },
+
+    resetMessages: function () {
+      this.messageError = '';
+      this.messageSuccess = ''
     },
 
     setAdvertisementAddHeading(advertisementHeading) {
@@ -175,14 +197,6 @@ export default {
 
     setAdvertisementAddPicture: function (pictureBas64Data) {
       this.advertisementAdd.picture = pictureBas64Data
-    },
-
-    setAdvertisementCreatedTimestamp() {
-      this.advertisementAdd.createdTimestamp = Date()
-    },
-
-    setAdvertisementEditedTimestamp() {
-      this.advertisementAdd.editedTimestamp = Date()
     },
 
     setAdvertisementAddStatus(status) {

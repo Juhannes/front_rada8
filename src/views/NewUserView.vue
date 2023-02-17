@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center" style="padding: 20px">
     <div class="col-3">
 
       <AlertWarning :message-warning="messageWarning"/>

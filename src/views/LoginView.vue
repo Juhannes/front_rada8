@@ -81,7 +81,8 @@ export default {
         sessionStorage.setItem('email', this.loginResponse.email)
         this.$emit('loginSuccess')
         this.messageDanger = ''
-        this.messageSuccess = 'Tere tulemast!'
+        localStorage.setItem("messageSuccess", "Tere tulemast!")
+        this.$router.push({name: 'home'})
 
 
       }).catch(error => {

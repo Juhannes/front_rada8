@@ -19,7 +19,7 @@
              data-bs-parent="#accordionExample">
           <div class="accordion-body col">
             <div class="bi-justify-left row">
-              Asukoht: {{ advertisement.cityId }}
+              Asukoht: {{ advertisement.cityName }}
             </div>
             <br>
             <div class="row" >
@@ -76,18 +76,13 @@ export default {
       isAdmin: false,
       isAdvertiser: 0,
 
-      cities: [
-        {
-          cityId: 0,
-          cityName: ''
-        }
-      ]
+
 
 
     }
   },
   methods: {
-    isAdvertiser: function () {
+    isUserAdvertiser: function () {
       this.isAdvertiser = Number(sessionStorage.getItem('userId'))
     },
 

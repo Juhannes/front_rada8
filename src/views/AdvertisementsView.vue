@@ -42,6 +42,7 @@ export default {
           body: '',
           typeId: 0,
           cityId: 0,
+          cityName:'',
           createdTimestamp: null,
           modifiedTimestamp: null,
           status: '',
@@ -57,6 +58,7 @@ export default {
 
       this.$refs.advertisementsPiano.isUserLoggedIn()
       this.$refs.advertisementsPiano.isUserAdmin()
+      this.$refs.advertisementsPiano.isUserAdvertiser()
 
     },
 

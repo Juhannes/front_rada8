@@ -6,7 +6,7 @@
 
 
 
-    <div class="col-3">
+    <div style="margin: 20px" class="col-3">
       <AlertSuccess :message-success="messageSuccess"/>
       <AlertDanger :message-danger="messageDanger"/>
 

@@ -65,8 +65,8 @@ export default {
     }
   },
 
-  methods: {
 
+  methods: {
     callMethodsInPiano: function () {
 
       this.$refs.advertisementsPiano.isUserLoggedIn()
@@ -74,44 +74,41 @@ export default {
       this.$refs.advertisementsPiano.isUserAdvertiser()
 
     },
-
-    methods: {
-      getAllAdvertisements: function () {
-        this.$http.get("/advertisements")
-            .then(response => {
-              this.advertisements = response.data
-            })
-            .catch(error => {
-              console.log(error)
-            })
-      }
-      ,
-      getAdvertisementOwner: function (userId) {
-        this.$http.get("/user", {
-              params: {
-                userId: userId,
-              }
-            }
-        ).then(response => {
-          this.outGoingMessage.sender = response.data;
-        }).catch(error => {
-          console.log(error)
-        })
-      }
-      ,
-      openMessageWindow: function (advertisementId) {
-        this.isNewMessage = true
-        let advertisement = this.advertisements.find(advertisement => advertisement.id === advertisementId)
-        this.outGoingMessage.subject = advertisement.header;
-        this.getAdvertisementOwner(advertisement.userId);
-        this.outGoingMessage.advertisementId = advertisementId;
-      }
-      ,
+    getAllAdvertisements: function () {
+      this.$http.get("/advertisements")
+          .then(response => {
+            this.advertisements = response.data
+          })
+          .catch(error => {
+            console.log(error)
+          })
     }
     ,
-    beforeMount() {
-      this.getAllAdvertisements()
+    getAdvertisementOwner: function (userId) {
+      this.$http.get("/user", {
+            params: {
+              userId: userId,
+            }
+          }
+      ).then(response => {
+        this.outGoingMessage.sender = response.data;
+      }).catch(error => {
+        console.log(error)
+      })
     }
+    ,
+    openMessageWindow: function (advertisementId) {
+      this.isNewMessage = true
+      let advertisement = this.advertisements.find(advertisement => advertisement.id === advertisementId)
+      this.outGoingMessage.subject = advertisement.header;
+      this.getAdvertisementOwner(advertisement.userId);
+      this.outGoingMessage.advertisementId = advertisementId;
+    }
+    ,
+  }
+  ,
+  beforeMount() {
+    this.getAllAdvertisements()
   }
 }
 

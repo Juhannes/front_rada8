@@ -64,7 +64,8 @@ export default {
   data: function () {
     return {
       isLoggedIn: false,
-      roleName: sessionStorage.getItem('roleName')
+      roleName: sessionStorage.getItem('roleName'),
+      messageSuccess: ''
     }
 
   },

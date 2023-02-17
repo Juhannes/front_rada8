@@ -5,9 +5,9 @@
         <div v-on:click="showMessage(message.messageId); clearMessageWindow()" class="accordion accordion-flush" style="cursor: pointer" id="accordionFlushExample">
           <div class="accordion-item" style="box-shadow: 2px 2px 2px rgba(86,86,86,0.64)">
             <h2 class="accordion-header">
-              <div class="messageButtonArea">
+              <span class="messageButtonArea">
                 {{ message.subject }} <span class="dateTime">{{ message.dateTime }}</span>
-              </div>
+              </span>
             </h2>
           </div>
         </div>

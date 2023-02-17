@@ -5,8 +5,10 @@ import MyAdvertisementsView from "@/views/MyAdvertisementsView.vue";
 import NewUserView from "@/views/NewUserView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MessagesView from "@/views/MessagesView.vue";
-import AdvertisementsView from "@/views/AdvertisementsView.vue";
 import MyAdvertisementsEditView from "@/views/MyAdvertisementsEditView.vue";
+import MyAdvertisementsDeleteView from "@/views/MyAdvertisementsDeleteView.vue";
+import AdvertisementsView from "@/views/AdvertisementsView.vue";
+import NewAdvertisementView from "@/views/NewAdvertisementView.vue";
 
 Vue.use(VueRouter)
 
@@ -15,6 +17,11 @@ const routes = [
     path: '/advertisements',
     name: 'advertisementsRoute',
     component: AdvertisementsView
+  },
+  {
+    path: '/new-advertisement',
+    name: 'newAdvertisementRoute',
+    component: NewAdvertisementView
   },
   {
     path: '/login',
@@ -33,13 +40,18 @@ const routes = [
   },
   {
     path: '/my-advertisements',
-    name: 'myAdvertisements',
+    name: 'myAdvertisementsRoute',
     component: MyAdvertisementsView
   },
   {
     path: '/my-advertisements-edit',
-    name: 'myAdvertisementsEdit',
+    name: 'myAdvertisementsEditRoute',
     component: MyAdvertisementsEditView
+  },
+  {
+    path: '/my-advertisements-delete',
+    name: 'myAdvertisementsDeleteRoute',
+    component: MyAdvertisementsDeleteView
   },
   {
     path: '/messages',

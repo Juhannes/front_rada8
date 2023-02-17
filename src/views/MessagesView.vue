@@ -8,27 +8,34 @@
       </div>
       <div class="col col-7">
         <div class="col text-start" style="margin-left: 2rem">
-          <button v-on:click="setMessageFilter('A'); setSelectedFilter('Saabunud sõnumid')" type="button" class="btn btn-success btn-sm">Saabunud</button>
-          <button type="button" class="btn btn-secondary btn-sm" style="margin-left: 10px; margin-right: 10px">Saadetud</button>
-          <button v-on:click="setMessageFilter('T'); setSelectedFilter('Prügikast')" type="button" class="btn btn-warning btn-sm">Prügikast</button>
+          <button v-on:click="setMessageFilter('A'); setSelectedFilter('Saabunud sõnumid')" type="button"
+                  class="btn btn-success btn-sm">Saabunud
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" style="margin-left: 10px; margin-right: 10px">
+            Saadetud
+          </button>
+          <button v-on:click="setMessageFilter('T'); setSelectedFilter('Prügikast')" type="button"
+                  class="btn btn-warning btn-sm">Prügikast
+          </button>
 
         </div>
 
         <div class="col">
-          <MessageTable @emitShowMessageEvent="showMessage" :messages="messages" :message-filter="messageFilter"/>
+          <MessageTable @emitShowMessageEvent="showMessage"
+                        @clearMessageWindowEvent="clearMessageWindow"
+                        refs="messageTable" :messages="messages" :message-filter="messageFilter"/>
         </div>
       </div>
 
       <!-- COLUMN 2  -->
+      <!--                       @emitSendReplyEvent="sendMessageReply"-->
       <div class="col col-4" style="margin-top: 2rem">
-        <div v-if="alertMessage != ''" class="alert alert-warning" role="alert">
-          {{ alertMessage }}
-        </div>
         <MessageWindow @emitToggleMessageEvent="toggleMessage" @emitDeleteMessageEvent="deleteMessage"
-                     @emitRefreshTableEvent="getReceivedMessages(this.userId)"
+                       @emitRefreshTableEvent="getReceivedMessages(this.userId)"
                        @emitRestoreMessageEvent="restoreMessage"
-                       @emitSendReplyEvent="sendMessageReply"
-                       :message="this.message" :view-message="viewMessage"/>
+
+                       @activateIsSendEvent="changeIsSendToTrue"
+                       :message="this.message" :view-message="viewMessage" :is-send="isSend" ref="messageWindow"/>
 
       </div>
 
@@ -41,18 +48,22 @@
 <script>
 import MessageTable from "@/components/messages/MessageTable.vue";
 import MessageWindow from "@/components/messages/MessageWindow.vue";
+import AlertWarning from "@/components/alert/AlertWarning.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: "MessagesView",
-  components: {MessageWindow, MessageTable},
+  components: {AlertSuccess, AlertWarning, MessageWindow, MessageTable},
   data: function () {
     return {
-      userId: sessionStorage.getItem('userId'),
+      userId: Number(sessionStorage.getItem('userId')),
       message: {},
       viewMessage: false,
       messageFilter: 'A',
       selectedFilter: 'Saabunud sõnumid',
       alertMessage: '',
+      alertType: '',
+      isSend: false,
 
       messages: [
         {
@@ -70,11 +81,11 @@ export default {
           advertisementId: 0
         }
       ],
-      replyMessage: {
+      outGoingMessage: {
         senderId: 0,
         receiverId: 0,
         conversationId: 0,
-        replyBody: ''
+        messageBody: ''
       }
     }
   },
@@ -103,8 +114,9 @@ export default {
         console.log(error)
       })
       this.message.status = 'T'
+      this.alertType = 'Warning'
       this.alertMessage = 'Sõnum lendas prügikasti!'
-      setTimeout(() =>  {
+      setTimeout(() => {
         this.alertMessage = '';
       }, 2000)
     },
@@ -120,33 +132,24 @@ export default {
         console.log(error)
       })
       this.message.status = 'A'
+      this.alertType = 'Warning'
       this.alertMessage = 'Sõnum taastatud!'
-      setTimeout(() =>  {
+      setTimeout(() => {
         this.alertMessage = '';
       }, 2000)
     },
-    sendMessageReply: function (replyMessage) {
-      this.replyMessage = replyMessage
-      this.$http.post("/message/reply", this.replyMessage
-      ).then(response => {
-        console.log(response.data)
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-
-
     showMessage: function (messageId) {
-      let message = this.messages.find(message => message.messageId == messageId)
-      this.message = message
+      this.message = this.messages.find(message => message.messageId === messageId)
       this.viewMessage = true
     },
+    changeIsSendToTrue: function () {
+      this.isSend = true
+    },
+    clearMessageWindow: function () {
+      this.isSend = false
+    },
     toggleMessage: function (viewMessage) {
-      if (viewMessage) {
-        this.viewMessage = false
-      } else {
-        this.viewMessage = true
-      }
+      this.viewMessage = !viewMessage;
     },
     setMessageFilter: function (filterStatus) {
       this.messageFilter = filterStatus
@@ -155,6 +158,7 @@ export default {
     setSelectedFilter: function (selected) {
       this.selectedFilter = selected
     },
+
   },
   beforeMount() {
     this.getReceivedMessages(this.userId)
@@ -162,3 +166,4 @@ export default {
 }
 </script>
 
+<!--Kui kunagi jõuab siis võib teha MessageWindows this.body = sessionStorage vms, et kirjutatud sõnum ära ei kaoks kui kuhugile klikata-->

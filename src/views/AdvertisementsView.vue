@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="row">
       <div class="col-3">
         <CitiesDropdown/>
@@ -32,8 +31,6 @@ export default {
   },
   data: function () {
     return {
-
-
       advertisements: [
         {
           advertisementId: 0,
@@ -42,13 +39,29 @@ export default {
           body: '',
           typeId: 0,
           cityId: 0,
-          cityName:'',
+          cityName: '',
           createdTimestamp: null,
           modifiedTimestamp: null,
           status: '',
           picture: null
         }
       ],
+      isNewMessage: false,
+      outGoingMessage:
+          {
+            messageId: 0,
+            conversationId: 0,
+            subject: '',
+            sender: {
+              userId: 0,
+              userName: '',
+              email: ''
+            },
+            body: '',
+            dateTime: '',
+            status: '',
+            advertisementId: 0
+          }
     }
   },
 
@@ -62,30 +75,44 @@ export default {
 
     },
 
-
-    getAllAdvertisements: function () {
-      this.$http.get("/advertisements")
-          .then(response => {
-            this.advertisements = response.data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-
+    methods: {
+      getAllAdvertisements: function () {
+        this.$http.get("/advertisements")
+            .then(response => {
+              this.advertisements = response.data
+            })
+            .catch(error => {
+              console.log(error)
+            })
+      }
+      ,
+      getAdvertisementOwner: function (userId) {
+        this.$http.get("/user", {
+              params: {
+                userId: userId,
+              }
+            }
+        ).then(response => {
+          this.outGoingMessage.sender = response.data;
+        }).catch(error => {
+          console.log(error)
+        })
+      }
+      ,
+      openMessageWindow: function (advertisementId) {
+        this.isNewMessage = true
+        let advertisement = this.advertisements.find(advertisement => advertisement.id === advertisementId)
+        this.outGoingMessage.subject = advertisement.header;
+        this.getAdvertisementOwner(advertisement.userId);
+        this.outGoingMessage.advertisementId = advertisementId;
+      }
+      ,
     }
-
-  },
-
-  beforeMount() {
-
-    this.getAllAdvertisements()
-
-
-
-
+    ,
+    beforeMount() {
+      this.getAllAdvertisements()
+    }
   }
-
-
 }
 
 

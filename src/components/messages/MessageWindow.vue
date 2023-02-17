@@ -1,44 +1,96 @@
 <template>
-  <div v-if="Object.keys(message).length !== 0 && viewMessage" class="p-3 border bg-light">
-    <ReceivedMessage @emitSendMessageEvent="sendReply" :message="message" ref="message"/>
-    <MessageWindowButtons @emitReplyToMessageViewEvent="replyToMessage" :message="message"/>
+  <div>
+    <div>
+      <AlertWarning v-if="alertMessage !== '' && alertType === 'Warning'" :message-warning="alertMessage"/>
+      <AlertSuccess v-else-if="alertMessage !== '' && alertType === 'Success'" :message-success="alertMessage"/>
+    </div>
+    <div v-if="Object.keys(message).length !== 0 && viewMessage" class="p-3 border bg-light">
+      <Message @emitSendReplyMessageEvent="sendReplyMessage" :message="message" :is-send="isSend" ref="message"/>
 
+      <MessageWindowButtons @emitToggleEditableWindowEvent="activateIsSend" :message="message" :is-send="isSend"
+                            ref="buttons"/>
+    </div>
+    <div v-else-if="isNewMessage" class="p-3 border bg-light">
+      <Message @emitSendNewMessageEvent="sendNewMessage" :message="message" :is-new-message="isNewMessage"
+               :is-send="true"
+               ref="message"/>
+      <MessageWindowButtons @emitToggleEditableWindowEvent="activateIsSend" :message="message"
+                            :is-new-message="isNewMessage" :is-send="true" ref="buttons"/>
+    </div>
   </div>
+
 </template>
 <script>
-import ReceivedMessage from "@/components/messages/Message.vue";
+import Message from "@/components/messages/Message.vue";
 import MessageWindowButtons from "@/components/messages/MessageWindowButtons.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import AlertWarning from "@/components/alert/AlertWarning.vue";
 
 export default {
   name: 'MessageWindow',
-  components: {MessageWindowButtons, ReceivedMessage},
+  components: {AlertWarning, AlertSuccess, MessageWindowButtons, Message},
   props: {
     message: {},
-    viewMessage: false
+    viewMessage: false,
+    isNewMessage: false,
+    isSend: Boolean,
+    newOutgoingMessage: {},
+    advertisementId: 0
   },
   data: function () {
     return {
-      replyMessage: {
-        senderId: sessionStorage.getItem('userId'),
+      outGoingMessage: {
+        senderId: Number(sessionStorage.getItem('userId')),
         receiverId: 0,
         conversationId: 0,
-        replyBody: '',
-      }
+        messageBody: '',
+      },
+      alertMessage: '',
+      alertType: ''
     }
   },
   methods: {
+    sendReplyMessage: function (replyMessage) {
+      this.outGoingMessage = replyMessage
+      this.$http.post("/message/reply", this.outGoingMessage
+      ).then(response => {
+        this.alertType = 'Success'
+        this.alertMessage = 'Sõnum saadetud!'
+        setTimeout(() => {
+          this.alertMessage = '';
+        }, 2000)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    sendNewMessage: function (newMessage) {
+      this.outGoingMessage = newMessage
+      this.$http.post("/message/new-message", this.outGoingMessage, {
+            params: {
+              advertisementId: this.advertisementId,
+            }
+          }
+      ).then(response => {
+        this.alertType = 'Success'
+        this.alertMessage = 'Sõnum saadetud!'
+        setTimeout(() => {
+          this.alertMessage = '';
+        }, 2000)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     toggleMessage: function () {
       this.$emit('emitToggleMessageEvent', this.viewMessage)
     },
-    replyToMessage: function () {
-      this.$refs.message.respondToMessage()
+    activateIsSend: function () {
+      this.$emit('activateIsSendEvent')
     },
     getReplyData: function () {
       this.$refs.message.sendMessage()
     },
-    sendReply: function (replyMessage) {
-      this.replyMessage = replyMessage
-      this.$emit('emitSendReplyEvent', this.replyMessage)
+    getNewMessageData: function () {
+      this.$refs.message.sendMessage()
     }
     ,
     deleteMessage: function () {
@@ -50,7 +102,6 @@ export default {
     refreshTable: function () {
       this.$emit('emitRefreshTableEvent')
     },
-
-  }
+  },
 }
 </script>

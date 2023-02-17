@@ -1,6 +1,6 @@
 <template>
   <div v-if="messageSuccess !== ''" class="alert alert-success" role="alert">
-    {{messageSuccess}}
+    {{ messageSuccess }}
   </div>
 </template>
 <script>

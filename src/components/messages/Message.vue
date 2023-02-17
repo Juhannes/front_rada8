@@ -3,12 +3,13 @@
     <div>
       <div class="input-group" style=" justify-content: space-between;">
         <div class="input-group mb-3" style="width: 70%;">
-          <span v-if="!isRespond" class="input-group-text" id="basic-addon1">Saatja</span>
-          <span v-else class="input-group-text" id="basic-addon1">Saaja</span>
+          <span v-if="!isSend" class="input-group-text" id="basic-addon1">Saatja</span>
+          <span v-else-if="isSend || isNewMessage" class="input-group-text" id="basic-addon1">Saaja</span>
           <input v-model:value="message.sender.userName" type="text" disabled readonly class="form-control"
                  style="background-color: white; border-bottom-right-radius: 0.375rem; border-top-right-radius: 0.375rem;">
-          <p v-if="!isRespond" class="dateTime" style="margin-left: 15px">{{ message.dateTime }}</p>
-          <p v-else class="dateTime" style="margin-left: 15px; visibility: hidden">{{ message.dateTime }}</p>
+          <p v-if="!isSend" class="dateTime" style="margin-left: 15px">{{ message.dateTime }}</p>
+          <p v-else-if="isSend || isNewMessage" class="dateTime" style="margin-left: 15px; visibility: hidden">
+            {{ message.dateTime }}</p>
         </div>
         <div class="input-group" style="width: fit-content;">
 
@@ -22,13 +23,13 @@
       <input v-model:value="message.subject" type="text" disabled readonly class="form-control"
              style="background-color: white">
     </div>
-    <div v-if="!isRespond" class="form-floating">
+    <div v-if="!isSend" class="form-floating">
     <textarea v-model:content="message.body" class="form-control" disabled readonly placeholder="Leave a message"
               id="floatingTextarea2" style="height: 300px; background-color: white"></textarea>
       <label for="floatingTextarea2">Sõnum</label>
     </div>
-    <div v-else class="form-floating">
-    <textarea v-model="replyMessage.replyBody" class="form-control"  placeholder="Reply message"
+    <div v-else-if="isSend || isNewMessage" class="form-floating">
+    <textarea v-model="outGoingMessage.messageBody" class="form-control" placeholder="Reply message"
               id="floatingTextarea2" style="height: 300px; background-color: white"></textarea>
       <label for="floatingTextarea2">Sõnum</label>
     </div>
@@ -37,31 +38,35 @@
 </template>
 <script>
 export default {
-  name: 'receivedMessage',
+  name: 'Message',
   props: {
     message: {},
+    isNewMessage: false,
+    isSend: Boolean,
   },
   data: function () {
     return {
-      isRespond: false,
-      replyMessage: {
-        senderId: sessionStorage.getItem('userId'),
-        conversationId: this.message.conversationId,
-        receiverId: this.message.sender.userId,
-        replyBody: ''
-      }
+      outGoingMessage: {
+        senderId: Number(sessionStorage.getItem('userId')),
+        conversationId: 0,
+        receiverId: 0,
+        messageBody: ''
+      },
     }
   },
   methods: {
-    toggleMessage() {
+    toggleMessage: function () {
       this.$parent.toggleMessage();
     },
-    respondToMessage: function () {
-      this.isRespond = !this.isRespond;
+    sendMessage: function () {
+      this.outGoingMessage.conversationId = this.message.conversationId
+      this.outGoingMessage.receiverId = this.message.sender.userId
+      if (this.isNewMessage) {
+        this.$emit('emitSendNewMessageEvent', this.outGoingMessage)
+      } else {
+        this.$emit('emitSendReplyMessageEvent', this.outGoingMessage)
+      }
     },
-    sendMessage() {
-      this.$emit('emitSendMessageEvent', this.replyMessage)
-    }
   }
 }
 </script>

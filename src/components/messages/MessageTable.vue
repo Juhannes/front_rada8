@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-if="messages.length > 0">
-      <div v-for="message in messages" v-if="message.status == messageFilter"  class="row" style="margin: 0.6rem;">
-        <div v-on:click="showMessage(message.messageId)" class="accordion accordion-flush" style="cursor: pointer" id="accordionFlushExample">
+      <div v-for="message in messages" v-if="message.status === messageFilter" class="row" style="margin: 0.6rem;">
+        <div v-on:click="showMessage(message.messageId); clearMessageWindow()" class="accordion accordion-flush" style="cursor: pointer" id="accordionFlushExample">
           <div class="accordion-item" style="box-shadow: 2px 2px 2px rgba(86,86,86,0.64)">
             <h2 class="accordion-header">
               <div class="messageButtonArea">
@@ -27,14 +27,14 @@ export default {
   },
   data: function () {
     return {
-
     }
   },
   methods: {
     showMessage: function (messageId) {
-
       this.$emit('emitShowMessageEvent', messageId)
-
+    },
+    clearMessageWindow: function () {
+      this.$emit('clearMessageWindowEvent')
     }
   },
 

@@ -13,7 +13,7 @@
         <AlertSuccess :message-success="messageSuccess"/>
       </div>
     </div>
-     <div class="row justify-content-center">
+    <div class="row justify-content-center">
       <div class="col-2">
         <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary">Otsin bändi</button>
       </div>
@@ -26,9 +26,26 @@
     </div>
     <div class="row justify-content-center" style="padding: 10px">
       <div class="col-2">
-        <button type="button" class="btn btn-outline-secondary">Lisan kuulutuse</button>
+        <button v-on:click="addAdvertisement" type="button" class="btn btn-outline-secondary">Lisan kuulutuse</button>
       </div>
     </div>
+    <vue-particles color="#2c3e50"
+                   :particleOpacity="0.7"
+                   :particlesNumber="50"
+                   shapeType="star"
+                   :particleSize="6"
+                   linesColor="#2c3e50"
+                   :linesWidth="3"
+                   :lineLinked="true"
+                   :lineOpacity="0.4"
+                   :linesDistance="150"
+                   :moveSpeed="2"
+                   :hoverEffect="true"
+                   hoverMode="grab"
+                   :clickEffect="false"
+                   clickMode="push"
+                   class="particles-js">
+    </vue-particles>
   </div>
 
 </template>
@@ -46,7 +63,8 @@ export default {
   },
   data: function () {
     return {
-      messageSuccess: ''
+      isLoggedIn: false,
+      roleName: sessionStorage.getItem('roleName')
     }
 
   },
@@ -60,6 +78,15 @@ export default {
       localStorage.removeItem("messageSuccess")
       if (this.messageSuccess == null)
         this.messageSuccess = ''
+    },
+    addAdvertisement: function () {
+      this.isLoggedIn = this.roleName != null;
+
+      if (this.isLoggedIn) {
+        this.$router.push({name: "newAdvertisementRoute"});
+      } else {
+        this.$router.push({name: "loginRoute"})
+      }
     },
   },
   beforeMount() {

@@ -1,7 +1,7 @@
 <template>
   <div>
   <div>Sõnumi saatmiseks</div>
-  <a v-on:click="pushToLogin" class="link-dark">logi sisse</a>
+  <a v-on:click="pushToLogin" class="link-dark icon-hover">logi sisse</a>
   </div>
 </template>
 <script>

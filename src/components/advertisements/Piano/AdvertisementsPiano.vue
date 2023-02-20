@@ -22,11 +22,15 @@
               Asukoht: {{ advertisement.cityName }}
             </div>
             <br>
-            <div class="row" >
+            <div class="row">
               {{ advertisement.body }}
               <br>
-              <img src="" class="rounded mx-auto d-block" alt="...">
-            </div>
+              <br>
+              <button v-if="advertisement.picture !== null" type="button" class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Näita pilti.
+              </button>
+              <ShowPictureModal :advertisement="advertisement"/>
+             </div>
             <br>
             <div class="row">
               <div class="col">
@@ -60,10 +64,15 @@ import SendMessageButton from "@/components/advertisements/Piano/SendMessageButt
 import DeleteAdvertisementButton from "@/components/advertisements/Piano/DeleteAdvertisementButton.vue";
 import EditAdvertisementButton from "@/components/advertisements/Piano/EditAdvertisementButton.vue";
 import NotLoggedInMessage from "@/components/advertisements/Piano/NotLoggedInMessage.vue";
+import ShowPictureModal from "@/components/advertisements/Piano/ShowPictureModal.vue";
+
 
 export default {
   name: 'AdvertisementsPiano',
-  components: {NotLoggedInMessage, EditAdvertisementButton, DeleteAdvertisementButton, SendMessageButton},
+  components: {
+    ShowPictureModal,
+   NotLoggedInMessage, EditAdvertisementButton, DeleteAdvertisementButton, SendMessageButton
+  },
   props: {
     advertisements: {}
   },
@@ -75,13 +84,16 @@ export default {
       roleName: sessionStorage.getItem('roleName'),
       isAdmin: false,
       isAdvertiser: 0,
-
-
+      pictureData: this.advertisements.picture
 
 
     }
   },
   methods: {
+    sendPictureDataToModal: function () {
+
+    },
+
     isUserAdvertiser: function () {
       this.isAdvertiser = Number(sessionStorage.getItem('userId'))
     },

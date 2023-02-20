@@ -25,7 +25,6 @@ export default {
   methods: {
     setSelectedTypeId: function (typeId) {
       this.selectedTypeId = typeId;
-      // console.log(typeId)
     },
     emitSelectedTypeId: function () {
       this.$emit('emitSelectedTypeIdEvent', this.selectedTypeId)

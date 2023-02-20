@@ -9,6 +9,7 @@ import MyAdvertisementsEditView from "@/views/MyAdvertisementsEditView.vue";
 import MyAdvertisementsDeleteView from "@/views/MyAdvertisementsDeleteView.vue";
 import AdvertisementsView from "@/views/AdvertisementsView.vue";
 import NewAdvertisementView from "@/views/NewAdvertisementView.vue";
+import MyProfileView from "@/views/MyProfileView.vue";
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,11 @@ const routes = [
     path: '/new-user',
     name: 'newUserRoute',
     component: NewUserView
+  },
+  {
+    path: '/profile',
+    name: 'myProfileRoute',
+    component: MyProfileView
   },
     {
     path: '/home',

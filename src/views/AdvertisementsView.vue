@@ -2,14 +2,17 @@
   <div>
     <div class="row">
       <div class="col-3">
-        <CitiesDropdown/>
+        <div>
+          Asukoht:
+        </div>
+        <CitiesDropdown :is-search="isSearch" :advertisements="advertisements"/>
         <br>
         <br>
         <br>
         <div>
           Otsin:
         </div>
-        <TypeDropdown/>
+        <TypeDropdown :is-search="isSearch"/>
       </div>
       <AdvertisementsPiano :advertisements="advertisements" ref="advertisementsPiano"/>
     </div>
@@ -47,6 +50,7 @@ export default {
         }
       ],
       isNewMessage: false,
+      isSearch: true,
       outGoingMessage:
           {
             messageId: 0,

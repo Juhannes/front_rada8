@@ -2,6 +2,7 @@
   <div id="app">
     <div>
       <div class="row justify-content-center" style="padding-top: 5px">
+        <div class="col-1"></div>
         <div class="col-2">
           <router-link v-if="isLoggedIn === false" type="button" class="btn btn-outline-secondary" to="/new-user">Loo
             kasutaja
@@ -34,6 +35,9 @@
           </router-link>
 
           <router-link v-else type="button" class="btn btn-outline-secondary" to="/login">Sisene</router-link>
+        </div>
+        <div class="col-1">
+            <router-link v-if="isLoggedIn" to="/profile"><font-awesome-icon icon="fa-solid fa-user-large" class="mx-2 icon-hover"/></router-link>
         </div>
       </div>
       <router-view @loginSuccess="updateLoginButton"/>

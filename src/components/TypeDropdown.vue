@@ -1,12 +1,16 @@
 <template>
   <select v-model="selectedTypeId" v-on:change="emitSelectedAdvertisementType" class="form-select" aria-label="Default select example">
-    <option disabled value="0">Kategooria</option>
+    <option v-if="isSearch" value="0">Kõik kategooriad</option>
+    <option v-else disabled value="0">Kategooria</option>
     <option v-for="advertisementTypes in advertisementTypes" :value="advertisementTypes.id">{{advertisementTypes.name}}</option>
   </select>
 </template>
 <script>
 export default {
   name: 'TypeDropdown',
+  props: {
+    isSearch: Boolean
+  },
   data: function () {
     return {
       advertisementTypes: [

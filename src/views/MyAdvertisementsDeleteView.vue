@@ -1,9 +1,8 @@
 <template>
   <div>
-    <AlertSuccess :message-success="messageSuccess"/>
+    <AlertSuccess :message-success="messageSuccess" style="padding: 20px"/>
         <div class="row" style="padding: 20px">
       <MyAdvertisementSelection ref="myAdvertisementSelection" @emitSelectedTypeIdEvent="setRequestedTypeId"/>
-      <!--      <button type="button" class="btn btn-outline-secondary col-3">Lisa uus kuulutus</button>-->
     </div>
     <div class="row" style="padding: 20px">
       <div class="col-8">

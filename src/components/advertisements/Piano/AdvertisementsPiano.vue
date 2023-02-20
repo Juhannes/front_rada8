@@ -49,7 +49,7 @@
 
               </div>
               <div class="col">
-                Viimati muudetud: {{ advertisement.modifiedTimestamp }}
+                Viimati muudetud: {{moment.utc(advertisement.editedTimestamp).format('D/MM/YYYY, HH:mm')}}
               </div>
             </div>
 

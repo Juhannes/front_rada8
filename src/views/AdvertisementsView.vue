@@ -49,7 +49,7 @@ export default {
           cityId: 0,
           cityName: '',
           createdTimestamp: null,
-          modifiedTimestamp: null,
+          editedTimestamp: null,
           status: '',
           picture: null
         }

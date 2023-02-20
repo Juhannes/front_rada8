@@ -1,21 +1,21 @@
 <template>
   <div class="col-8">
-    <div v-for="advertisement in advertisements" class="accordion" id="accordionExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                  aria-expanded="true" aria-controls="collapseOne">
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item" v-for="(advertisement, index) in advertisements" >
+        <h2 class="accordion-header" :id="'heading'+ index">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
+                  aria-expanded="true" :aria-controls="'collapseOne' + index">
             <div class="row">
-              <div class="col-7">
+              <div class="col-10">
                 {{ advertisement.header }}
               </div>
               <div class="col">
-                Kuulutus lisatud: {{ advertisement.createdTimestamp }}
+                Kuulutus lisatud: {{moment.utc(advertisement.createdTimestamp).format('D/MM/YYYY, HH:mm')}}
               </div>
             </div>
           </button>
         </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+        <div :id="'collapseOne' + index" class="accordion-collapse collapse show" :aria-labelledby="'heading' +index"
              data-bs-parent="#accordionExample">
           <div class="accordion-body col">
             <div class="bi-justify-left row">
@@ -24,22 +24,26 @@
             <br>
             <div class="row">
               {{ advertisement.body }}
-              <br>
-              <br>
-              <button v-if="advertisement.picture !== null" type="button" class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Näita pilti.
+              <div class="row">
+
+              <button v-if="advertisement.picture !== null" type="button" class="btn btn-dark   col-2 justify-content-md-start" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Näita pilti
               </button>
+              </div>
+
+
+            </div>
               <ShowPictureModal :advertisement="advertisement"/>
-             </div>
+
             <br>
             <div class="row">
               <div class="col">
                 <!--User not logged in-->
                 <NotLoggedInMessage v-if="!isLoggedIn"/>
-                <!--User logged in-->
-                <SendMessageButton v-if="isLoggedIn"/>
                 <!--Advertiser logged in-->
                 <EditAdvertisementButton v-if="isAdvertiser === advertisement.userId"/>
+                <!--User logged in-->
+                <SendMessageButton v-else-if="isLoggedIn"/>
                 <!--Admin logged in-->
                 <DeleteAdvertisementButton v-if="isAdmin"/>
 
@@ -65,6 +69,7 @@ import DeleteAdvertisementButton from "@/components/advertisements/Piano/DeleteA
 import EditAdvertisementButton from "@/components/advertisements/Piano/EditAdvertisementButton.vue";
 import NotLoggedInMessage from "@/components/advertisements/Piano/NotLoggedInMessage.vue";
 import ShowPictureModal from "@/components/advertisements/Piano/ShowPictureModal.vue";
+import moment from "moment/moment";
 
 
 export default {
@@ -72,6 +77,11 @@ export default {
   components: {
     ShowPictureModal,
    NotLoggedInMessage, EditAdvertisementButton, DeleteAdvertisementButton, SendMessageButton
+  },
+  computed: {
+    moment() {
+      return moment
+    }
   },
   props: {
     advertisements: {}

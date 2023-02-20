@@ -24,7 +24,7 @@
 import CitiesDropdown from "@/components/CitiesDropdown.vue";
 import TypeDropdown from "@/components/TypeDropdown.vue";
 import AdvertisementsPiano from "@/components/advertisements/Piano/AdvertisementsPiano.vue";
-import moment from "moment";
+
 
 
 export default {

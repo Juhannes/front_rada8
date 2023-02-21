@@ -33,8 +33,7 @@
         <MessageWindow @emitToggleMessageEvent="toggleMessage" @emitDeleteMessageEvent="deleteMessage"
                        @emitRefreshTableEvent="getReceivedMessages(this.userId)"
                        @emitRestoreMessageEvent="restoreMessage"
-
-                       @activateIsSendEvent="changeIsSendToTrue"
+                       @activateIsSendEvent="changeIsSendToTrue()"
                        :message="this.message" :view-message="viewMessage" :is-send="isSend" ref="messageWindow"/>
 
       </div>
@@ -174,7 +173,12 @@ export default {
       this.viewMessage = true
     },
     changeIsSendToTrue: function () {
-      this.isSend = true
+      if (!this.isSend) {
+        this.isSend = true;
+      } else if (this.isSend) {
+        this.isSend = false
+      }
+
     },
     clearMessageWindow: function () {
       this.isSend = false

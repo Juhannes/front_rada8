@@ -2,16 +2,20 @@
   <div>
     <div v-if="messageGroups.length > 0">
       <div v-if="isInbox">
-        <div v-for="messageGroup in messageGroups">
-          <div v-for="(message, index) in messageGroup" :key="message.messageId"
-               :class="{ 'class' : index !== 0 }">
-            <div v-if="message.status === messageFilter && message.sender.userId !== userId"
-                 class="row" style="margin: 0.6rem;">
-              <div v-on:click="showMessage(message); clearMessageWindow()" class="accordion accordion-flush"
+        <div v-for="(messageGroup, groupIndex) in messageGroups">
+          <div
+              v-for="(message, messageIndex) in messageGroup.filter(message => message.sender.userId !== userId && message.status === messageFilter)"
+              :key="message.messageId"
+              :class="{ 'child' : messageIndex !== 0 }">
+            <div
+                class="row" style="margin: 0.6rem;">
+              <div v-on:click="showMessage(message); clearMessageWindow(); turnActive(messageIndex, groupIndex)"
+                   class="accordion accordion-flush"
                    style="cursor: pointer;" id="accordionFlushExample">
                 <div class="accordion-item" style="box-shadow: 2px 2px 2px rgba(86,86,86,0.64)">
                   <h2 class="accordion-header">
-              <span class="messageButtonArea">
+              <span class="messageButtonArea"
+                    :class="{ active: activeMessageIndex === messageIndex && activeGroupIndex === groupIndex }">
                 {{ message.subject }} <span class="dateTime">{{ message.dateTime }}</span>
               </span>
                   </h2>
@@ -22,15 +26,20 @@
         </div>
       </div>
       <div v-else-if="!isInbox">
-        <div v-for="messageGroup in messageGroups">
-          <div v-for="message in messageGroup">
-            <div v-if="message.status === messageFilter && message.sender.userId === userId"
-                 class="row" style="margin: 0.6rem;">
-              <div v-on:click="showMessage(message); clearMessageWindow()" class="accordion accordion-flush"
+        <div v-for="(messageGroup, groupIndex) in messageGroups">
+          <div
+              v-for="(message, messageIndex) in messageGroup.filter(message => message.sender.userId !== userId && message.status === messageFilter)"
+              :key="message.messageId"
+              :class="{ 'child' : messageIndex !== 0 }">
+            <div
+                class="row" style="margin: 0.6rem;">
+              <div v-on:click="showMessage(message); clearMessageWindow(); turnActive(messageIndex, groupIndex)"
+                   class="accordion accordion-flush"
                    style="cursor: pointer" id="accordionFlushExample">
                 <div class="accordion-item" style="box-shadow: 2px 2px 2px rgba(86,86,86,0.64)">
                   <h2 class="accordion-header">
-              <span class="messageButtonArea">
+              <span class="messageButtonArea"
+                    :class="{ active: activeMessageIndex === messageIndex && activeGroupIndex === groupIndex }">
                 {{ message.subject }} <span class="dateTime">{{ message.dateTime }}</span>
               </span>
                   </h2>
@@ -53,19 +62,25 @@ export default {
     isInbox: Boolean
   },
   data: function () {
-    return {}
+    return {
+      activeMessageIndex: null,
+      activeGroupIndex: null
+    }
   },
   methods: {
     showMessage: function (message) {
       this.$emit('emitShowMessageEvent', message)
     },
     clearMessageWindow: function () {
+      this.isActive = false
       this.$emit('clearMessageWindowEvent')
+    },
+    turnActive: function (activeMessageIndex, activeGroupIndex) {
+      this.activeMessageIndex = activeMessageIndex;
+      this.activeGroupIndex = activeGroupIndex
     }
   },
   mounted() {
-    console.log(sessionStorage.getItem('userId'))
-    console.log(this.userId)
   }
 
 }
@@ -93,8 +108,14 @@ export default {
 }
 
 .child {
-  width: 80%;
+  width: 95%;
   margin-left: auto;
   margin-right: 0;
+}
+
+.active {
+  background-color: #f4f4f4;
+  border-bottom: solid 1px black;
+  border-left: solid 1px black;
 }
 </style>

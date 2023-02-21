@@ -17,6 +17,11 @@
                    clickMode="push"
                    class="particles-js">
     </vue-particles>
+    <div class="row justify-content-center">
+      <div class="col-3">
+        <AlertSuccess :message-success="messageSuccess"/>
+      </div>
+    </div>
     <div class="row">
       <div style="padding: 50px">
         <h1>Ei viitsi enam üksi pilli tinistada või on bändist puudu see üks ja ainus?</h1>
@@ -25,14 +30,10 @@
         <h2>Pole vaja kaugelt otsida!</h2>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <div class="col-3">
-        <AlertSuccess :message-success="messageSuccess"/>
-      </div>
-    </div>
+
     <div class="row justify-content-center">
       <div class="col-2">
-        <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary">Otsin bändi</button>
+        <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary"><strong>Otsin bändi</strong></button>
       </div>
       <div class="col-3">
         <button type="button" class="btn btn-outline-secondary">Otsin bändikaaslast</button>
@@ -78,8 +79,9 @@ export default {
 
       this.messageSuccess = localStorage.getItem("messageSuccess")
       localStorage.removeItem("messageSuccess")
-      if (this.messageSuccess == null)
+      if (this.messageSuccess == null){
         this.messageSuccess = ''
+      }
     },
     addAdvertisement: function () {
       this.isLoggedIn = this.roleName != null;

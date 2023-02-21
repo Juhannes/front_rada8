@@ -1,5 +1,22 @@
 <template>
   <div>
+    <vue-particles color="#2c3e50"
+                   :particleOpacity="0.7"
+                   :particlesNumber="50"
+                   shapeType="star"
+                   :particleSize="6"
+                   linesColor="#2c3e50"
+                   :linesWidth="3"
+                   :lineLinked="true"
+                   :lineOpacity="0.4"
+                   :linesDistance="150"
+                   :moveSpeed="2"
+                   :hoverEffect="true"
+                   hoverMode="grab"
+                   :clickEffect="false"
+                   clickMode="push"
+                   class="particles-js">
+    </vue-particles>
     <div class="row">
       <div style="padding: 50px">
         <h1>Ei viitsi enam üksi pilli tinistada või on bändist puudu see üks ja ainus?</h1>
@@ -29,23 +46,7 @@
         <button v-on:click="addAdvertisement" type="button" class="btn btn-outline-secondary">Lisan kuulutuse</button>
       </div>
     </div>
-    <vue-particles color="#2c3e50"
-                   :particleOpacity="0.7"
-                   :particlesNumber="50"
-                   shapeType="star"
-                   :particleSize="6"
-                   linesColor="#2c3e50"
-                   :linesWidth="3"
-                   :lineLinked="true"
-                   :lineOpacity="0.4"
-                   :linesDistance="150"
-                   :moveSpeed="2"
-                   :hoverEffect="true"
-                   hoverMode="grab"
-                   :clickEffect="false"
-                   clickMode="push"
-                   class="particles-js">
-    </vue-particles>
+
   </div>
 
 </template>
@@ -98,5 +99,4 @@ export default {
 </script>
 
 <style>
-
 </style>

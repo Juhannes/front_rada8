@@ -25,10 +25,12 @@
               {{ advertisement.body }}
               <div class="row">
 
-                <button   v-if="advertisement.picture !== null" type="button" class="btn btn-dark   col-2 justify-content-md-start" data-bs-toggle="modal" data-bs-target="#exampleModal" v-on:click="setSelectedAdvertisement(advertisement)">
+                <button
+                    v-if="advertisement.picture !== null" v-on:click="setSelectedAdvertisement(advertisement)"
+                    type="button" class="btn btn-dark   col-2 justify-content-md-start" >
                 Näita pilti
+                </button>
 
-              </button>
               </div>
             </div>
 
@@ -60,7 +62,7 @@
 
 
     </div>
-    <ShowPictureModal ref="showPictureModal" :advertisement="selectedAdvertisement" :key="selectedAdvertisement.id"/>
+    <PictureModal v-show="showModal" @close-modal="showModal = false" ref="pictureModal" :advertisement="selectedAdvertisement" />
   </div>
 </template>
 <script>
@@ -70,11 +72,13 @@ import EditAdvertisementButton from "@/components/advertisements/Piano/EditAdver
 import NotLoggedInMessage from "@/components/advertisements/Piano/NotLoggedInMessage.vue";
 import ShowPictureModal from "@/components/advertisements/Piano/ShowPictureModal.vue";
 import moment from "moment/moment";
+import PictureModal from "@/components/advertisements/Piano/PictureModal.vue";
 
 
 export default {
   name: 'AdvertisementsPiano',
   components: {
+    PictureModal,
     ShowPictureModal,
    NotLoggedInMessage, EditAdvertisementButton, DeleteAdvertisementButton, SendMessageButton
   },
@@ -95,21 +99,19 @@ export default {
       roleName: sessionStorage.getItem('roleName'),
       isAdmin: false,
       isAdvertiser: 0,
+      showModal: false
 
 
 
     }
   },
   methods: {
-    showModal: function () {
 
-    },
 
     setSelectedAdvertisement: function (advertisement) {
-      console.log("OLEME SIIN pilt: " + advertisement.picture)
       this.selectedAdvertisement = advertisement
-
-      this.$refs.showPictureModal.setPicture(advertisement.picture)
+      this.$refs.pictureModal.setPicture(advertisement.picture)
+      this.showModal = true
 
     },
 

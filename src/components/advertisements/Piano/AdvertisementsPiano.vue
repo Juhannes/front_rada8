@@ -25,22 +25,21 @@
               {{ advertisement.body }}
               <div class="row">
 
-              <button v-if="advertisement.picture !== null" type="button" class="btn btn-dark   col-2 justify-content-md-start" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button   v-if="advertisement.picture !== null" type="button" class="btn btn-dark   col-2 justify-content-md-start" data-bs-toggle="modal" data-bs-target="#exampleModal" v-on:click="setSelectedAdvertisement(advertisement)">
                 Näita pilti
+
               </button>
               </div>
-
-
             </div>
-              <ShowPictureModal :advertisement="advertisement"/>
+
 
             <br>
-            <div class="row">
+            <div class="row ">
               <div class="col">
                 <!--User not logged in-->
                 <NotLoggedInMessage v-if="!isLoggedIn"/>
                 <!--Advertiser logged in-->
-                <EditAdvertisementButton v-if="isAdvertiser === advertisement.userId"/>
+                <EditAdvertisementButton v-if="isAdvertiser === advertisement.userId" :advertisement="advertisement" />
                 <!--User logged in-->
                 <SendMessageButton v-else-if="isLoggedIn"/>
                 <!--Admin logged in-->
@@ -49,7 +48,9 @@
 
               </div>
               <div class="col">
+                <div v-if="advertisement.createdTimestamp !== advertisement.editedTimestamp">
                 Viimati muudetud: {{moment.utc(advertisement.editedTimestamp).format('D/MM/YYYY, HH:mm')}}
+                </div>
               </div>
             </div>
 
@@ -59,7 +60,7 @@
 
 
     </div>
-
+    <ShowPictureModal ref="showPictureModal" :advertisement="selectedAdvertisement" :key="selectedAdvertisement.id"/>
   </div>
 </template>
 <script>
@@ -88,18 +89,27 @@ export default {
   data: function () {
 
     return {
+      selectedAdvertisement : {},
       sessionUserId: sessionStorage.getItem('userId'),
       isLoggedIn: false,
       roleName: sessionStorage.getItem('roleName'),
       isAdmin: false,
       isAdvertiser: 0,
-      pictureData: this.advertisements.picture
+
 
 
     }
   },
   methods: {
-    sendPictureDataToModal: function () {
+    showModal: function () {
+
+    },
+
+    setSelectedAdvertisement: function (advertisement) {
+      console.log("OLEME SIIN pilt: " + advertisement.picture)
+      this.selectedAdvertisement = advertisement
+
+      this.$refs.showPictureModal.setPicture(advertisement.picture)
 
     },
 

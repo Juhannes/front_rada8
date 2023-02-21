@@ -24,21 +24,29 @@
              style="background-color: white">
     </div>
     <div v-if="!isSend" class="form-floating">
+
     <textarea v-model:content="message.body" class="form-control" disabled readonly placeholder="Leave a message"
               id="floatingTextarea2" style="height: 300px; background-color: white"></textarea>
       <label for="floatingTextarea2">Sõnum</label>
+
     </div>
     <div v-else-if="isSend || isNewMessage" class="form-floating">
     <textarea v-model="outGoingMessage.messageBody" class="form-control" placeholder="Reply message"
               id="floatingTextarea2" style="height: 300px; background-color: white"></textarea>
       <label for="floatingTextarea2">Sõnum</label>
+      <div style="width:50%; margin-top: 5px">
+        <image-input/>
+      </div>
     </div>
   </div>
 
 </template>
 <script>
+import ImageInput from "@/components/ImageInput.vue";
+
 export default {
   name: 'Message',
+  components: {ImageInput},
   props: {
     message: {},
     isNewMessage: false,

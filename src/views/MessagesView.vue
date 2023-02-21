@@ -11,7 +11,7 @@
           <button v-on:click="setMessageFilter('A'); setSelectedFilter('Saabunud sõnumid')" type="button"
                   class="btn btn-success btn-sm">Saabunud
           </button>
-          <button type="button" class="btn btn-secondary btn-sm" style="margin-left: 10px; margin-right: 10px">
+          <button v-on:click="setToOutbox('A'); setSelectedFilter('Saadetud sõnumid')" type="button" class="btn btn-secondary btn-sm" style="margin-left: 10px; margin-right: 10px">
             Saadetud
           </button>
           <button v-on:click="setMessageFilter('T'); setSelectedFilter('Prügikast')" type="button"
@@ -23,7 +23,7 @@
         <div class="col">
           <MessageTable @emitShowMessageEvent="showMessage"
                         @clearMessageWindowEvent="clearMessageWindow"
-                        refs="messageTable" :messages="messages" :message-filter="messageFilter"/>
+                        refs="messageTable" :message-groups="messageGroups" :message-filter="this.messageFilter" :user-id="this.userId" :is-inbox="isInbox"/>
         </div>
       </div>
 
@@ -61,26 +61,45 @@ export default {
       viewMessage: false,
       messageFilter: 'A',
       selectedFilter: 'Saabunud sõnumid',
+      isInbox: true,
       alertMessage: '',
       alertType: '',
       isSend: false,
 
-      messages: [
-        {
-          messageId: 0,
-          conversationId: 0,
-          subject: '',
-          sender: {
-            userId: 0,
-            userName: '',
-            email: ''
-          },
-          body: '',
-          dateTime: '',
-          status: '',
-          advertisementId: 0
-        }
+      messageGroups: [
+        [
+          {
+            messageId: 0,
+            conversationId: 0,
+            subject: '',
+            sender: {
+              userId: 0,
+              userName: '',
+              email: ''
+            },
+            body: '',
+            dateTime: '',
+            status: '',
+            advertisementId: 0
+          }
+        ]
       ],
+      // messages: [
+      //   {
+      //     messageId: 0,
+      //     conversationId: 0,
+      //     subject: '',
+      //     sender: {
+      //       userId: 0,
+      //       userName: '',
+      //       email: ''
+      //     },
+      //     body: '',
+      //     dateTime: '',
+      //     status: '',
+      //     advertisementId: 0
+      //   }
+      // ],
       outGoingMessage: {
         senderId: 0,
         receiverId: 0,
@@ -97,7 +116,7 @@ export default {
             }
           }
       ).then(response => {
-        this.messages = response.data
+        this.messageGroups = response.data
       }).catch(error => {
         console.log(error)
       })
@@ -138,8 +157,20 @@ export default {
         this.alertMessage = '';
       }, 2000)
     },
-    showMessage: function (messageId) {
-      this.message = this.messages.find(message => message.messageId === messageId)
+    showMessage: function (message) {
+
+      this.message = message
+      // console.log(messageId)
+      // this.message = this.messages.find(message => message.messageId === messageId)
+      // this.messageGroups.map(function (messageGroup) {
+      //   messageGroup.map(function (message) {
+      //     console.log(message)
+      //     if (message.messageId === messageId) {
+      //       this.message = message;
+      //     }
+      //   })
+      // })
+
       this.viewMessage = true
     },
     changeIsSendToTrue: function () {
@@ -153,11 +184,15 @@ export default {
     },
     setMessageFilter: function (filterStatus) {
       this.messageFilter = filterStatus
+      this.isInbox = true
     },
-
     setSelectedFilter: function (selected) {
       this.selectedFilter = selected
     },
+    setToOutbox: function (filterStatus) {
+      this.messageFilter = filterStatus
+      this.isInbox = false;
+    }
 
   },
   beforeMount() {

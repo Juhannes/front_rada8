@@ -39,7 +39,6 @@ export default {
   },
   watch: {
     picture: function () {
-      alert("sadasd")
     }
   }
 }

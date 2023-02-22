@@ -1,29 +1,28 @@
 <template>
   <div>
-    <div class="row" style="padding-top: 20px; padding-left: 10px">
-      <div class="col-2">
-        <div>
-          Asukoht:
-        </div>
-        <CitiesDropdown ref="citiesDropdown" :is-search="isSearch" :advertisements="advertisements" @emitSelectedCityIdEvent="setCityId"/>
+    <div class="row">
+      <div class="col-3" style="width: 200px; margin-left: 15px">
+        <CitiesDropdown @emitSelectedCityIdEvent="setCityId"/>
+        <br>
+        <br>
         <br>
         <div>
           Otsin:
         </div>
-        <TypeDropdown ref="typeDropdown" :is-search="isSearch" @emitAdvertisementTypeEvent="setTypeId"/>
-        <br>
-        <button v-on:click="getAllActiveAdvertisements" type="button" class="btn btn-dark" style="margin: 10px">
-          Tühista filtreeringud
+        <TypeDropdown @emitAdvertisementTypeEvent="setTypeId" />
+        <button v-on:click="getAdvertisementsByCityIdAndTypeId" type="button" class="btn btn-dark">
+          Filtreeri tulemusi
         </button>
       </div>
-      <div class="col-3" v-if="filteredAdvertisements.length < 1">
-        Selles kategoorias kuulutused puuduvad!
+      <div class="col-6">
+        <AdvertisementsPiano @openMessageWindowEvent="openMessageWindow" :advertisements="advertisements"
+                             ref="advertisementsPiano"/>
       </div>
-      <div class="col-10" v-else>
-        <AdvertisementsPiano :advertisements="filteredAdvertisements" ref="advertisementsPiano"/>
-
+      <div class="col-3">
+        <message-window @emitToggleMessageEvent="toggleMessage" :is-new-message="isNewMessage"
+                        :advertisement-id="outGoingMessage.advertisementId" :view-message="viewMessage"
+                        :message="outGoingMessage"/>
       </div>
-
     </div>
 
   </div>
@@ -33,17 +32,21 @@
 import CitiesDropdown from "@/components/CitiesDropdown.vue";
 import TypeDropdown from "@/components/TypeDropdown.vue";
 import AdvertisementsPiano from "@/components/advertisements/Piano/AdvertisementsPiano.vue";
+import MessageWindow from "@/components/messages/MessageWindow.vue";
+
 
 export default {
   name: "AdvertisementsView",
-  components: {AdvertisementsPiano, CitiesDropdown, TypeDropdown},
+  components: {MessageWindow, AdvertisementsPiano, CitiesDropdown, TypeDropdown},
   mounted() {
     this.callMethodsInPiano()
+
   },
   data: function () {
     return {
-      cityId: 0,
-      typeId: 0,
+      cityId: '',
+      typeId:'',
+
       advertisements: [
         {
           advertisementId: 0,
@@ -54,28 +57,13 @@ export default {
           cityId: 0,
           cityName: '',
           createdTimestamp: null,
-          modifiedTimestamp: null,
-          status: '',
-          picture: null
-        }
-      ],
-      filteredAdvertisements: [
-        {
-          advertisementId: 0,
-          userId: 0,
-          header: '',
-          body: '',
-          typeId: 0,
-          cityId: 0,
-          cityName: '',
-          createdTimestamp: null,
-          modifiedTimestamp: null,
+          editedTimestamp: null,
           status: '',
           picture: null
         }
       ],
       isNewMessage: false,
-      isSearch: true,
+      viewMessage: false,
       outGoingMessage:
           {
             messageId: 0,
@@ -105,7 +93,7 @@ export default {
             }
           }
       ).then(response => {
-        this.filteredAdvertisements = response.data
+        this.advertisements = response.data
       }).catch(error => {
         console.log(error)
       })
@@ -113,11 +101,9 @@ export default {
 
     setTypeId: function (typeId) {
       this.typeId = typeId
-      this.getAdvertisementsByCityIdAndTypeId()
     },
     setCityId: function (cityId) {
       this.cityId = cityId
-      this.getAdvertisementsByCityIdAndTypeId()
     },
 
 
@@ -132,13 +118,11 @@ export default {
       this.$http.get("/advertisements", {
             params: {
               status: 'A'
+
             }
           }
       ).then(response => {
         this.advertisements = response.data
-        this.filteredAdvertisements = response.data
-        this.$refs.citiesDropdown.setSelectedCityId(0)
-        this.$refs.typeDropdown.setSelectedTypeId(0)
       }).catch(error => {
         console.log(error)
       })
@@ -154,18 +138,22 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-    },
-    openMessageWindow: function (advertisementId) {
+    }
+    ,
+    openMessageWindow: function (advertisement) {
       this.isNewMessage = true
-      let advertisement = this.advertisements.find(advertisement => advertisement.id === advertisementId)
+      this.viewMessage = true
       this.outGoingMessage.subject = advertisement.header;
       this.getAdvertisementOwner(advertisement.userId);
-      this.outGoingMessage.advertisementId = advertisementId;
+      this.outGoingMessage.advertisementId = advertisement.id;
     },
-  }
-  ,
+    toggleMessage: function (viewMessage) {
+      this.viewMessage = !viewMessage;
+    }
+  },
   beforeMount() {
     this.getAllActiveAdvertisements()
+
   }
 }
 

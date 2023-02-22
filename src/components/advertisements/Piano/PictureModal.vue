@@ -10,7 +10,6 @@
 
         <div class="modal-body">
           <slot name="body">
-            Pilt siia
             <img :src="picture" class="img-fluid">
           </slot>
         </div>

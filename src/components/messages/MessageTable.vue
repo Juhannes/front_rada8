@@ -4,7 +4,7 @@
       <div v-if="isInbox">
         <div v-for="(messageGroup, groupIndex) in messageGroups">
           <div
-              v-for="(message, messageIndex) in messageGroup.filter(message => message.sender.userId !== userId && message.status === messageFilter)"
+              v-for="(message, messageIndex) in messageGroup.filter(messageX => messageX.sender.userId !== userId && messageX.status === messageFilter)"
               :key="message.messageId"
               :class="{ 'child' : messageIndex !== 0 }">
             <div
@@ -28,7 +28,7 @@
       <div v-else-if="!isInbox">
         <div v-for="(messageGroup, groupIndex) in messageGroups">
           <div
-              v-for="(message, messageIndex) in messageGroup.filter(message => message.sender.userId !== userId && message.status === messageFilter)"
+              v-for="(message, messageIndex) in messageGroup.filter(messageX => messageX.sender.userId === userId && messageX.status === messageFilter)"
               :key="message.messageId"
               :class="{ 'child' : messageIndex !== 0 }">
             <div

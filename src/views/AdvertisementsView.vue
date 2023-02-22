@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-3">
+      <div class="col-3" style="width: 200px; margin-left: 15px">
         <CitiesDropdown @emitSelectedCityIdEvent="setCityId"/>
         <br>
         <br>
@@ -14,7 +14,15 @@
           Filtreeri tulemusi
         </button>
       </div>
-      <AdvertisementsPiano :advertisements="advertisements" ref="advertisementsPiano"/>
+      <div class="col-6">
+        <AdvertisementsPiano @openMessageWindowEvent="openMessageWindow" :advertisements="advertisements"
+                             ref="advertisementsPiano"/>
+      </div>
+      <div class="col-3">
+        <message-window @emitToggleMessageEvent="toggleMessage" :is-new-message="isNewMessage"
+                        :advertisement-id="outGoingMessage.advertisementId" :view-message="viewMessage"
+                        :message="outGoingMessage"/>
+      </div>
     </div>
 
   </div>
@@ -24,13 +32,12 @@
 import CitiesDropdown from "@/components/CitiesDropdown.vue";
 import TypeDropdown from "@/components/TypeDropdown.vue";
 import AdvertisementsPiano from "@/components/advertisements/Piano/AdvertisementsPiano.vue";
-
-
+import MessageWindow from "@/components/messages/MessageWindow.vue";
 
 
 export default {
   name: "AdvertisementsView",
-  components: {AdvertisementsPiano, CitiesDropdown, TypeDropdown},
+  components: {MessageWindow, AdvertisementsPiano, CitiesDropdown, TypeDropdown},
   mounted() {
     this.callMethodsInPiano()
 
@@ -39,7 +46,6 @@ export default {
     return {
       cityId: '',
       typeId:'',
-
 
       advertisements: [
         {
@@ -57,6 +63,7 @@ export default {
         }
       ],
       isNewMessage: false,
+      viewMessage: false,
       outGoingMessage:
           {
             messageId: 0,
@@ -77,7 +84,6 @@ export default {
 
 
   methods: {
-
     getAdvertisementsByCityIdAndTypeId: function () {
       this.$http.get("/advertisement-location-type", {
             params: {
@@ -134,13 +140,16 @@ export default {
       })
     }
     ,
-    openMessageWindow: function (advertisementId) {
+    openMessageWindow: function (advertisement) {
       this.isNewMessage = true
-      let advertisement = this.advertisements.find(advertisement => advertisement.id === advertisementId)
+      this.viewMessage = true
       this.outGoingMessage.subject = advertisement.header;
       this.getAdvertisementOwner(advertisement.userId);
-      this.outGoingMessage.advertisementId = advertisementId;
+      this.outGoingMessage.advertisementId = advertisement.id;
     },
+    toggleMessage: function (viewMessage) {
+      this.viewMessage = !viewMessage;
+    }
   },
   beforeMount() {
     this.getAllActiveAdvertisements()

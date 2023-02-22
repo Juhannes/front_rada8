@@ -45,7 +45,7 @@
                 <!--Advertiser logged in-->
                 <EditAdvertisementButton v-if="isAdvertiser === advertisement.userId" :advertisement="advertisement" />
                 <!--User logged in-->
-                <SendMessageButton v-else-if="isLoggedIn"/>
+                <SendMessageButton @sendMessageEvent="openMessageWindow(advertisement)" v-else-if="isLoggedIn"/>
                 <!--Admin logged in-->
                 <button v-if="isAdmin" type="button" class="btn btn-dark" v-on:click="deleteAdvertisement(advertisement)">
                   <font-awesome-icon icon="fa-solid fa-trash-can" class="mx-2 icon-hover"/>
@@ -136,6 +136,10 @@ export default {
       this.selectedAdvertisement = advertisement
       this.$refs.pictureModal.setPicture(advertisement.picture)
       this.showModal = true
+    },
+
+    openMessageWindow: function (advertisement) {
+      this.$emit('openMessageWindowEvent', advertisement)
     },
 
     isUserAdvertiser: function () {

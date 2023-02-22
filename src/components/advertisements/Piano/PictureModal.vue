@@ -3,20 +3,22 @@
     <div v-if="show" class="modal-mask" @click="$emit('close')">
       <div class="modal-container">
         <div class="modal-header">
-          <slot name="header">Kuulutusele lisatud pilt</slot>
+          <slot name="header">
+            <h5 class="modal-title">Kuulutusele lisatud pilt</h5>
+          </slot>
         </div>
 
         <div class="modal-body">
           <slot name="body">
             Pilt siia
-            <img :src="picture" class="img-fluid" alt="...">
+            <img :src="picture" class="img-fluid">
           </slot>
         </div>
 
         <div class="modal-footer">
           <slot name="footer">
                         <button
-                class="modal-default-button"
+                class="btn btn-secondary"
                 @click="$emit('close')"
             >Sule</button>
           </slot>
@@ -66,7 +68,7 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 400px;
   margin: auto;
   padding: 20px 30px;
   background-color: #fff;

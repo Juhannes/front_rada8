@@ -9,6 +9,9 @@
 <script>
 export default {
   name: 'ActiveBox',
+  props: {
+    isAdd: Boolean
+  },
   data: function () {
     return {
       isSelected: false,
@@ -28,6 +31,14 @@ export default {
         this.isSelected = false
       }
     },
+    setAddStatus: function () {
+      this.isSelected = this.isAdd
+    },
+  },
+  beforeMount() {
+    if (this.isAdd) {
+      this.setAddStatus()
+    }
   }
 }
 </script>

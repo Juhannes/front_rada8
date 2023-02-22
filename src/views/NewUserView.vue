@@ -30,7 +30,7 @@
         <label class="form-check-label" for="defaultCheck1">
           Nõustun
           <!-- Button trigger modal -->
-          <a class="link-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          <a class="link-dark icon-hover" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             kasutajatingimustega
           </a>
 

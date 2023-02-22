@@ -17,7 +17,7 @@
         <AdvertisementBody ref="advertisementBody" @emitAdvertisementBodyEvent="setAdvertisementAddBody"/>
       </div>
       <div class="col-1" style="padding: 10px">
-        <ActiveBox ref="activeBox" @emitActiveStatusEvent="setAdvertisementAddStatus"/>
+        <ActiveBox :is-add="this.isAdd" ref="activeBox" @emitActiveStatusEvent="setAdvertisementAddStatus"/>
       </div>
       <div>
         <ImageInput style="padding: 10px" @emitBase64Event="setAdvertisementAddPicture"/>

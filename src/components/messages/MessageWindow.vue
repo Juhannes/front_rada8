@@ -4,20 +4,20 @@
       <AlertWarning v-if="alertMessage !== '' && alertType === 'Warning'" :message-warning="alertMessage"/>
       <AlertSuccess v-else-if="alertMessage !== '' && alertType === 'Success'" :message-success="alertMessage"/>
     </div>
-    <div v-if="Object.keys(message).length !== 0 && viewMessage && isInbox" class="p-3 border bg-light">
+    <div v-if="Object.keys(message).length !== 0 && !isNewMessage && viewMessage && isInbox" class="p-3 border bg-light">
       <Message @emitSendReplyMessageEvent="sendReplyMessage" :message="message" :is-send="isSend" ref="message"/>
 
       <MessageWindowButtons @emitToggleEditableWindowEvent="activateIsSend" :message="message" :is-send="isSend"
                             ref="buttons"/>
     </div>
-    <div v-else-if="isNewMessage" class="p-3 border bg-light">
+    <div v-else-if="isNewMessage && viewMessage && !isInbox" class="p-3 border bg-light">
       <Message @emitSendNewMessageEvent="sendNewMessage" :message="message" :is-new-message="isNewMessage"
                :is-send="true"
                ref="message"/>
       <MessageWindowButtons @emitToggleEditableWindowEvent="activateIsSend" :message="message"
                             :is-new-message="isNewMessage" :is-send="true" ref="buttons"/>
     </div>
-    <div v-else-if="!isInbox" class="p-3 border bg-light">
+    <div v-else-if="!isNewMessage && viewMessage && !isInbox" class="p-3 border bg-light">
       <Message @emitSendReplyMessageEvent="sendReplyMessage" :message="message" :is-send="isSend" ref="message"/>
     </div>
   </div>

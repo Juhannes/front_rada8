@@ -24,7 +24,7 @@
         <button v-on:click="sendNewMesage(); toggleMessage()" type="button" class="btn btn-success"
                 style="margin: 10px; margin-left: 0">Saada
         </button>
-        <button v-on:click="toggleEditable()" type="button" class="btn btn-secondary" style="margin: 10px">Tühista
+        <button v-on:click="toggleMessage()" type="button" class="btn btn-secondary" style="margin: 10px">Tühista
         </button>
       </div>
       <div v-else>

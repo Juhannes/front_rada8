@@ -1,5 +1,6 @@
 <template>
   <div class="col-8">
+    <AlertSuccess :message-success="this.messageSuccess"/>
     <div class="accordion" id="accordionExample">
       <div class="accordion-item" v-for="(advertisement, index) in advertisements" >
         <h2 class="accordion-header" :id="'heading'+ index">
@@ -45,9 +46,10 @@
                 <!--User logged in-->
                 <SendMessageButton v-else-if="isLoggedIn"/>
                 <!--Admin logged in-->
-                <DeleteAdvertisementButton v-if="isAdmin"/>
-
-
+                <button v-if="isAdmin" type="button" class="btn btn-dark" v-on:click="deleteAdvertisement(advertisement)">
+                  <font-awesome-icon icon="fa-solid fa-trash-can" class="mx-2 icon-hover"/>
+                  Kustuta kuulutus
+                </button>
               </div>
               <div class="col">
                 <div v-if="advertisement.createdTimestamp !== advertisement.editedTimestamp">
@@ -67,20 +69,19 @@
 </template>
 <script>
 import SendMessageButton from "@/components/advertisements/Piano/SendMessageButton.vue";
-import DeleteAdvertisementButton from "@/components/advertisements/Piano/DeleteAdvertisementButton.vue";
 import EditAdvertisementButton from "@/components/advertisements/Piano/EditAdvertisementButton.vue";
 import NotLoggedInMessage from "@/components/advertisements/Piano/NotLoggedInMessage.vue";
-import ShowPictureModal from "@/components/advertisements/Piano/ShowPictureModal.vue";
 import moment from "moment/moment";
 import PictureModal from "@/components/advertisements/Piano/PictureModal.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 
 export default {
   name: 'AdvertisementsPiano',
   components: {
+    AlertSuccess,
     PictureModal,
-    ShowPictureModal,
-   NotLoggedInMessage, EditAdvertisementButton, DeleteAdvertisementButton, SendMessageButton
+    NotLoggedInMessage, EditAdvertisementButton, SendMessageButton
   },
   computed: {
     moment() {
@@ -99,20 +100,40 @@ export default {
       roleName: sessionStorage.getItem('roleName'),
       isAdmin: false,
       isAdvertiser: 0,
-      showModal: false
+      showModal: false,
+      messageSuccess: ''
+
+
 
 
 
     }
   },
   methods: {
+    deleteAdvertisement: function (advertisement) {
 
+      this.$http.delete("/my-advertisements", {
+            params: {
+              advertisementId: advertisement.id
+            }
+          }
+      ).then(response => {
+       this.messageSuccess = 'Kuulutus kustutatud'
+        this.timeoutAndGoBack(2000)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    timeoutAndGoBack: function (timeOut) {
+      setTimeout(() => {
+        this.$router.go(0)
+      }, timeOut)
+    },
 
     setSelectedAdvertisement: function (advertisement) {
       this.selectedAdvertisement = advertisement
       this.$refs.pictureModal.setPicture(advertisement.picture)
       this.showModal = true
-
     },
 
     isUserAdvertiser: function () {

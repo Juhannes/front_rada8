@@ -27,6 +27,7 @@ import AdvertisementsPiano from "@/components/advertisements/Piano/Advertisement
 
 
 
+
 export default {
   name: "AdvertisementsView",
   components: {AdvertisementsPiano, CitiesDropdown, TypeDropdown},
@@ -38,6 +39,7 @@ export default {
     return {
       cityId: '',
       typeId:'',
+
 
       advertisements: [
         {
@@ -75,6 +77,7 @@ export default {
 
 
   methods: {
+
     getAdvertisementsByCityIdAndTypeId: function () {
       this.$http.get("/advertisement-location-type", {
             params: {

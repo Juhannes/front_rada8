@@ -56,6 +56,7 @@ export default {
       roleName: sessionStorage.getItem('roleName')
     }
   },
+
   methods: {
     updateLoginButton: function () {
       this.roleName = sessionStorage.getItem('roleName')
@@ -65,8 +66,8 @@ export default {
       sessionStorage.clear()
       location.reload()
     }
-
   },
+
 
 
 }

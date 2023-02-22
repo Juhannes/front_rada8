@@ -34,7 +34,7 @@
                        @emitRefreshTableEvent="getReceivedMessages(this.userId)"
                        @emitRestoreMessageEvent="restoreMessage"
                        @activateIsSendEvent="changeIsSendToTrue()"
-                       :message="this.message" :view-message="viewMessage" :is-send="isSend" ref="messageWindow"/>
+                       :message="this.message" :view-message="viewMessage" :is-send="isSend" :is-inbox="isInbox" ref="messageWindow"/>
 
       </div>
 
@@ -83,22 +83,6 @@ export default {
           }
         ]
       ],
-      // messages: [
-      //   {
-      //     messageId: 0,
-      //     conversationId: 0,
-      //     subject: '',
-      //     sender: {
-      //       userId: 0,
-      //       userName: '',
-      //       email: ''
-      //     },
-      //     body: '',
-      //     dateTime: '',
-      //     status: '',
-      //     advertisementId: 0
-      //   }
-      // ],
       outGoingMessage: {
         senderId: 0,
         receiverId: 0,
@@ -157,19 +141,7 @@ export default {
       }, 2000)
     },
     showMessage: function (message) {
-
       this.message = message
-      // console.log(messageId)
-      // this.message = this.messages.find(message => message.messageId === messageId)
-      // this.messageGroups.map(function (messageGroup) {
-      //   messageGroup.map(function (message) {
-      //     console.log(message)
-      //     if (message.messageId === messageId) {
-      //       this.message = message;
-      //     }
-      //   })
-      // })
-
       this.viewMessage = true
     },
     changeIsSendToTrue: function () {

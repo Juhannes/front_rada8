@@ -34,9 +34,6 @@
     <textarea v-model="outGoingMessage.messageBody" class="form-control" placeholder="Reply message"
               id="floatingTextarea2" style="height: 300px; background-color: white"></textarea>
       <label for="floatingTextarea2">Sõnum</label>
-      <div style="width:50%; margin-top: 5px">
-        <image-input/>
-      </div>
     </div>
   </div>
 

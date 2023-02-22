@@ -26,11 +26,12 @@
               {{ advertisement.body }}
               <div class="row">
 
-                <button
-                    v-if="advertisement.picture !== null" v-on:click="setSelectedAdvertisement(advertisement)"
-                    type="button" class="btn btn-dark   col-2 justify-content-md-start" >
-                Näita pilti
-                </button>
+<!--                <button-->
+<!--                    v-if="advertisement.picture !== null" v-on:click="setSelectedAdvertisement(advertisement)"-->
+<!--                    type="button" class="btn btn-dark   col-2 justify-content-md-start" >-->
+<!--                Näita pilti-->
+<!--                </button>-->
+                <button id="show-modal" @click="setSelectedAdvertisement">Show Modal</button>
 
               </div>
             </div>
@@ -64,7 +65,8 @@
 
 
     </div>
-    <PictureModal v-show="showModal" @close-modal="showModal = false" ref="pictureModal" :advertisement="selectedAdvertisement" />
+<!--    <PictureModal v-show="showModal" @close-modal="showModal = false" ref="pictureModal" :advertisement="selectedAdvertisement" />-->
+    <PictureModal :show="showModal" @close="showModal = false" ref="pictureModal"></PictureModal>
   </div>
 </template>
 <script>

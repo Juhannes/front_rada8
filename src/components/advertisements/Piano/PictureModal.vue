@@ -1,19 +1,40 @@
 <template>
-  <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>
-      <img class="img-fluid" :src="this.picture">
+  <Transition name="modal">
+    <div v-if="show" class="modal-mask" @click="$emit('close')">
+      <div class="modal-container">
+        <div class="modal-header">
+          <slot name="header">Kuulutusele lisatud pilt</slot>
+        </div>
+
+        <div class="modal-body">
+          <slot name="body">
+            Pilt siia
+            <img :src="picture" class="img-fluid" alt="...">
+          </slot>
+        </div>
+
+        <div class="modal-footer">
+          <slot name="footer">
+                        <button
+                class="modal-default-button"
+                @click="$emit('close')"
+            >Sule</button>
+          </slot>
+        </div>
+      </div>
     </div>
-    <div class="modal-footer" @click="$emit('close-modal')">
-      <button type="button" class="btn btn-secondary">Sule</button>
-    </div>
-  </div>
+  </Transition>
 </template>
 
 <script>
+import ImageInput from "@/components/ImageInput.vue";
+
 export default {
   name: "PictureModal",
+  components: {ImageInput},
   props: {
-    advertisement: {},
+    show: Boolean,
+
 
 
   },
@@ -31,46 +52,62 @@ export default {
 
 </script>
 
-<style scoped>
-.modal-overlay {
+<<style>
+.modal-mask {
   position: fixed;
+  z-index: 9998;
   top: 0;
-  bottom: 0;
   left: 0;
-  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
-  background-color: #000000da;
+  transition: opacity 0.3s ease;
 }
 
-.modal {
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 40%;
-  color: var(--bs-modal-color);
-  pointer-events: auto;
-  background-color: var(--bs-modal-bg);
-  background-clip: padding-box;
-  border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
-  border-radius: var(--bs-modal-border-radius);
-  outline: 0;
-
-}
-
-.close {
-  margin: 10% 0 0 16px;
-  cursor: pointer;
-}
-
-.close-img {
-  width: 25px;
-}
-
-.image {
+.modal-container {
   width: 300px;
+  margin: auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
 }
 
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
 
+.modal-body {
+  margin: 20px 0;
+}
+
+.modal-default-button {
+  float: right;
+}
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter-from {
+  opacity: 0;
+}
+
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .modal-container,
+.modal-leave-to .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
 </style>

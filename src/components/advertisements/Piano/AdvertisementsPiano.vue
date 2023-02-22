@@ -16,7 +16,7 @@
             </div>
           </button>
         </h2>
-        <div :id="'collapseOne' + index" class="accordion-collapse collapse show" :aria-labelledby="'heading' +index">
+        <div :id="'collapseOne' + index" class="accordion-collapse collapse" :aria-labelledby="'heading' +index">
           <div class="accordion-body col">
             <div class="bi-justify-left row">
               Asukoht: {{ advertisement.cityName }}

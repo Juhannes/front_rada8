@@ -7,12 +7,14 @@
           <router-link type="button" class="btn btn-outline-secondary"
                        :to="{name:'newAdvertisementRoute', query:{isAdd: 'true'}}">Lisa kuulutus
           </router-link>
-          <router-link type="button" class="btn btn-outline-secondary" to="/advertisements" style="margin-left: 15px">Sirvi kuulutusi
+          <router-link type="button" class="btn btn-outline-secondary" to="/advertisements" style="margin-left: 15px">
+            Sirvi kuulutusi
           </router-link>
         </div>
 
         <div v-else class="col-4">
-          <router-link type="button" class="btn btn-outline-secondary" to="/advertisements" style="margin-left: 15px">Sirvi kuulutusi
+          <router-link type="button" class="btn btn-outline-secondary" to="/advertisements" style="margin-left: 15px">
+            Sirvi kuulutusi
           </router-link>
         </div>
         <div class="col-2">
@@ -24,21 +26,26 @@
           <router-link type="button" class="btn btn-outline-secondary" to="/my-advertisements">Minu
             kuulutused
           </router-link>
-          <router-link type="button" class="btn btn-outline-secondary" to="/messages" style="margin-left: 10px">Sõnumid</router-link>
+          <router-link type="button" class="btn btn-outline-secondary" to="/messages" style="margin-left: 10px">
+            Sõnumid
+          </router-link>
         </div>
         <div v-else class="col-2" style="margin-left: 10px">
 
         </div>
         <div class="col-2">
-          <router-link
-              v-if="isLoggedIn" v-on:click.native="logout" type="button" class="btn btn-outline-secondary" to="/home">
-            Välju
-          </router-link>
+          <div v-if="isLoggedIn">
+            <router-link v-on:click.native="logout" type="button" class="btn btn-outline-secondary" to="/home">
+              Välju
+            </router-link>
+          </div>
+          <div v-else>
+            <router-link type="button" class="btn btn-outline-secondary" to="/login">Sisene</router-link>
+            <router-link type="button" class="btn btn-outline-secondary" to="/new-user" style="margin-left: 15px">Loo
+              kasutaja
+            </router-link>
+          </div>
 
-          <router-link v-else type="button" class="btn btn-outline-secondary" to="/login">Sisene</router-link>
-          <router-link v-if="isLoggedIn === false" type="button" class="btn btn-outline-secondary" to="/new-user" style="margin-left: 15px">Loo
-            kasutaja
-          </router-link>
         </div>
       </div>
       <router-view @loginSuccess="updateLoginButton"/>
@@ -56,18 +63,24 @@ export default {
       roleName: sessionStorage.getItem('roleName')
     }
   },
-
   methods: {
     updateLoginButton: function () {
       this.roleName = sessionStorage.getItem('roleName')
-      this.isLoggedIn = this.roleName === 'admin' || 'user'
+      if (this.roleName === 'admin' || this.roleName === 'user') {
+        this.isLoggedIn = true
+      } else {
+        this.isLoggedIn = false
+      }
     },
     logout: function () {
       sessionStorage.clear()
+      this.isLoggedIn = false
       location.reload()
-    }
+    },
   },
-
+  beforeMount() {
+    this.updateLoginButton()
+  }
 
 
 }

@@ -31,6 +31,7 @@
       <button v-if="isAdd" v-on:click="addAdvertisement" type="button" class="btn btn-secondary btn-sm mystyle">Salvesta</button>
       <button v-else v-on:click="editAdvertisement" type="button" class="btn btn-secondary btn-sm mystyle">Salvesta muudatused</button>
       <button v-if="!isAdd" v-on:click="deleteAdvertisement" type="button" class="btn btn-secondary btn-sm mystyle">Kustuta</button>
+      <button v-on:click="resetPictureData" type="button" class="btn btn-secondary btn-sm">Eemalda pilt</button>
       <button v-if="!isAdd" v-on:click="returnToMyAds" type="button" class="btn btn-secondary btn-sm mystyle">Tühista</button>
       <button v-else v-on:click="$router.go(-1)" type="button" class="btn btn-secondary btn-sm mystyle">Tühista</button>
 
@@ -195,13 +196,17 @@ export default {
       this.$refs.typeDropdown.setSelectedTypeId(typeId)
     },
 
-    setAdvertisementAddPicture: function (pictureBas64Data) {
-      this.advertisementAdd.picture = pictureBas64Data
+    setAdvertisementAddPicture: function (pictureBase64Data) {
+      this.advertisementAdd.picture = pictureBase64Data
     },
 
     setAdvertisementAddStatus(status) {
       this.advertisementAdd.status = status
       this.$refs.activeBox.setActiveStatus(status)
+    },
+
+    resetPictureData: function () {
+      this.advertisementAdd.picture = null
     },
   }
 }

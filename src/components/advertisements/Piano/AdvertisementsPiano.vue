@@ -1,9 +1,9 @@
 <template>
-  <div class="col-8">
+  <div class="col-10">
     <div class="accordion" id="accordionExample">
       <div class="accordion-item" v-for="(advertisement, index) in advertisements" >
         <h2 class="accordion-header" :id="'heading'+ index">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
                   aria-expanded="true" :aria-controls="'collapseOne' + index">
             <div class="row">
               <div class="col-10">
@@ -15,7 +15,7 @@
             </div>
           </button>
         </h2>
-        <div :id="'collapseOne' + index" class="accordion-collapse collapse show" :aria-labelledby="'heading' +index">
+        <div :id="'collapseOne' + index" class="accordion-collapse collapse" :aria-labelledby="'heading' +index">
           <div class="accordion-body col">
             <div class="bi-justify-left row">
               Asukoht: {{ advertisement.cityName }}
@@ -112,7 +112,6 @@ export default {
       this.selectedAdvertisement = advertisement
       this.$refs.pictureModal.setPicture(advertisement.picture)
       this.showModal = true
-
     },
 
     isUserAdvertiser: function () {
@@ -126,7 +125,6 @@ export default {
 
     isUserLoggedIn: function () {
       this.isLoggedIn = this.sessionUserId !== null;
-
     }
   }
 

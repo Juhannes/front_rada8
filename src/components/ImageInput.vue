@@ -1,6 +1,10 @@
 <template>
   <div>
-    <input type="file" v-on:change="handleImage" accept="image/x-png,image/jpeg,image/gif">
+
+    <div>
+      <input type="file" v-on:change="handleImage" accept="image/x-png,image/jpeg,image/gif">
+    </div>
+
   </div>
 </template>
 
@@ -28,7 +32,8 @@ export default {
         alert(error);
       }
       reader.readAsDataURL(fileObject);
-    }
+    },
+
   }
 }
 </script>

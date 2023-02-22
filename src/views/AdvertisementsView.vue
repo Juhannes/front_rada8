@@ -1,28 +1,29 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-3">
+    <div class="row" style="padding-top: 20px; padding-left: 10px">
+      <div class="col-2">
         <div>
           Asukoht:
         </div>
-        <CitiesDropdown :is-search="isSearch" :advertisements="advertisements"/>
-        <br>
-        <select v-model="advertisements.cityName" class="form-select" aria-label="Default select example">
-          <option value="0">Kõik linnad</option>
-          <option v-for="advertisements in advertisements" :value="advertisements.cityName">
-            {{advertisements.cityName}}
-          </option>
-
-        </select>
-        <br>
-        <button v-on:click="setCityNames" type="button" class="btn btn-primary">Test</button>
+        <CitiesDropdown ref="citiesDropdown" :is-search="isSearch" :advertisements="advertisements" @emitSelectedCityIdEvent="setCityId"/>
         <br>
         <div>
           Otsin:
         </div>
-        <TypeDropdown :is-search="isSearch"/>
+        <TypeDropdown ref="typeDropdown" :is-search="isSearch" @emitAdvertisementTypeEvent="setTypeId"/>
+        <br>
+        <button v-on:click="getAllActiveAdvertisements" type="button" class="btn btn-dark" style="margin: 10px">
+          Tühista filtreeringud
+        </button>
       </div>
-      <AdvertisementsPiano :advertisements="advertisements" ref="advertisementsPiano"/>
+      <div class="col-3" v-if="filteredAdvertisements.length < 1">
+        Selles kategoorias kuulutused puuduvad!
+      </div>
+      <div class="col-10" v-else>
+        <AdvertisementsPiano :advertisements="filteredAdvertisements" ref="advertisementsPiano"/>
+
+      </div>
+
     </div>
 
   </div>
@@ -41,6 +42,8 @@ export default {
   },
   data: function () {
     return {
+      cityId: 0,
+      typeId: 0,
       advertisements: [
         {
           advertisementId: 0,
@@ -56,15 +59,19 @@ export default {
           picture: null
         }
       ],
-      cities: [
+      filteredAdvertisements: [
         {
-          id: 0,
-          name: ''
-        }
-      ],
-      availableCities: [
-        {
-          name: ''
+          advertisementId: 0,
+          userId: 0,
+          header: '',
+          body: '',
+          typeId: 0,
+          cityId: 0,
+          cityName: '',
+          createdTimestamp: null,
+          modifiedTimestamp: null,
+          status: '',
+          picture: null
         }
       ],
       isNewMessage: false,
@@ -89,6 +96,31 @@ export default {
 
 
   methods: {
+    getAdvertisementsByCityIdAndTypeId: function () {
+      this.$http.get("/advertisement-location-type", {
+            params: {
+              cityId: this.cityId,
+              typeId: this.typeId,
+              status: 'A'
+            }
+          }
+      ).then(response => {
+        this.filteredAdvertisements = response.data
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
+    setTypeId: function (typeId) {
+      this.typeId = typeId
+      this.getAdvertisementsByCityIdAndTypeId()
+    },
+    setCityId: function (cityId) {
+      this.cityId = cityId
+      this.getAdvertisementsByCityIdAndTypeId()
+    },
+
+
     callMethodsInPiano: function () {
 
       this.$refs.advertisementsPiano.isUserLoggedIn()
@@ -96,16 +128,21 @@ export default {
       this.$refs.advertisementsPiano.isUserAdvertiser()
 
     },
-    getAllAdvertisements: function () {
-      this.$http.get("/advertisements")
-          .then(response => {
-            this.advertisements = response.data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-    }
-    ,
+    getAllActiveAdvertisements: function () {
+      this.$http.get("/advertisements", {
+            params: {
+              status: 'A'
+            }
+          }
+      ).then(response => {
+        this.advertisements = response.data
+        this.filteredAdvertisements = response.data
+        this.$refs.citiesDropdown.setSelectedCityId(0)
+        this.$refs.typeDropdown.setSelectedTypeId(0)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     getAdvertisementOwner: function (userId) {
       this.$http.get("/user", {
             params: {
@@ -118,15 +155,6 @@ export default {
         console.log(error)
       })
     },
-    getAllCities: function () {
-      this.$http.get("/cities")
-          .then(response => {
-            this.cities = response.data;
-          })
-          .catch(error => {
-            console.log(error)
-          })
-    },
     openMessageWindow: function (advertisementId) {
       this.isNewMessage = true
       let advertisement = this.advertisements.find(advertisement => advertisement.id === advertisementId)
@@ -134,22 +162,10 @@ export default {
       this.getAdvertisementOwner(advertisement.userId);
       this.outGoingMessage.advertisementId = advertisementId;
     },
-
-    setCityNames: function () {
-      for (let i = 0; i < this.advertisements.length; i++) {
-        for (let j = 0; j < this.cities.length; j++)
-          if (this.advertisements[i].cityId === this.cities[j].id) {
-            this.advertisements[i].cityName = this.cities[j].name
-            console.log(this.cities[j].name)
-          }
-      }
-    }
   }
   ,
   beforeMount() {
-    this.getAllAdvertisements()
-    this.getAllCities()
-    this.setCityNames()
+    this.getAllActiveAdvertisements()
   }
 }
 

@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-3" style="width: 200px; margin-left: 15px">
-        <CitiesDropdown @emitSelectedCityIdEvent="setCityId"/>
+        <CitiesDropdown :is-search="true" @emitSelectedCityIdEvent="setCityId"/>
         <br>
         <br>
         <br>

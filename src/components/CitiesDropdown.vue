@@ -3,8 +3,10 @@
           aria-label="Default select example">
     <option v-if="isSearch" value="0">Kõik linnad</option>
     <option v-else value="0" disabled>Asukoht</option>
-    <option v-if="isSearch" v-for="advertisements in advertisements" :value="advertisements.cityId">{{ advertisements.cityName }}</option>
-    <option v-if="!isSearch" v-for="cities in cities" :value="cities.id">{{ cities.name }}</option>
+<!--    <option v-if="isSearch" v-for="advertisements in advertisements" :value="advertisements.cityId">-->
+<!--      {{ advertisements.cityName }}-->
+<!--    </option>-->
+    <option v-for="cities in cities" :value="cities.id">{{ cities.name }}</option>
 
 
   </select>
@@ -39,6 +41,16 @@ export default {
           })
     },
 
+    getAdCities: function () {
+      this.$http.get("/cities-ads").then(
+          response => {
+            this.cities = response.data;
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+
     setSelectedCityId: function (cityId) {
       this.selectedCityId = cityId
     },
@@ -47,7 +59,12 @@ export default {
     },
   },
   beforeMount() {
-    this.getAllCities()
+    if (this.isSearch) {
+      this.getAdCities()
+    } else {
+      this.getAllCities();
+    }
+
   }
 }
 </script>

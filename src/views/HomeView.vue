@@ -2,18 +2,18 @@
   <div>
     <vue-particles color="#2c3e50"
                    :particleOpacity="0.7"
-                   :particlesNumber="50"
+                   :particlesNumber="70"
                    shapeType="star"
                    :particleSize="6"
                    linesColor="#2c3e50"
                    :linesWidth="3"
                    :lineLinked="true"
-                   :lineOpacity="0.4"
-                   :linesDistance="150"
-                   :moveSpeed="2"
+                   :lineOpacity="0.2"
+                   :linesDistance="200"
+                   :moveSpeed="3"
                    :hoverEffect="true"
                    hoverMode="grab"
-                   :clickEffect="false"
+                   :clickEffect="true"
                    clickMode="push"
                    class="particles-js">
     </vue-particles>
@@ -23,15 +23,15 @@
       </div>
     </div>
     <div class="row">
-      <div style="padding: 50px">
+      <div class="centered-text-h1" style="padding: 50px">
         <h1>Ei viitsi enam üksi pilli tinistada või on bändist puudu see üks ja ainus?</h1>
       </div>
-      <div style="padding-bottom: 20px">
+      <div class="centered-text-h2" style="padding-bottom: 20px">
         <h2>Pole vaja kaugelt otsida!</h2>
       </div>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="row centered-text-h3 justify-content-center">
       <div class="col-2">
         <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary">Otsin bändi</button>
       </div>
@@ -42,7 +42,7 @@
         <button v-on:click="searchEquipment" type="button" class="btn btn-outline-secondary">Otsin varustust</button>
       </div>
     </div>
-    <div class="row justify-content-center" style="padding: 10px">
+    <div class="row centered-text-h4 justify-content-center" style="padding: 10px">
       <div class="col-2">
         <button v-on:click="addAdvertisement" type="button" class="btn btn-outline-secondary">Lisan kuulutuse</button>
       </div>

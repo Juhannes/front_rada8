@@ -11,7 +11,8 @@
           <button v-on:click="setMessageFilter('A'); setSelectedFilter('Saabunud sõnumid')" type="button"
                   class="btn btn-success btn-sm">Saabunud
           </button>
-          <button v-on:click="setToOutbox('A'); setSelectedFilter('Saadetud sõnumid')" type="button" class="btn btn-secondary btn-sm" style="margin-left: 10px; margin-right: 10px">
+          <button v-on:click="setToOutbox('A'); setSelectedFilter('Saadetud sõnumid')" type="button"
+                  class="btn btn-secondary btn-sm" style="margin-left: 10px; margin-right: 10px">
             Saadetud
           </button>
           <button v-on:click="setMessageFilter('T'); setSelectedFilter('Prügikast')" type="button"
@@ -23,7 +24,8 @@
         <div class="col">
           <MessageTable @emitShowMessageEvent="showMessage"
                         @clearMessageWindowEvent="clearMessageWindow"
-                        refs="messageTable" :message-groups="messageGroups" :message-filter="this.messageFilter" :user-id="this.userId" :is-inbox="isInbox"/>
+                        refs="messageTable" :message-groups="messageGroups" :message-filter="this.messageFilter"
+                        :user-id="this.userId" :is-inbox="isInbox"/>
         </div>
       </div>
 
@@ -34,7 +36,8 @@
                        @emitRefreshTableEvent="getReceivedMessages(this.userId)"
                        @emitRestoreMessageEvent="restoreMessage"
                        @activateIsSendEvent="changeIsSendToTrue()"
-                       :message="this.message" :view-message="viewMessage" :is-send="isSend" :is-inbox="isInbox" ref="messageWindow"/>
+                       :message="this.message" :view-message="viewMessage" :is-send="isSend" :is-inbox="isInbox"
+                       ref="messageWindow"/>
 
       </div>
 
@@ -72,6 +75,11 @@ export default {
             conversationId: 0,
             subject: '',
             sender: {
+              userId: 0,
+              userName: '',
+              email: ''
+            },
+            receiver: {
               userId: 0,
               userName: '',
               email: ''

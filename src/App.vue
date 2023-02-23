@@ -18,9 +18,10 @@
           </router-link>
         </div>
         <div class="col-2 icon-hover">
-
-            <img v-on:click="pushToHome" src="./assets/logo-no-background.png" style="max-width: 50%"/>
-
+<!--            <img v-on:click="to" src="./assets/logo-no-background.png" style="max-width: 50%"/>-->
+          <router-link to="/">
+            <img src="./assets/logo-no-background.png" style="max-width: 50%"/>
+          </router-link>
         </div>
         <div v-if="isLoggedIn" class="col-2">
           <router-link type="button" class="btn btn-outline-secondary" to="/my-advertisements">Minu
@@ -35,7 +36,7 @@
         </div>
         <div class="col-2">
           <div v-if="isLoggedIn">
-            <router-link v-on:click.native="logout" type="button" class="btn btn-outline-secondary" to="">
+            <router-link to="/" v-on:click.native="logout" type="button" class="btn btn-outline-secondary">
               Välju
             </router-link>
           </div>
@@ -79,7 +80,7 @@ export default {
     logout: function () {
       sessionStorage.clear()
       this.isLoggedIn = false
-      this.pushToHome()
+      // this.pushToHome()
       location.reload()
     },
   },

@@ -126,6 +126,7 @@ export default {
       this.message.status = 'T'
       this.alertType = 'Warning'
       this.alertMessage = 'Sõnum lendas prügikasti!'
+      this.getReceivedMessages()
       setTimeout(() => {
         this.alertMessage = '';
       }, 2000)

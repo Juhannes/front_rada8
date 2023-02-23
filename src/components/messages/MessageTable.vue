@@ -16,7 +16,7 @@
                   <h2 class="accordion-header">
               <span class="messageButtonArea"
                     :class="{ active: activeMessageIndex === messageIndex && activeGroupIndex === groupIndex }">
-                {{ message.subject }} <span class="dateTime">{{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</span>
+                Kellelt: <strong style="">&nbsp;{{ message.sender.userName }}</strong>  <span style="margin-left: 2rem; font-style: italic">Pealkiri:&nbsp;{{ message.subject }}</span> <span class="dateTime">{{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</span>
               </span>
                   </h2>
                 </div>
@@ -40,7 +40,7 @@
                   <h2 class="accordion-header">
               <span class="messageButtonArea"
                     :class="{ active: activeMessageIndex === messageIndex && activeGroupIndex === groupIndex }">
-                {{ message.subject }} <span class="dateTime">{{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</span>
+                Kellelt: {{ message.receiver.userName}} <span style="margin-left: 2rem; font-style: italic">Pealkiri: {{ message.subject }}</span>  <span class="dateTime">{{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</span>
               </span>
                   </h2>
                 </div>

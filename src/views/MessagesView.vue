@@ -34,7 +34,7 @@
       <!--                       @emitSendReplyEvent="sendMessageReply"-->
       <div class="col col-4" style="margin-top: 2rem">
         <MessageWindow @emitToggleMessageEvent="toggleMessage" @emitDeleteMessageEvent="deleteMessage"
-                       @emitRefreshTableEvent="getReceivedMessages(this.userId)"
+                       @emitRefreshTableEvent="getReceivedMessages()"
                        @emitRestoreMessageEvent="restoreMessage"
                        @activateIsSendEvent="changeIsSendToTrue()"
                        :message="this.message" :view-message="viewMessage" :is-send="isSend" :is-inbox="isInbox" ref="messageWindow"/>
@@ -100,10 +100,10 @@ export default {
     }
   },
   methods: {
-    getReceivedMessages: function (userId) {
+    getReceivedMessages: function () {
       this.$http.get("/message", {
             params: {
-              userId: userId,
+              userId: this.userId,
             }
           }
       ).then(response => {

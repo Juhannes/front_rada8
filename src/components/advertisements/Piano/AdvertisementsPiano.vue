@@ -1,9 +1,10 @@
 <template>
-  <div class="col-10">
+  <div class="col-8">
+    <AlertSuccess :message-success="this.messageSuccess"/>
     <div class="accordion" id="accordionExample">
       <div class="accordion-item" v-for="(advertisement, index) in advertisements" >
         <h2 class="accordion-header" :id="'heading'+ index">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
                   aria-expanded="true" :aria-controls="'collapseOne' + index">
             <div class="row">
               <div class="col-10">
@@ -24,13 +25,9 @@
             <div class="row">
               {{ advertisement.body }}
               <div class="row">
-
-                <button
-                    v-if="advertisement.picture !== null" v-on:click="setSelectedAdvertisement(advertisement)"
-                    type="button" class="btn btn-dark   col-2 justify-content-md-start" >
-                Näita pilti
+                <button v-if="advertisement.picture !== null" id="show-modal" @click="setSelectedAdvertisement(advertisement)"
+                        class="btn btn-dark   col-2 justify-content-md-start">Näita pilti
                 </button>
-
               </div>
             </div>
 
@@ -45,9 +42,10 @@
                 <!--User logged in-->
                 <SendMessageButton @sendMessageEvent="openMessageWindow(advertisement)" v-else-if="isLoggedIn"/>
                 <!--Admin logged in-->
-                <DeleteAdvertisementButton v-if="isAdmin"/>
-
-
+                <button v-if="isAdmin" type="button" class="btn btn-dark" v-on:click="deleteAdvertisement(advertisement)">
+                  <font-awesome-icon icon="fa-solid fa-trash-can" class="mx-2 icon-hover"/>
+                  Kustuta kuulutus
+                </button>
               </div>
               <div class="col">
                 <div v-if="advertisement.createdTimestamp !== advertisement.editedTimestamp">
@@ -62,25 +60,24 @@
 
 
     </div>
-    <PictureModal v-show="showModal" @close-modal="showModal = false" ref="pictureModal" :advertisement="selectedAdvertisement" />
+    <PictureModal :show="showModal" @close="showModal = false" ref="pictureModal"></PictureModal>
   </div>
 </template>
 <script>
 import SendMessageButton from "@/components/advertisements/Piano/SendMessageButton.vue";
-import DeleteAdvertisementButton from "@/components/advertisements/Piano/DeleteAdvertisementButton.vue";
 import EditAdvertisementButton from "@/components/advertisements/Piano/EditAdvertisementButton.vue";
 import NotLoggedInMessage from "@/components/advertisements/Piano/NotLoggedInMessage.vue";
-import ShowPictureModal from "@/components/advertisements/Piano/ShowPictureModal.vue";
 import moment from "moment/moment";
 import PictureModal from "@/components/advertisements/Piano/PictureModal.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 
 export default {
   name: 'AdvertisementsPiano',
   components: {
+    AlertSuccess,
     PictureModal,
-    ShowPictureModal,
-   NotLoggedInMessage, EditAdvertisementButton, DeleteAdvertisementButton, SendMessageButton
+    NotLoggedInMessage, EditAdvertisementButton, SendMessageButton
   },
   computed: {
     moment() {
@@ -99,17 +96,38 @@ export default {
       roleName: sessionStorage.getItem('roleName'),
       isAdmin: false,
       isAdvertiser: 0,
-      showModal: false
+      showModal: false,
+      messageSuccess: ''
+
+
 
 
 
     }
   },
   methods: {
+    deleteAdvertisement: function (advertisement) {
 
+      this.$http.delete("/my-advertisements", {
+            params: {
+              advertisementId: advertisement.id
+            }
+          }
+      ).then(response => {
+       this.messageSuccess = 'Kuulutus kustutatud'
+        this.timeoutAndGoBack(2000)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    timeoutAndGoBack: function (timeOut) {
+      setTimeout(() => {
+        this.$router.go(0)
+      }, timeOut)
+    },
 
     setSelectedAdvertisement: function (advertisement) {
-      this.selectedAdvertisement = advertisement
+      // this.selectedAdvertisement = advertisement
       this.$refs.pictureModal.setPicture(advertisement.picture)
       this.showModal = true
     },
@@ -129,6 +147,7 @@ export default {
 
     isUserLoggedIn: function () {
       this.isLoggedIn = this.sessionUserId !== null;
+
     }
   }
 

@@ -12,7 +12,7 @@
         </div>
         <TypeDropdown ref="typeDropdown" :is-search="isSearch" @emitAdvertisementTypeEvent="setTypeId"/>
         <br>
-        <button v-on:click="getAllActiveAdvertisements" type="button" class="btn btn-dark" style="margin: 10px">
+        <button v-on:click="resetTypeAndGetAll" type="button" class="btn btn-secondary mystyle" style="margin: 10px">
           Tühista filtreeringud
         </button>
       </div>
@@ -159,12 +159,27 @@ export default {
             }
           }
       ).then(response => {
-        this.advertisements = response.data
-        this.filteredAdvertisements = response.data
+        if (this.searchBand || this.searchMember || this.searchEquip) {
+          this.setPresetType();
+        } else {
+          this.advertisements = response.data
+          this.filteredAdvertisements = response.data
+        }
         this.setPresetType();
       }).catch(error => {
         console.log(error)
       })
+    },
+
+    resetTypeAndGetAll: function () {
+      this.resetPresetType()
+      this.getAllActiveAdvertisements()
+    },
+
+    resetPresetType: function () {
+      this.searchMember = false
+      this.searchEquip = false
+      this.searchBand = false
     },
     getAdvertisementOwner: function (userId) {
       this.$http.get("/user", {

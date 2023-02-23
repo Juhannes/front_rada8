@@ -4,7 +4,7 @@
     <div class="accordion" id="accordionExample">
       <div class="accordion-item" v-for="(advertisement, index) in advertisements" >
         <h2 class="accordion-header" :id="'heading'+ index">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
+          <button class="accordion-button collapsed" style="background-color: #e9f1fa" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
                   aria-expanded="true" :aria-controls="'collapseOne' + index">
             <div class="row">
               <div class="col-10">
@@ -26,7 +26,7 @@
               {{ advertisement.body }}
               <div class="row">
                 <button v-if="advertisement.picture !== null" id="show-modal" @click="setSelectedAdvertisement(advertisement)"
-                        class="btn btn-dark   col-2 justify-content-md-start">Näita pilti
+                        class="btn btn-secondary btn-sm mystyle   col-2 justify-content-md-start">Näita pilti
                 </button>
               </div>
             </div>
@@ -42,7 +42,7 @@
                 <!--User logged in-->
                 <SendMessageButton @sendMessageEvent="openMessageWindow(advertisement)" v-else-if="isLoggedIn"/>
                 <!--Admin logged in-->
-                <button v-if="isAdmin" type="button" class="btn btn-dark" v-on:click="deleteAdvertisement(advertisement)">
+                <button v-if="isAdmin" type="button" class="btn btn-secondary btn-sm mystyle" v-on:click="deleteAdvertisement(advertisement)">
                   <font-awesome-icon icon="fa-solid fa-trash-can" class="mx-2 icon-hover"/>
                   Kustuta kuulutus
                 </button>

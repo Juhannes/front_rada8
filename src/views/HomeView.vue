@@ -33,7 +33,7 @@
 
     <div class="row justify-content-center">
       <div class="col-2">
-        <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary"><strong>Otsin bändi</strong></button>
+        <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary">Otsin bändi</button>
       </div>
       <div class="col-3">
         <button v-on:click="searchBandMember" type="button" class="btn btn-outline-secondary">Otsin bändikaaslast</button>

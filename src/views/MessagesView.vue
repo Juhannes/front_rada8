@@ -79,6 +79,11 @@ export default {
               userName: '',
               email: ''
             },
+            receiver: {
+              userId: 0,
+              userName: '',
+              email: ''
+            },
             body: '',
             dateTime: '',
             status: '',

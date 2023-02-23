@@ -65,7 +65,8 @@ export default {
   },
   methods: {
     pushToHome: function () {
-      this.$router.push({name: "home"})
+      this.$router.push({name: "home"}).catch(err => { return err })
+
     },
     updateLoginButton: function () {
       this.roleName = sessionStorage.getItem('roleName')
@@ -99,7 +100,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: aliceblue;
-  min-height: 100vh
+  min-height: 100%;
 }
 
 nav {

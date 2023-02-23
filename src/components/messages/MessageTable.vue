@@ -16,7 +16,7 @@
                   <h2 class="accordion-header">
               <span class="messageButtonArea"
                     :class="{ active: activeMessageIndex === messageIndex && activeGroupIndex === groupIndex }">
-                {{ message.subject }} <span class="dateTime">{{ message.dateTime }}</span>
+                {{ message.subject }} <span class="dateTime">{{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</span>
               </span>
                   </h2>
                 </div>
@@ -53,8 +53,15 @@
   </div>
 </template>
 <script>
+import moment from "moment/moment";
+
 export default {
   name: 'MessageTable',
+  computed: {
+    moment() {
+      return moment
+    }
+  },
   props: {
     userId: 0,
     messageGroups: undefined,

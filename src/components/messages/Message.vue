@@ -3,13 +3,24 @@
     <div>
       <div class="input-group" style=" justify-content: space-between;">
         <div class="input-group mb-3" style="width: 70%;">
-          <span v-if="!isSend" class="input-group-text" id="basic-addon1">Saatja</span>
-          <span v-else-if="isSend || isNewMessage" class="input-group-text" id="basic-addon1">Saaja</span>
-          <input v-model:value="message.sender.userName" type="text" disabled readonly class="form-control"
-                 style="background-color: white; border-bottom-right-radius: 0.375rem; border-top-right-radius: 0.375rem;">
-          <p v-if="!isSend" class="dateTime" style="margin-left: 15px">{{ message.dateTime }}</p>
+          <div v-if="!isSend && isInbox" class="input-group">
+            <span  class="input-group-text" id="basic-addon1">Saatja</span>
+            <input v-model:value="message.sender.userName" type="text" disabled readonly class="form-control"
+                   style="background-color: white; border-bottom-right-radius: 0.375rem; border-top-right-radius: 0.375rem;">
+          </div>
+          <div v-else-if="!isSend && !isInbox" class="input-group">
+            <span  class="input-group-text" id="basic-addon1">Saaja</span>
+            <input v-model:value="message.receiver.userName" type="text" disabled readonly class="form-control"
+                   style="background-color: white; border-bottom-right-radius: 0.375rem; border-top-right-radius: 0.375rem;">
+          </div>
+          <div v-else-if="isSend || isNewMessage" class="input-group">
+            <span  class="input-group-text" id="basic-addon1">Saaja</span>
+            <input v-model:value="message.sender.userName" type="text" disabled readonly class="form-control"
+                   style="background-color: white; border-bottom-right-radius: 0.375rem; border-top-right-radius: 0.375rem;">
+          </div>
+          <p v-if="!isSend" class="dateTime" style="margin-left: 15px">{{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</p>
           <p v-else-if="isSend || isNewMessage" class="dateTime" style="margin-left: 15px; visibility: hidden">
-            {{ message.dateTime }}</p>
+            {{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</p>
         </div>
         <div class="input-group" style="width: fit-content;">
 
@@ -40,14 +51,21 @@
 </template>
 <script>
 import ImageInput from "@/components/ImageInput.vue";
+import moment from "moment/moment";
 
 export default {
   name: 'Message',
+  computed: {
+    moment() {
+      return moment
+    }
+  },
   components: {ImageInput},
   props: {
     message: {},
     isNewMessage: false,
     isSend: Boolean,
+    isInbox: Boolean,
   },
   data: function () {
     return {

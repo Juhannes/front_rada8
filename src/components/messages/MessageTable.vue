@@ -40,7 +40,7 @@
                   <h2 class="accordion-header">
               <span class="messageButtonArea"
                     :class="{ active: activeMessageIndex === messageIndex && activeGroupIndex === groupIndex }">
-                {{ message.subject }} <span class="dateTime">{{ message.dateTime }}</span>
+                {{ message.subject }} <span class="dateTime">{{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</span>
               </span>
                   </h2>
                 </div>

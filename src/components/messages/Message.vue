@@ -13,9 +13,9 @@
             <input v-model:value="message.receiver.userName" type="text" disabled readonly class="form-control"
                    style="background-color: white; border-bottom-right-radius: 0.375rem; border-top-right-radius: 0.375rem;">
           </div>
-          <div v-else-if="isSend || isNewMessage">
+          <div v-else-if="isSend || isNewMessage" class="input-group">
             <span  class="input-group-text" id="basic-addon1">Saaja</span>
-            <input v-model:value="message.receiver.userName" type="text" disabled readonly class="form-control"
+            <input v-model:value="message.sender.userName" type="text" disabled readonly class="form-control"
                    style="background-color: white; border-bottom-right-radius: 0.375rem; border-top-right-radius: 0.375rem;">
           </div>
           <p v-if="!isSend" class="dateTime" style="margin-left: 15px">{{ message.dateTime }}</p>

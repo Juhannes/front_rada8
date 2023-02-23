@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div>
-      <div class="row justify-content-center centered-text-app" style="padding-top: 10px">
+      <div class="row justify-content-center" style="padding-top: 10px">
         <div v-if="isLoggedIn" class="col-4">
 
           <router-link type="button" class="btn btn-outline-secondary"

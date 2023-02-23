@@ -2,7 +2,7 @@
   <div>
     <vue-particles color="#2c3e50"
                    :particleOpacity="0.7"
-                   :particlesNumber="70"
+                   :particlesNumber="50"
                    shapeType="star"
                    :particleSize="6"
                    linesColor="#2c3e50"

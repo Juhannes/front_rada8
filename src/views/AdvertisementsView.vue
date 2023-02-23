@@ -1,7 +1,10 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-3" style="width: 200px; margin-left: 15px">
+    <div class="row" style="padding-top: 20px; padding-left: 10px">
+      <div class="col-2">
+        <div>
+          Asukoht:
+        </div>
         <CitiesDropdown :is-search="true" @emitSelectedCityIdEvent="setCityId"/>
         <br>
         <br>
@@ -9,13 +12,17 @@
         <div>
           Otsin:
         </div>
-        <TypeDropdown @emitAdvertisementTypeEvent="setTypeId" />
-        <button v-on:click="getAdvertisementsByCityIdAndTypeId" type="button" class="btn btn-dark">
-          Filtreeri tulemusi
+        <TypeDropdown ref="typeDropdown" :is-search="isSearch" @emitAdvertisementTypeEvent="setTypeId"/>
+        <br>
+        <button v-on:click="getAllActiveAdvertisements" type="button" class="btn btn-dark" style="margin: 10px">
+          Tühista filtreeringud
         </button>
       </div>
-      <div class="col-6">
-        <AdvertisementsPiano @openMessageWindowEvent="openMessageWindow" :advertisements="advertisements"
+      <div class="col-3" v-if="filteredAdvertisements.length < 1">
+        Selles kategoorias kuulutused puuduvad!
+      </div>
+      <div class="col-6" v-else>
+        <AdvertisementsPiano @openMessageWindowEvent="openMessageWindow" :advertisements="filteredAdvertisements"
                              ref="advertisementsPiano"/>
       </div>
       <div class="col-3">
@@ -44,9 +51,11 @@ export default {
   },
   data: function () {
     return {
-      cityId: '',
-      typeId:'',
-
+      searchBand: this.$route.query.searchBand,
+      searchMember: this.$route.query.searchMember,
+      searchEquip: this.$route.query.searchEquip,
+      cityId: 0,
+      typeId: 0,
       advertisements: [
         {
           advertisementId: 0,
@@ -57,12 +66,28 @@ export default {
           cityId: 0,
           cityName: '',
           createdTimestamp: null,
-          editedTimestamp: null,
+          modifiedTimestamp: null,
+          status: '',
+          picture: null
+        }
+      ],
+      filteredAdvertisements: [
+        {
+          advertisementId: 0,
+          userId: 0,
+          header: '',
+          body: '',
+          typeId: 0,
+          cityId: 0,
+          cityName: '',
+          createdTimestamp: null,
+          modifiedTimestamp: null,
           status: '',
           picture: null
         }
       ],
       isNewMessage: false,
+      isSearch: true,
       viewMessage: false,
       outGoingMessage:
           {
@@ -93,7 +118,7 @@ export default {
             }
           }
       ).then(response => {
-        this.advertisements = response.data
+        this.filteredAdvertisements = response.data
       }).catch(error => {
         console.log(error)
       })
@@ -101,9 +126,11 @@ export default {
 
     setTypeId: function (typeId) {
       this.typeId = typeId
+      this.getAdvertisementsByCityIdAndTypeId()
     },
     setCityId: function (cityId) {
       this.cityId = cityId
+      this.getAdvertisementsByCityIdAndTypeId()
     },
 
 
@@ -114,6 +141,22 @@ export default {
       this.$refs.advertisementsPiano.isUserAdvertiser()
 
     },
+    setPresetType: function () {
+      if (this.searchBand) {
+        this.$refs.typeDropdown.setSelectedTypeId(1)
+        this.setTypeId(1)
+      } else if (this.searchMember) {
+        this.$refs.typeDropdown.setSelectedTypeId(2)
+        this.setTypeId(2)
+      } else if (this.searchEquip) {
+        this.$refs.typeDropdown.setSelectedTypeId(3)
+        this.setTypeId(3)
+      } else {
+        this.$refs.typeDropdown.setSelectedTypeId(0)
+      }
+      this.$refs.citiesDropdown.setSelectedCityId(0);
+    },
+
     getAllActiveAdvertisements: function () {
       this.$http.get("/advertisements", {
             params: {
@@ -123,6 +166,8 @@ export default {
           }
       ).then(response => {
         this.advertisements = response.data
+        this.filteredAdvertisements = response.data
+        this.setPresetType();
       }).catch(error => {
         console.log(error)
       })

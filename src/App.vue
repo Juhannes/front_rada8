@@ -100,7 +100,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: aliceblue;
-  height: 100%;
+  min-height: 100%;
 }
 
 nav {

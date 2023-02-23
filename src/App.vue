@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     pushToHome: function () {
-      this.$router.push({name: "home"}).catch(err => { return err })
+      this.$router.push({name: "home"})
 
     },
     updateLoginButton: function () {

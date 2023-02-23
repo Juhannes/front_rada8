@@ -61,6 +61,7 @@ export default {
       ).then(response => {
         this.alertType = 'Success'
         this.alertMessage = 'Sõnum saadetud!'
+        this.$emit('emitRefreshTableEvent')
         setTimeout(() => {
           this.alertMessage = '';
         }, 2000)
@@ -78,6 +79,7 @@ export default {
       ).then(response => {
         this.alertType = 'Success'
         this.alertMessage = 'Sõnum saadetud!'
+        this.$emit('emitRefreshTableEvent')
         setTimeout(() => {
           this.alertMessage = '';
         }, 2000)

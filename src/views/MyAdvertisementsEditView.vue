@@ -33,7 +33,6 @@ export default {
     return {
       isEdit: Boolean(this.$route.query.isEdit),
       advertisementId: this.$route.params.advertisementId,
-
       advertisementRequest: {
         id: 0,
         userId: 0,
@@ -65,6 +64,9 @@ export default {
         this.$refs.editAddAdvertisement.setAdvertisementAddStatus(this.advertisementRequest.status)
         this.$refs.editAddAdvertisement.setAdvertisementAddId(this.advertisementId)
         this.$refs.editAddAdvertisement.setAdvertisementAddPicture(this.advertisementRequest.picture)
+        this.setRequestedTypeId(this.advertisementRequest.typeId)
+        this.$refs.myAdvertisementSelection.setSelectedTypeId(this.advertisementRequest.typeId)
+
 
       }).catch(error => {
         console.log(error)
@@ -73,12 +75,10 @@ export default {
 
     setRequestedTypeId(typeId) {
       this.$refs.myAdvertisementsTable.setRequestedTypeId(typeId)
-      console.log(typeId)
     }
   },
   beforeMount() {
     this.getMyAdvertisement()
-    console.log(this.advertisementId)
   }
 }
 </script>

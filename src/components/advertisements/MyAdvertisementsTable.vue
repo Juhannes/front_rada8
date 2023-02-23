@@ -52,6 +52,9 @@ export default {
       return moment
     }
   },
+  props: {
+    typeId: ''
+  },
   data: function () {
     return {
       myAdvertisements: [
@@ -107,7 +110,7 @@ export default {
 
   },
   beforeMount() {
-    this.getMyAdvertisements(this.userId,1)
+    this.getMyAdvertisements(this.userId, 1)
   }
 }
 </script>

@@ -21,7 +21,6 @@
       </div>
       <div class="col-10" v-else>
         <AdvertisementsPiano :advertisements="filteredAdvertisements" ref="advertisementsPiano"/>
-
       </div>
 
     </div>
@@ -42,6 +41,9 @@ export default {
   },
   data: function () {
     return {
+      searchBand: this.$route.query.searchBand,
+      searchMember: this.$route.query.searchMember,
+      searchEquip: this.$route.query.searchEquip,
       cityId: 0,
       typeId: 0,
       advertisements: [
@@ -128,6 +130,22 @@ export default {
       this.$refs.advertisementsPiano.isUserAdvertiser()
 
     },
+    setPresetType: function () {
+      if (this.searchBand) {
+        this.$refs.typeDropdown.setSelectedTypeId(1)
+        this.setTypeId(1)
+      } else if (this.searchMember) {
+        this.$refs.typeDropdown.setSelectedTypeId(2)
+        this.setTypeId(2)
+      } else if (this.searchEquip) {
+        this.$refs.typeDropdown.setSelectedTypeId(3)
+        this.setTypeId(3)
+      } else {
+        this.$refs.typeDropdown.setSelectedTypeId(0)
+      }
+      this.$refs.citiesDropdown.setSelectedCityId(0);
+    },
+
     getAllActiveAdvertisements: function () {
       this.$http.get("/advertisements", {
             params: {
@@ -137,8 +155,7 @@ export default {
       ).then(response => {
         this.advertisements = response.data
         this.filteredAdvertisements = response.data
-        this.$refs.citiesDropdown.setSelectedCityId(0)
-        this.$refs.typeDropdown.setSelectedTypeId(0)
+        this.setPresetType();
       }).catch(error => {
         console.log(error)
       })

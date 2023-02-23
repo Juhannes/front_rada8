@@ -36,10 +36,10 @@
         <button v-on:click="searchBand" type="button" class="btn btn-outline-secondary"><strong>Otsin bändi</strong></button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-outline-secondary">Otsin bändikaaslast</button>
+        <button v-on:click="searchBandMember" type="button" class="btn btn-outline-secondary">Otsin bändikaaslast</button>
       </div>
       <div class="col-2">
-        <button type="button" class="btn btn-outline-secondary">Otsin varustust</button>
+        <button v-on:click="searchEquipment" type="button" class="btn btn-outline-secondary">Otsin varustust</button>
       </div>
     </div>
     <div class="row justify-content-center" style="padding: 10px">
@@ -73,7 +73,13 @@ export default {
   },
   methods: {
     searchBand: function () {
-      this.$router.push({name: "advertisementsRoute"})
+      this.$router.push({name: "advertisementsRoute", query:{searchBand: 'true'}})
+    },
+    searchBandMember: function () {
+      this.$router.push({name: "advertisementsRoute", query:{searchMember: 'true'}})
+    },
+    searchEquipment: function () {
+      this.$router.push({name: "advertisementsRoute", query:{searchEquip: 'true'}})
     },
     setMessageSuccess: function () {
 
@@ -87,7 +93,7 @@ export default {
       this.isLoggedIn = this.roleName != null;
 
       if (this.isLoggedIn) {
-        this.$router.push({name: "newAdvertisementRoute"});
+        this.$router.push({name: "newAdvertisementRoute", query:{isAdd: 'true'}});
       } else {
         this.$router.push({name: "loginRoute"})
       }

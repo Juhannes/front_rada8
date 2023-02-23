@@ -13,71 +13,58 @@ import MyProfileView from "@/views/MyProfileView.vue";
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const router = new VueRouter({
+  mode: 'history',
+  routes: [ {
     path: '/advertisements',
     name: 'advertisementsRoute',
     component: AdvertisementsView
   },
-  {
-    path: '/new-advertisement',
-    name: 'newAdvertisementRoute',
-    component: NewAdvertisementView
-  },
-  {
-    path: '/login',
-    name: 'loginRoute',
-    component: LoginView
-  },
-  {
-    path: '/new-user',
-    name: 'newUserRoute',
-    component: NewUserView
-  },
-  {
-    path: '/profile',
-    name: 'myProfileRoute',
-    component: MyProfileView
-  },
     {
-    path: '/home',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/my-advertisements',
-    name: 'myAdvertisementsRoute',
-    component: MyAdvertisementsView
-  },
-  {
-    path: '/my-advertisements-edit',
-    name: 'myAdvertisementsEditRoute',
-    component: MyAdvertisementsEditView
-  },
-  {
-    path: '/my-advertisements-delete',
-    name: 'myAdvertisementsDeleteRoute',
-    component: MyAdvertisementsDeleteView
-  },
-  {
-    path: '/messages',
-    name: 'messageRoute',
-    component: MessagesView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-    }
-  }
-]
-
-const router = new VueRouter({
-  routes
+      path: '/new-advertisement',
+      name: 'newAdvertisementRoute',
+      component: NewAdvertisementView
+    },
+    {
+      path: '/login',
+      name: 'loginRoute',
+      component: LoginView
+    },
+    {
+      path: '/new-user',
+      name: 'newUserRoute',
+      component: NewUserView
+    },
+    {
+      path: '/profile',
+      name: 'myProfileRoute',
+      component: MyProfileView
+    },
+    {
+      path: '',
+      name: 'home',
+      component: HomeView
+    },
+    {
+      path: '/my-advertisements',
+      name: 'myAdvertisementsRoute',
+      component: MyAdvertisementsView
+    },
+    {
+      path: '/my-advertisements-edit',
+      name: 'myAdvertisementsEditRoute',
+      component: MyAdvertisementsEditView
+    },
+    {
+      path: '/my-advertisements-delete',
+      name: 'myAdvertisementsDeleteRoute',
+      component: MyAdvertisementsDeleteView
+    },
+    {
+      path: '/messages',
+      name: 'messageRoute',
+      component: MessagesView
+    },]
 })
 
 export default router

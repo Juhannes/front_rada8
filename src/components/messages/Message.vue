@@ -18,9 +18,9 @@
             <input v-model:value="message.sender.userName" type="text" disabled readonly class="form-control"
                    style="background-color: white; border-bottom-right-radius: 0.375rem; border-top-right-radius: 0.375rem;">
           </div>
-          <p v-if="!isSend" class="dateTime" style="margin-left: 15px">{{ message.dateTime }}</p>
+          <p v-if="!isSend" class="dateTime" style="margin-left: 15px">{{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</p>
           <p v-else-if="isSend || isNewMessage" class="dateTime" style="margin-left: 15px; visibility: hidden">
-            {{ message.dateTime }}</p>
+            {{ moment.utc(message.dateTime).format('HH:mm DD/MM/YYYY') }}</p>
         </div>
         <div class="input-group" style="width: fit-content;">
 
@@ -51,9 +51,15 @@
 </template>
 <script>
 import ImageInput from "@/components/ImageInput.vue";
+import moment from "moment/moment";
 
 export default {
   name: 'Message',
+  computed: {
+    moment() {
+      return moment
+    }
+  },
   components: {ImageInput},
   props: {
     message: {},

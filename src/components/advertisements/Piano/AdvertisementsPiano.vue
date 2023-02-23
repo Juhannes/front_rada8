@@ -1,10 +1,10 @@
 <template>
-  <div class="col-8">
+  <div>
     <AlertSuccess :message-success="this.messageSuccess"/>
     <div class="accordion" id="accordionExample">
       <div class="accordion-item" v-for="(advertisement, index) in advertisements" >
         <h2 class="accordion-header" :id="'heading'+ index">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne' + index"
                   aria-expanded="true" :aria-controls="'collapseOne' + index">
             <div class="row">
               <div class="col-10">

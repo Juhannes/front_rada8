@@ -19,10 +19,14 @@
       <div class="col-3" v-if="filteredAdvertisements.length < 1">
         Selles kategoorias kuulutused puuduvad!
       </div>
-      <div class="col-10" v-else>
-        <AdvertisementsPiano :advertisements="filteredAdvertisements" ref="advertisementsPiano"/>
+      <div class="col-6" v-else>
+        <AdvertisementsPiano @openMessageWindowEvent="openMessageWindow" :advertisements="filteredAdvertisements" ref="advertisementsPiano"/>
       </div>
-
+      <div class="col-3">
+        <message-window @emitToggleMessageEvent="toggleMessage" :is-new-message="isNewMessage"
+                        :advertisement-id="outGoingMessage.advertisementId" :view-message="viewMessage"
+                        :message="outGoingMessage"/>
+      </div>
     </div>
 
   </div>
@@ -32,10 +36,11 @@
 import CitiesDropdown from "@/components/CitiesDropdown.vue";
 import TypeDropdown from "@/components/TypeDropdown.vue";
 import AdvertisementsPiano from "@/components/advertisements/Piano/AdvertisementsPiano.vue";
+import MessageWindow from "@/components/messages/MessageWindow.vue";
 
 export default {
   name: "AdvertisementsView",
-  components: {AdvertisementsPiano, CitiesDropdown, TypeDropdown},
+  components: {MessageWindow, AdvertisementsPiano, CitiesDropdown, TypeDropdown},
   mounted() {
     this.callMethodsInPiano()
   },
@@ -78,6 +83,7 @@ export default {
       ],
       isNewMessage: false,
       isSearch: true,
+      viewMessage: false,
       outGoingMessage:
           {
             messageId: 0,
@@ -172,15 +178,17 @@ export default {
         console.log(error)
       })
     },
-    openMessageWindow: function (advertisementId) {
+    openMessageWindow: function (advertisement) {
       this.isNewMessage = true
-      let advertisement = this.advertisements.find(advertisement => advertisement.id === advertisementId)
+      this.viewMessage = true
       this.outGoingMessage.subject = advertisement.header;
       this.getAdvertisementOwner(advertisement.userId);
-      this.outGoingMessage.advertisementId = advertisementId;
+      this.outGoingMessage.advertisementId = advertisement.id;
     },
-  }
-  ,
+    toggleMessage: function (viewMessage) {
+      this.viewMessage = !viewMessage;
+    }
+  },
   beforeMount() {
     this.getAllActiveAdvertisements()
   }

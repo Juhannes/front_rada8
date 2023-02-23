@@ -7,25 +7,26 @@
         {{ selectedFilter }}
       </div>
       <div class="col col-7">
-        <div class="col text-start" style="margin-left: 2rem">
-          <button v-on:click="setMessageFilter('A'); setSelectedFilter('Saabunud sõnumid')" type="button"
-                  class="btn btn-success btn-sm">Saabunud
-          </button>
-          <button v-on:click="setToOutbox('A'); setSelectedFilter('Saadetud sõnumid')" type="button"
-                  class="btn btn-secondary btn-sm" style="margin-left: 10px; margin-right: 10px">
-            Saadetud
-          </button>
-          <button v-on:click="setMessageFilter('T'); setSelectedFilter('Prügikast')" type="button"
-                  class="btn btn-warning btn-sm">Prügikast
-          </button>
+
+        <div class="col">
+
+          <div class="col-12 btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input v-on:click="setMessageFilter('A'); setSelectedFilter('Saabunud sõnumid')" checked type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="btnradio1">Saabunud</label>
+
+            <input v-on:click="setToOutbox('A'); setSelectedFilter('Saadetud sõnumid')" type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="btnradio2">Saadetud</label>
+
+            <input v-on:click="setMessageFilter('T'); setSelectedFilter('Prügikast')" type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="btnradio3">Kustutatud</label>
+          </div>
 
         </div>
 
         <div class="col">
           <MessageTable @emitShowMessageEvent="showMessage"
                         @clearMessageWindowEvent="clearMessageWindow"
-                        refs="messageTable" :message-groups="messageGroups" :message-filter="this.messageFilter"
-                        :user-id="this.userId" :is-inbox="isInbox"/>
+                        refs="messageTable" :message-groups="messageGroups" :message-filter="this.messageFilter" :user-id="this.userId" :is-inbox="isInbox"/>
         </div>
       </div>
 
@@ -36,8 +37,7 @@
                        @emitRefreshTableEvent="getReceivedMessages(this.userId)"
                        @emitRestoreMessageEvent="restoreMessage"
                        @activateIsSendEvent="changeIsSendToTrue()"
-                       :message="this.message" :view-message="viewMessage" :is-send="isSend" :is-inbox="isInbox"
-                       ref="messageWindow"/>
+                       :message="this.message" :view-message="viewMessage" :is-send="isSend" :is-inbox="isInbox" ref="messageWindow"/>
 
       </div>
 
